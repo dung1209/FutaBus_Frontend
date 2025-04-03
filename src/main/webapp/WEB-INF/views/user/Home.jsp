@@ -15,8 +15,8 @@
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" type="text/css"
-	href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
+<!--<link rel="stylesheet" type="text/css"
+	href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">-->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet"
@@ -454,7 +454,7 @@
                 isValid = false;
             }
             if (isValid) {
-                fetch('/FutaBusBooking/api/user/trip-selection', {
+                /*fetch('http://localhost:8085/FutaBus_Backend/api/user/trip-selection', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -473,10 +473,48 @@
                 })
                 .then(data => {
                     console.log("Dữ liệu đã gửi thành công!", data);
-                    window.location.href = "/FutaBusBooking/trip-selection";
+                    window.location.href = "/FutaBus_Frontend/trip-selection";
                 })
                 .catch(error => {
                     console.error("Lỗi khi gửi dữ liệu:", error);
+                });*/
+            	const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/trip-selection');
+
+                url.searchParams.append("departure", departure);
+                url.searchParams.append("destination", destination);
+                url.searchParams.append("departureDate", myID_go);
+                if (isRoundTrip) url.searchParams.append("returnDate", myID_back);
+                url.searchParams.append("tickets", parseInt(tickets));
+
+                fetch(url, {
+                    method: 'GET',  
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("✅ Dữ liệu đã nhận thành công!", data);
+                    if (data.status === "success") { 
+                        let redirectURL = '/FutaBus_Frontend/trip-selection?departure=' + departure +
+                        '&destination=' + destination +
+                        '&departureDate=' + myID_go +
+                        '&tickets=' + tickets + 
+                        (isRoundTrip ? '&returnDate=' + myID_back : '');
+
+      					console.log("🔗 URL chuyển hướng:", redirectURL);
+      					window.location.href = redirectURL;
+                        
+                        //window.location.href = "/FutaBus_Frontend/trip-selection";
+                    	//window.location.href = `/FutaBus_Frontend/trip-selection?departure=${departure}&destination=${destination}&departureDate=${myID_go}&tickets=${tickets}` + 
+                        //(isRoundTrip ? `&returnDate=${myID_back}` : '');
+                    } else {
+                        console.error("❌ Lỗi phản hồi từ API:", data);
+                    }
+                })
+                .catch(error => {
+                    console.error("❌ Lỗi khi lấy dữ liệu:", error.message);
+                    console.error("🔍 Chi tiết lỗi:", error);
                 });
             }
         });

@@ -1,5 +1,9 @@
 package SpringMVC.UserController;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -10,7 +14,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+
+import org.springframework.http.*;
+//import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserViewController {
@@ -28,23 +40,34 @@ public class UserViewController {
         
         return "user/Home";
     }
+
+    private final RestTemplate restTemplate = new RestTemplate();
     
     @GetMapping("/trip-selection")
-    public String tripSelectionPage(HttpSession session, Model model) {
-    	RestTemplate restTemplate = new RestTemplate();
+    public String tripSelectionPage(
+            @RequestParam String departure,
+            @RequestParam String destination,
+            @RequestParam String departureDate,
+            @RequestParam(required = false) String returnDate,
+            @RequestParam int tickets,
+            Model model) {
 
-        String apiUrlWithParams = API_URL + "tinhthanh";
-        ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
+        try {
+//            ResponseEntity<List> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null, List.class);
+//            List<?> tripList = response.getBody();  // API trả về danh sách chuyến đi
 
-        Map<String, Object> responseData = response.getBody();  
-        model.addAttribute("tinhThanhList", responseData.get("tinhThanhList"));
-        
-        model.addAttribute("departure", session.getAttribute("departure"));
-        model.addAttribute("destination", session.getAttribute("destination"));
-        model.addAttribute("departureDate", session.getAttribute("departureDate"));
-        model.addAttribute("returnDate", session.getAttribute("returnDate"));
-        model.addAttribute("tickets", session.getAttribute("tickets"));
-        
+            //model.addAttribute("trips", tripList);
+
+            model.addAttribute("departure", departure);
+            model.addAttribute("destination", destination);
+            model.addAttribute("departureDate", departureDate);
+            model.addAttribute("returnDate", returnDate);
+            model.addAttribute("tickets", tickets);
+
+        } catch (Exception e) {
+            System.out.println("❌ Lỗi khi gọi API: " + e.getMessage());
+            model.addAttribute("error", "Không thể lấy thông tin chuyến xe! Vui lòng thử lại.");
+        }
         return "user/TripSelection";
     }
 

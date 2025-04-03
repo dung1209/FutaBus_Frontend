@@ -15,8 +15,6 @@
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" type="text/css"
-	href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet"
@@ -120,13 +118,13 @@
 			</div>
 
 			<div class="form-group">
-				<label for="myID_go">Ngày đi</label> <input id="myID_go" type="date"
+				<label for="my_go">Ngày đi</label> <input id="my_go" type="text"
 					name="departure-date" class="form-control" value="${departureDate}">
 			</div>
 
 			<div class="form-group hidden" id="return-date-group">
-				<label for="myID_back">Ngày về</label> <input id="myID_back"
-					type="date" name="return-date" class="form-control"  value="${returnDate}" readonly>
+				<label for="my_back">Ngày về</label> <input id="my_back"
+					type="text" name="return-date" class="form-control"  value="${returnDate}" readonly>
 			</div>
 
 			<div class="form-group">
@@ -490,14 +488,28 @@
         let formattedDate = day + '/' + month + '/' + year;
 
         //document.getElementById("myID_go").value = formattedDate;
-        document.getElementById("myID_back").value = formattedDate;
+        //document.getElementById("myID_back").value = formattedDate;
         
         const oneWayRadio = document.getElementById("one-way");
         const roundTripRadio = document.getElementById("round-trip");
         const returnDateGroup = document.getElementById("return-date-group");
-        const returnDateInput = document.getElementById("myID_back");
-        var returnDate = document.getElementById("myID_back");
+        //const returnDateInput = document.getElementById("myID_back");
+        //var returnDate = document.getElementById("myID_back");
         var departureDate = document.getElementById("myID_go");
+        
+        const returnDateInput = document.getElementById("my_back");
+        const returnDateValue = returnDateInput.value.trim();
+        if (returnDateValue) {
+            // Nếu có returnDate, chọn Khứ hồi
+            roundTripRadio.checked = true;
+            returnDateGroup.classList.remove("hidden");
+            returnDateInput.disabled = false;
+        } else {
+            // Nếu không có returnDate, chọn Một chiều
+            oneWayRadio.checked = true;
+            returnDateGroup.classList.add("hidden");
+            returnDateInput.disabled = true;
+        }
 
         oneWayRadio.addEventListener("change", function() {
             returnDateGroup.classList.add("hidden");
@@ -507,7 +519,7 @@
         roundTripRadio.addEventListener("change", function() {
             returnDateGroup.classList.remove("hidden");
             returnDateInput.disabled = false; 
-            returnDate.value = departureDate.value; 
+            //returnDate.value = departureDate.value; 
         });
         
         function toast({ title = "", message = "", type = "info", duration = 3000 }) {
