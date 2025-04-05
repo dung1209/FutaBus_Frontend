@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import FutaBus.bean.ChuyenXeResult;
 
 import org.springframework.http.*;
-//import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserViewController {
@@ -45,29 +45,62 @@ public class UserViewController {
     
     @GetMapping("/trip-selection")
     public String tripSelectionPage(
+            @RequestParam int departureId,
             @RequestParam String departure,
+            @RequestParam int destinationId,
             @RequestParam String destination,
             @RequestParam String departureDate,
             @RequestParam(required = false) String returnDate,
             @RequestParam int tickets,
             Model model) {
 
-        try {
-//            ResponseEntity<List> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null, List.class);
-//            List<?> tripList = response.getBody();  // API trả về danh sách chuyến đi
+        RestTemplate restTemplate = new RestTemplate();
+        String apiUrlWithParams = API_URL + "trip-selection?"
+                + "departureId=" + departureId
+                + "&departure=" + departure
+                + "&destinationId=" + destinationId
+                + "&destination=" + destination
+                + "&departureDate=" + departureDate
+                + (returnDate != null ? "&returnDate=" + returnDate : "")
+                + "&tickets=" + tickets;
 
-            //model.addAttribute("trips", tripList);
+        ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
+        Map<String, Object> responseData = response.getBody();
 
-            model.addAttribute("departure", departure);
-            model.addAttribute("destination", destination);
-            model.addAttribute("departureDate", departureDate);
-            model.addAttribute("returnDate", returnDate);
-            model.addAttribute("tickets", tickets);
+        List<Map<String, Object>> chuyenXeList = (List<Map<String, Object>>) responseData.get("chuyenXeResultList");
 
-        } catch (Exception e) {
-            System.out.println("❌ Lỗi khi gọi API: " + e.getMessage());
-            model.addAttribute("error", "Không thể lấy thông tin chuyến xe! Vui lòng thử lại.");
+        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat targetFormat = new SimpleDateFormat("HH:mm"); 
+
+        for (Map<String, Object> chuyen : chuyenXeList) {
+
+            String thoiDiemDi = (String) chuyen.get("thoiDiemDi");
+            String thoiDiemDen = (String) chuyen.get("thoiDiemDen");
+
+            try {
+                Date dateDi = originalFormat.parse(thoiDiemDi);
+                Date dateDen = originalFormat.parse(thoiDiemDen);
+                String formattedThoiDiemDi = targetFormat.format(dateDi);
+                String formattedThoiDiemDen = targetFormat.format(dateDen);
+
+                chuyen.put("thoiDiemDiFormatted", formattedThoiDiemDi);
+                chuyen.put("thoiDiemDenFormatted", formattedThoiDiemDen);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
+        model.addAttribute("numberOfTrips", responseData.get("numberOfTrips"));
+        model.addAttribute("chuyenXeResultList", chuyenXeList); 
+        model.addAttribute("departureId", departureId);
+        model.addAttribute("departure", departure);
+        model.addAttribute("destinationId", destinationId);
+        model.addAttribute("destination", destination);
+        model.addAttribute("departureDate", departureDate);
+        model.addAttribute("returnDate", returnDate);
+        model.addAttribute("tickets", tickets);
+
         return "user/TripSelection";
     }
 

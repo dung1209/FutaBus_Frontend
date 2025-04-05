@@ -911,6 +911,7 @@ p.duration {
  	display: block;
   	font-size: 0.9em;
   	color: #777;  
+  	margin-top: 3px;
 }
 
 .trip-summary span {

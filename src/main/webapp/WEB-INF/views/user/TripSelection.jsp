@@ -123,8 +123,9 @@
 			</div>
 
 			<div class="form-group hidden" id="return-date-group">
-				<label for="my_back">Ngày về</label> <input id="my_back"
-					type="text" name="return-date" class="form-control"  value="${returnDate}" readonly>
+				<label for="my_back">Ngày về</label> <input id="my_back" type="text"
+					name="return-date" class="form-control" value="${returnDate}"
+					readonly>
 			</div>
 
 			<div class="form-group">
@@ -156,7 +157,7 @@
 						width="22" height="22" alt="delete">
 				</div>
 			</div>
-			
+
 			<div class="filter-group">
 				<label>Giờ đi</label>
 				<div class="filter-options">
@@ -194,131 +195,74 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="result-section">
 			<div class="search-location-section">
-				<h3>TP. Hồ Chí Minh - Lâm Đồng (31)</h3>
+				<h3>${departure}- ${destination} (${numberOfTrips})</h3>
 				<div class="result-filters">
-					<button class="btn-result-filter"><img
-						src="<%=request.getContextPath()%>/assets/user/image/save_money.svg" alt="save_money">Giá rẻ bất ngờ</button>
-					<button class="btn-result-filter"><img
-						src="<%=request.getContextPath()%>/assets/user/image/clock.svg" alt="clock">Giờ khởi hành</button>
-					<button class="btn-result-filter"><img
-						src="<%=request.getContextPath()%>/assets/user/image/seat.svg" alt="seat">Ghế trống</button>
+					<button class="btn-result-filter">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/save_money.svg"
+							alt="save_money">Giá rẻ bất ngờ
+					</button>
+					<button class="btn-result-filter">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/clock.svg"
+							alt="clock">Giờ khởi hành
+					</button>
+					<button class="btn-result-filter">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/seat.svg"
+							alt="seat">Ghế trống
+					</button>
 				</div>
 			</div>
 
 			<div class="trip-list">
-				<div class="trip-item">
-					<div class="trip-details">
-						<div class="trip-info">
-							<div class="time-info">
-								<p class="duration">01:50</p>
-								<img src="<%=request.getContextPath()%>/assets/user/image/pickup.svg" width="22" height="22" alt="pickup">
-								<span class="flex-1 border-b-2 border-dotted"></span>
-								<p><span class="time">8 giờ</span> <span class="timezone">(Asian/Ho Chi Minh)</span></p>
-								<span class="flex-1 border-b-2 border-dotted"></span>
-								<img src="<%=request.getContextPath()%>/assets/user/image/station.svg" width="22" height="22" alt="station">
-								<p class="duration">05:50</p>
+				<c:forEach var="chuyen" items="${chuyenXeResultList}">
+					<div class="trip-item">
+						<div class="trip-details">
+							<div class="trip-info">
+								<div class="time-info">
+									<p class="duration">${chuyen.thoiDiemDiFormatted}</p>
+									<img
+										src="<%=request.getContextPath()%>/assets/user/image/pickup.svg"
+										width="22" height="22" alt="pickup"> <span
+										class="flex-1 border-b-2 border-dotted"></span>
+									<p>
+										<fmt:formatNumber var="formattedTime" value="${chuyen.thoiGianDiChuyenTB}" type="number" maxFractionDigits="1" minFractionDigits="0" />
+										<span class="time">${formattedTime} giờ</span> <span
+											class="timezone">(Asian/Ho Chi Minh)</span>
+									</p>
+									<span class="flex-1 border-b-2 border-dotted"></span> <img
+										src="<%=request.getContextPath()%>/assets/user/image/station.svg"
+										width="22" height="22" alt="station">
+									<p class="duration">${chuyen.thoiDiemDenFormatted}</p>
+								</div>
+
+								<div class="location-info">
+									<p>${chuyen.tenBenXeDi}</p>
+									<p>${chuyen.tenBenXeDen}</p>
+								</div>
 							</div>
-							
-							<div class="location-info">
-								<p>Bến Xe Miền Tây</p>
-								<p>Bến Xe Đà Lạt</p>
-							</div>
-						</div>
-						
-						<div class="trip-summary">
-							<span class="kind">Limousine</span> 
-							<span class="blank">19 chỗ trống</span> 
-							<span class="price">290.000đ</span>
-						</div>
-					</div>
-					
-					<div class="divide"></div>
-					
-					<div class="trip-action">
-						<span>Chọn ghế</span>
-						<span>Lịch trình</span>
-						<span>Trung chuyển</span>
-						<span>Chính sách</span>
-						<button class="btn-select">Chọn chuyến</button>
-					</div>
-				</div>
-				
-				<div class="trip-item">
-					<div class="trip-details">
-						<div class="trip-info">
-							<div class="time-info">
-								<p class="duration">01:50</p>
-								<img src="<%=request.getContextPath()%>/assets/user/image/pickup.svg" width="22" height="22" alt="pickup">
-								<span class="flex-1 border-b-2 border-dotted"></span>
-								<p><span class="time">8 giờ</span> <span class="timezone">(Asian/Ho Chi Minh)</span></p>
-								<span class="flex-1 border-b-2 border-dotted"></span>
-								<img src="<%=request.getContextPath()%>/assets/user/image/station.svg" width="22" height="22" alt="station">
-								<p class="duration">05:50</p>
-							</div>
-							
-							<div class="location-info">
-								<p>Bến Xe Miền Tây</p>
-								<p>Bến Xe Đà Lạt</p>
+
+							<div class="trip-summary">
+								<span class="kind">${chuyen.tenLoai}</span> 
+								<span class="blank">${chuyen.soGheTrong} chỗ trống</span> 
+								<fmt:formatNumber var="formattedGiaHienHanh" value="${chuyen.giaHienHanh}" type="number" pattern="#,###" />
+								<span class="price">${formattedGiaHienHanh} VND</span>
 							</div>
 						</div>
-						
-						<div class="trip-summary">
-							<span class="kind">Limousine</span> 
-							<span class="blank">19 chỗ trống</span> 
-							<span class="price">290.000đ</span>
+
+						<div class="divide"></div>
+
+						<div class="trip-action">
+							<span>Chọn ghế</span> <span>Lịch trình</span> <span>Trung
+								chuyển</span> <span>Chính sách</span>
+							<button class="btn-select">Chọn chuyến</button>
 						</div>
 					</div>
-					
-					<div class="divide"></div>
-					
-					<div class="trip-action">
-						<span>Chọn ghế</span>
-						<span>Lịch trình</span>
-						<span>Trung chuyển</span>
-						<span>Chính sách</span>
-						<button class="btn-select">Chọn chuyến</button>
-					</div>
-				</div>
-				
-				<div class="trip-item">
-					<div class="trip-details">
-						<div class="trip-info">
-							<div class="time-info">
-								<p class="duration">01:50</p>
-								<img src="<%=request.getContextPath()%>/assets/user/image/pickup.svg" width="22" height="22" alt="pickup">
-								<span class="flex-1 border-b-2 border-dotted"></span>
-								<p><span class="time">8 giờ</span> <span class="timezone">(Asian/Ho Chi Minh)</span></p>
-								<span class="flex-1 border-b-2 border-dotted"></span>
-								<img src="<%=request.getContextPath()%>/assets/user/image/station.svg" width="22" height="22" alt="station">
-								<p class="duration">05:50</p>
-							</div>
-							
-							<div class="location-info">
-								<p>Bến Xe Miền Tây</p>
-								<p>Bến Xe Đà Lạt</p>
-							</div>
-						</div>
-						
-						<div class="trip-summary">
-							<span class="kind">Limousine</span> 
-							<span class="blank">19 chỗ trống</span> 
-							<span class="price">290.000đ</span>
-						</div>
-					</div>
-					
-					<div class="divide"></div>
-					
-					<div class="trip-action">
-						<span>Chọn ghế</span>
-						<span>Lịch trình</span>
-						<span>Trung chuyển</span>
-						<span>Chính sách</span>
-						<button class="btn-select">Chọn chuyến</button>
-					</div>
-				</div>
+				</c:forEach>
 			</div>
 		</div>
 	</div>
@@ -486,26 +430,19 @@
         let day = parts[2];  
         
         let formattedDate = day + '/' + month + '/' + year;
-
-        //document.getElementById("myID_go").value = formattedDate;
-        //document.getElementById("myID_back").value = formattedDate;
         
         const oneWayRadio = document.getElementById("one-way");
         const roundTripRadio = document.getElementById("round-trip");
         const returnDateGroup = document.getElementById("return-date-group");
-        //const returnDateInput = document.getElementById("myID_back");
-        //var returnDate = document.getElementById("myID_back");
         var departureDate = document.getElementById("myID_go");
-        
         const returnDateInput = document.getElementById("my_back");
         const returnDateValue = returnDateInput.value.trim();
+        
         if (returnDateValue) {
-            // Nếu có returnDate, chọn Khứ hồi
             roundTripRadio.checked = true;
             returnDateGroup.classList.remove("hidden");
             returnDateInput.disabled = false;
         } else {
-            // Nếu không có returnDate, chọn Một chiều
             oneWayRadio.checked = true;
             returnDateGroup.classList.add("hidden");
             returnDateInput.disabled = true;
@@ -519,7 +456,6 @@
         roundTripRadio.addEventListener("change", function() {
             returnDateGroup.classList.remove("hidden");
             returnDateInput.disabled = false; 
-            //returnDate.value = departureDate.value; 
         });
         
         function toast({ title = "", message = "", type = "info", duration = 3000 }) {
