@@ -166,7 +166,7 @@
 						<c:forEach var="quanhuyen" items="${quanHuyenList}">
 							<tr>
 								<td>${quanhuyen.tenQuanHuyen}</td>
-								<td>${quanhuyen.idTinhThanh}</td>
+								<td>${quanhuyen.tinhThanh.tenTinh}</td>
 								<td><img
 									src="<%=request.getContextPath()%>/assets/admin/image/see.png"
 									alt="detail" /> <img

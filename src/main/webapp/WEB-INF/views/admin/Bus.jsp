@@ -170,14 +170,14 @@
 								<td>${xe.tenXe}</td>
 								<td>
 									<c:forEach var="loaixe" items="${loaiXeList}">
-        								<c:if test="${xe.idLoaiXe == loaixe.idLoaiXe}">
+        								<c:if test="${xe.loaiXe.idLoaiXe == loaixe.idLoaiXe}">
             								${loaixe.tenLoai}
         								</c:if>
     								</c:forEach>
 								</td>
 								<td>
 									<c:forEach var="loaixe" items="${loaiXeList}">
-        								<c:if test="${xe.idLoaiXe == loaixe.idLoaiXe}">
+        								<c:if test="${xe.loaiXe.idLoaiXe == loaixe.idLoaiXe}">
             								${loaixe.soGhe}
         								</c:if>
     								</c:forEach>

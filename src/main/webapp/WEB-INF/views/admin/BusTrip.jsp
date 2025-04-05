@@ -169,28 +169,16 @@
 						<c:forEach var="chuyenxe" items="${chuyenXeList}">
 							<tr>
 								<td>
-									<c:forEach var="tuyenxe" items="${tuyenXeList}">
-        								<c:if test="${chuyenxe.idTuyenXe == tuyenxe.idTuyenXe}">
-            								${tuyenxe.tenTuyen}
-        								</c:if>
-    								</c:forEach>
+									${chuyenxe.tuyenXe.tenTuyen}
 								</td>
 								<td>${chuyenxe.thoiDiemDi}</td>
 								<td>${chuyenxe.thoiDiemDen}</td>
 								<td>
-									<c:forEach var="xe" items="${xeList}">
-        								<c:if test="${xe.idXe == chuyenxe.idXe}">
-            								${xe.bienSo}
-        								</c:if>
-    								</c:forEach>
+									${chuyenxe.xe.bienSo}
 								</td>
 								<td><fmt:formatNumber value="${chuyenxe.giaVe}" pattern="#,###" groupingUsed="true" /> VNĐ</td>
 								<td>
-									<c:forEach var="nguoidung" items="${nguoiDungList}">
-        								<c:if test="${nguoidung.idNguoiDung == chuyenxe.idTaiXe}">
-            								${nguoidung.hoTen}
-        								</c:if>
-    								</c:forEach>
+									${chuyenxe.taiXe.hoTen}
 								</td>
 								<td><img
 									src="<%=request.getContextPath()%>/assets/admin/image/see.png"

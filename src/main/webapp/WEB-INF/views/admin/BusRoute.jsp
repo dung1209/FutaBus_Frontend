@@ -171,18 +171,10 @@
 							<tr>
 								<td>${tuyenxe.tenTuyen}</td>
 								<td>
-    								<c:forEach var="benXe" items="${benXeList}">
-        								<c:if test="${benXe.idBenXe == tuyenxe.idBenXeDi}">
-            								${benXe.tenBenXe}
-        								</c:if>
-    								</c:forEach>
+    								${tuyenxe.benXeDi.tenBenXe}
 								</td>
 								<td>
-    								<c:forEach var="benXe" items="${benXeList}">
-        								<c:if test="${benXe.idBenXe == tuyenxe.idBenXeDen}">
-            								${benXe.tenBenXe}
-        								</c:if>
-    								</c:forEach>
+    								${tuyenxe.benXeDen.tenBenXe}
 								</td>
 								<td><fmt:formatNumber value="${tuyenxe.quangDuong}" pattern="#"/> km</td>
 								<td><fmt:formatNumber value="${tuyenxe.thoiGianDiChuyenTB}" pattern="#"/> giờ</td>
