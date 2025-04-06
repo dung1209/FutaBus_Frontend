@@ -198,7 +198,7 @@
 
 		<div class="result-section">
 			<div class="search-location-section">
-				<h3>${departure}- ${destination} (${numberOfTrips})</h3>
+				<h3>${departure}-${destination} (${numberOfTrips})</h3>
 				<div class="result-filters">
 					<button class="btn-result-filter">
 						<img
@@ -230,7 +230,9 @@
 										width="22" height="22" alt="pickup"> <span
 										class="flex-1 border-b-2 border-dotted"></span>
 									<p>
-										<fmt:formatNumber var="formattedTime" value="${chuyen.thoiGianDiChuyenTB}" type="number" maxFractionDigits="1" minFractionDigits="0" />
+										<fmt:formatNumber var="formattedTime"
+											value="${chuyen.thoiGianDiChuyenTB}" type="number"
+											maxFractionDigits="1" minFractionDigits="0" />
 										<span class="time">${formattedTime} giờ</span> <span
 											class="timezone">(Asian/Ho Chi Minh)</span>
 									</p>
@@ -247,9 +249,10 @@
 							</div>
 
 							<div class="trip-summary">
-								<span class="kind">${chuyen.tenLoai}</span> 
-								<span class="blank">${chuyen.soGheTrong} chỗ trống</span> 
-								<fmt:formatNumber var="formattedGiaHienHanh" value="${chuyen.giaHienHanh}" type="number" pattern="#,###" />
+								<span class="kind">${chuyen.tenLoai}</span> <span class="blank">${chuyen.soGheTrong}
+									chỗ trống</span>
+								<fmt:formatNumber var="formattedGiaHienHanh"
+									value="${chuyen.giaHienHanh}" type="number" pattern="#,###" />
 								<span class="price">${formattedGiaHienHanh} VND</span>
 							</div>
 						</div>
@@ -259,7 +262,21 @@
 						<div class="trip-action">
 							<span>Chọn ghế</span> <span>Lịch trình</span> <span>Trung
 								chuyển</span> <span>Chính sách</span>
-							<button class="btn-select">Chọn chuyến</button>
+							<button class="btn-select" 
+								data-departureId="${departureId}"
+								data-start="${chuyen.tenBenXeDi}"
+								data-departure="${departure}"
+								data-destinationId="${destinationId}"
+								data-end="${chuyen.tenBenXeDen}"
+								data-destination="${destination}"
+								data-departureDate="${departureDate}"
+								data-returnDate="${returnDate}"
+								data-start-time="${chuyen.thoiDiemDi}"
+								data-end-time="${chuyen.thoiDiemDen}"
+								data-loai="${chuyen.tenLoai}"
+								data-price="${chuyen.giaHienHanh}"
+								data-so-ghe="${chuyen.soGheTrong}"
+								data-id-xe="${chuyen.idXe}">Chọn chuyến</button>
 						</div>
 					</div>
 				</c:forEach>
@@ -348,6 +365,81 @@
         const destinationInput = document.getElementById("destination");
         const dropdownDeparture = document.getElementById("dropdown-list-departure");
         const dropdownDestination = document.getElementById("dropdown-list-destination");
+        
+        const buttons = document.querySelectorAll(".btn-select");
+
+        buttons.forEach(btn => {
+            btn.addEventListener("click", function () {
+            	const departureId = this.dataset.departureid;
+                const departure = this.dataset.departure;
+                const destinationId = this.dataset.destinationid;
+                const destination = this.dataset.destination;
+                const start = this.dataset.start;
+                const end = this.dataset.end;
+                const departureDate = this.dataset.departuredate;
+                const returnDate = this.dataset.returndate;
+                const startTime = this.dataset.startTime;
+                const endTime = this.dataset.endTime;
+                const loai = this.dataset.loai;
+                const price = this.dataset.price;
+                const soGhe = this.dataset.soGhe;
+                const idXe = this.dataset.idXe;
+
+                const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/book-tickets');
+                
+                url.searchParams.append("departureId", this.dataset.departureid);
+                url.searchParams.append("departure", this.dataset.departure);
+                url.searchParams.append("destinationId", this.dataset.destinationid);
+                url.searchParams.append("destination", this.dataset.destination);
+                url.searchParams.append("start", this.dataset.start);
+                url.searchParams.append("end", this.dataset.end);
+                url.searchParams.append("departureDate", this.dataset.departuredate);
+                url.searchParams.append("returnDate", this.dataset.returndate);
+                url.searchParams.append("startTime", this.dataset.startTime);
+                url.searchParams.append("endTime", this.dataset.endTime);
+                url.searchParams.append("loai", this.dataset.loai);
+                url.searchParams.append("price", this.dataset.price);
+                url.searchParams.append("soGhe", this.dataset.soGhe);
+                url.searchParams.append("idXe", this.dataset.idXe);
+
+                fetch(url, {
+                    method: 'GET',  
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Dữ liệu đã nhận thành công!", data);
+                    const isRoundTrip = false;
+                    if (data.status === "success") { 
+                    	let redirectURL = '/FutaBus_Frontend/book-tickets?' +
+                        'departureId=' + departureId +
+                        '&departure=' + departure +
+                        '&destinationId=' + destinationId +
+                        '&destination=' + destination +
+                        '&start=' + start +
+                        '&end=' + end +
+                        '&departureDate=' + departureDate +
+                        (isRoundTrip ? '&returnDate=' + returnDate : '') +
+                        '&startTime=' + startTime +
+                        '&endTime=' + endTime +
+                        '&loai=' + loai +
+                        '&price=' + price +
+                        '&soGhe=' + soGhe +
+                        '&idXe=' + idXe;
+
+      					window.location.href = redirectURL;
+                    } else {
+                        console.error("❌ Lỗi phản hồi từ API:", data);
+                    }
+                })
+                .catch(error => {
+                    console.error("❌ Lỗi khi lấy dữ liệu:", error.message);
+                    console.error("🔍 Chi tiết lỗi:", error);
+                });
+            });
+        });
 
         const cities = [];
 

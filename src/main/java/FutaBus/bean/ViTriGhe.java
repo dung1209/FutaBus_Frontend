@@ -17,17 +17,16 @@ public class ViTriGhe {
     @Column(name = "trangThai", nullable = false)
     private int trangThai;
 
-    @Column(name = "idXe", nullable = false)
-    private int idXe;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idXe", referencedColumnName = "idXe")
+    private Xe xe; 
 
-    public ViTriGhe() {
+    public Xe getXe() {
+        return xe;
     }
 
-    public ViTriGhe(int idViTriGhe, String tenViTri, int trangThai, int idXe) {
-        this.idViTriGhe = idViTriGhe;
-        this.tenViTri = tenViTri;
-        this.trangThai = trangThai;
-        this.idXe = idXe;
+    public void setXe(Xe xe) {
+        this.xe = xe;
     }
 
     public int getIdViTriGhe() {
@@ -46,29 +45,11 @@ public class ViTriGhe {
         this.tenViTri = tenViTri;
     }
 
-    public int isTrangThai() {
+    public int getTrangThai() {
         return trangThai;
     }
 
     public void setTrangThai(int trangThai) {
         this.trangThai = trangThai;
-    }
-
-    public int getIdXe() {
-        return idXe;
-    }
-
-    public void setIdXe(int idXe) {
-        this.idXe = idXe;
-    }
-
-    @Override
-    public String toString() {
-        return "ViTriGhe{" +
-                "idViTriGhe=" + idViTriGhe +
-                ", tenViTri='" + tenViTri + '\'' +
-                ", trangThai=" + trangThai +
-                ", idXe=" + idXe +
-                '}';
     }
 }

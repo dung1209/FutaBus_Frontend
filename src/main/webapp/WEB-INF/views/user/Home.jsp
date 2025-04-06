@@ -476,7 +476,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("✅ Dữ liệu đã nhận thành công!", data);
+                    console.log("Dữ liệu đã nhận thành công!", data);
                     console.log("Departure ID: " + departureId);
                     console.log("Destination ID: " + destinationId);
                     if (data.status === "success") { 

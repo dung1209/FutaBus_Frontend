@@ -20,6 +20,8 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 </head>
 <body>
@@ -65,8 +67,8 @@
 	<nav>
 		<div class="flex h-10 cursor-pointer items-center px-6">Quay lại</div>
 		<div class="content">
-			<p>TP.Hồ Chí Minh - Đà Lạt</p>
-			<p>Thứ 3, 14/01</p>
+			<p>${departure}-${destination}</p>
+			<p>${weekday},${departureDate}</p>
 		</div>
 	</nav>
 
@@ -86,83 +88,73 @@
 						<table>
 							<tbody>
 								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A01</span></td>
+									<td class="relative"><c:choose>
+											<c:when test="${viTriGheTangDuoiList[0].trangThai == 1}">
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+													alt="seat icon">
+												<span class="absolute">${viTriGheTangDuoiList[0].tenViTri}</span>
+											</c:when>
+											<c:otherwise>
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+													alt="seat icon" onclick="selectSeat(this)">
+												<span class="absolute seat-label">${viTriGheTangDuoiList[0].tenViTri}</span>
+											</c:otherwise>
+										</c:choose></td>
+
 									<td style="position: relative; width: 24px;"></td>
 									<td style="position: relative;"></td>
 									<td style="position: relative; width: 24px;"></td>
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A02</span></td>
+
+									<td class="relative"><c:choose>
+											<c:when test="${viTriGheTangDuoiList[1].trangThai == 1}">
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+													alt="seat icon">
+												<span class="absolute">${viTriGheTangDuoiList[1].tenViTri}</span>
+											</c:when>
+											<c:otherwise>
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+													alt="seat icon" onclick="selectSeat(this)">
+												<span class="absolute">${viTriGheTangDuoiList[1].tenViTri}</span>
+											</c:otherwise>
+										</c:choose></td>
 								</tr>
 
-								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A03</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A04</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A05</span></td>
-								</tr>
+								<c:forEach var="seat" items="${viTriGheTangDuoiList}"
+									varStatus="status">
+									<c:if test="${status.index >= 2}">
+										<c:if test="${(status.index - 2) % 3 == 0}">
+											<tr>
+										</c:if>
 
-								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A06</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A07</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A08</span></td>
-								</tr>
-								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A09</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A10</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A11</span></td>
-								</tr>
-								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A12</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A13</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A14</span></td>
-								</tr>
-								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A15</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A16</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">A17</span></td>
-								</tr>
+										<td class="relative"><c:choose>
+												<c:when test="${seat.trangThai == 1}">
+													<img width="32"
+														src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+														alt="seat icon">
+													<span class="absolute">${seat.tenViTri}</span>
+												</c:when>
+												<c:otherwise>
+													<img width="32"
+														src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+														alt="seat icon" onclick="selectSeat(this)">
+													<span class="absolute seat-label">${seat.tenViTri}</span>
+												</c:otherwise>
+											</c:choose></td>
+
+										<c:if test="${(status.index - 2) % 3 != 2}">
+											<td style="width: 24px;"></td>
+										</c:if>
+
+										<c:if
+											test="${(status.index - 2) % 3 == 2 || status.index == fn:length(viTriGheTangDuoiList) - 1}">
+											</tr>
+										</c:if>
+									</c:if>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
@@ -174,92 +166,73 @@
 						<table>
 							<tbody>
 								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative seat_disabled"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">B01</span></td>
+									<td class="relative"><c:choose>
+											<c:when test="${viTriGheTangTrenList[0].trangThai == 1}">
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+													alt="seat icon">
+												<span class="absolute">${viTriGheTangTrenList[0].tenViTri}</span>
+											</c:when>
+											<c:otherwise>
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+													alt="seat icon" onclick="selectSeat(this)">
+												<span class="absolute seat-label">${viTriGheTangTrenList[0].tenViTri}</span>
+											</c:otherwise>
+										</c:choose></td>
+
 									<td style="position: relative; width: 24px;"></td>
 									<td style="position: relative;"></td>
 									<td style="position: relative; width: 24px;"></td>
-									<td class="relative seat_disabled"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">B02</span></td>
+
+									<td class="relative"><c:choose>
+											<c:when test="${viTriGheTangTrenList[1].trangThai == 1}">
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+													alt="seat icon">
+												<span class="absolute">${viTriGheTangTrenList[1].tenViTri}</span>
+											</c:when>
+											<c:otherwise>
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+													alt="seat icon" onclick="selectSeat(this)">
+												<span class="absolute">${viTriGheTangTrenList[1].tenViTri}</span>
+											</c:otherwise>
+										</c:choose></td>
 								</tr>
 
-								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative seat_disabled"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">B03</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative seat_disabled"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">B04</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative seat_disabled"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">B05</span></td>
-								</tr>
+								<c:forEach var="seat" items="${viTriGheTangTrenList}"
+									varStatus="status">
+									<c:if test="${status.index >= 2}">
+										<c:if test="${(status.index - 2) % 3 == 0}">
+											<tr>
+										</c:if>
 
-								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative seat_disabled"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">B06</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative seat_disabled"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">B07</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative seat_disabled"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
-										alt="seat icon"><span class="absolute">B08</span></td>
-								</tr>
-								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative seat_active"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
-										alt="seat icon" onclick="selectSeat(this)"><span
-										class="absolute seat-label">B09</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative seat_active"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
-										alt="seat icon" onclick="selectSeat(this)"><span
-										class="absolute seat-label">B10</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative seat_active"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
-										alt="seat icon" onclick="selectSeat(this)"><span
-										class="absolute seat-label">B11</span></td>
-								</tr>
-								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative seat_active"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
-										alt="seat icon" onclick="selectSeat(this)"><span
-										class="absolute seat-label">B12</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative seat_active"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
-										alt="seat icon" onclick="selectSeat(this)"><span
-										class="absolute seat-label">B13</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative seat_active"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
-										alt="seat icon" onclick="selectSeat(this)"><span
-										class="absolute seat-label">B14</span></td>
-								</tr>
-								<tr class="flex items-center gap-1 justify-between">
-									<td class="relative seat_active"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
-										alt="seat icon" onclick="selectSeat(this)"><span
-										class="absolute seat-label">B15</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative seat_active"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
-										alt="seat icon" onclick="selectSeat(this)"><span
-										class="absolute seat-label">B16</span></td>
-									<td style="position: relative; width: 24px;"></td>
-									<td class="relative seat_active"><img width="32"
-										src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
-										alt="seat icon" onclick="selectSeat(this)"><span
-										class="absolute seat-label">B17</span></td>
-								</tr>
+										<td class="relative"><c:choose>
+												<c:when test="${seat.trangThai == 1}">
+													<img width="32"
+														src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+														alt="seat icon">
+													<span class="absolute">${seat.tenViTri}</span>
+												</c:when>
+												<c:otherwise>
+													<img width="32"
+														src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+														alt="seat icon" onclick="selectSeat(this)">
+													<span class="absolute seat-label">${seat.tenViTri}</span>
+												</c:otherwise>
+											</c:choose></td>
+
+										<c:if test="${(status.index - 2) % 3 != 2}">
+											<td style="width: 24px;"></td>
+										</c:if>
+
+										<c:if
+											test="${(status.index - 2) % 3 == 2 || status.index == fn:length(viTriGheTangDuoiList) - 1}">
+											</tr>
+										</c:if>
+									</c:if>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
@@ -336,24 +309,21 @@
 				<div class="departure-information">
 					<p class="item">Thông tin lượt đi</p>
 					<div class="trip-information">
-						<span class="title">Tuyến xe</span><span
-							class="road">Mien Dong moi - Di Linh</span>
+						<span class="title">Tuyến xe</span><span class="road">${start}
+							- ${end}</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Thời gian xuất bến</span><span
-							class="time">17:00 16/01/2025</span>
+						<span class="title">Thời gian xuất bến</span><span class="time">${formattedStartTime}</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Số lượng ghế</span><span
-							class="number">1 Ghế</span>
+						<span class="title">Số lượng ghế</span><span class="number">0
+							Ghế</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Số ghế</span><span
-							class="seat">B08, B08, B08, B08, B08</span>
+						<span class="title">Số ghế</span><span class="seat"></span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Tổng tiền lượt đi</span><span
-							class="price">240.000đ</span>
+						<span class="title">Tổng tiền lượt đi</span><span class="price">0đ</span>
 					</div>
 				</div>
 
@@ -361,18 +331,16 @@
 					<p class="item">Chi tiết giá</p>
 					<div class="price-infor">
 						<span class="title">Giá vé lượt đi</span><span
-							class="ticket-price">240.000đ</span>
+							class="ticket-price">0đ</span>
 					</div>
 					<div class="price-infor">
-						<span class="title">Phí thanh toán</span><span
-							class="fee">0đ</span>
+						<span class="title">Phí thanh toán</span><span class="fee">0đ</span>
 					</div>
-					
+
 					<div class="divide"></div>
-					
+
 					<div class="price-infor">
-						<span class="title">Tổng tiền</span><span
-							class="total">240.000đ</span>
+						<span class="title">Tổng tiền</span><span class="total">0đ</span>
 					</div>
 				</div>
 
@@ -449,12 +417,12 @@
 	
 	let selectedSeatsCount = 0;
 	const maxSeats = 5;
+	let selectedSeats = [];
 	
 	function selectSeat(imageElement) {
 	    const parentElement = imageElement.parentElement;
-
 	    const spanElement = parentElement.querySelector('.seat-label');
-
+	    const seatName = spanElement.textContent;
 	    const seatActiveSrc = "<%=request.getContextPath()%>/assets/user/image/seat_active.svg";
 	    const seatSelectingSrc = "<%=request.getContextPath()%>/assets/user/image/seat_selecting.svg";
 
@@ -468,14 +436,38 @@
 	            });
 	            return;
 	        }
+	    	selectedSeats.push(seatName);
 	        imageElement.src = seatSelectingSrc;
 	        spanElement.style.color = "#ef5222"; 
 	        selectedSeatsCount++;
-	        console.log("selectedSeatsCount: ",selectedSeatsCount);
+	        let seatsText = String(selectedSeatsCount).concat(" Ghế");
+	        let totalPrice = selectedSeatsCount * ${price};
+	        let formattedTotalPrice = totalPrice.toLocaleString('vi-VN');
+	        let totalPriceText = String(formattedTotalPrice).concat("đ");
+	        
+	        document.querySelector('.number').innerHTML = seatsText;
+	        document.querySelector('.seat').textContent = selectedSeats.join(', ');
+	        document.querySelector('.price').innerHTML = totalPriceText;
+	        document.querySelector('.ticket-price').innerHTML = totalPriceText;
+	        document.querySelector('.total').innerHTML = totalPriceText;
 	    } else if (imageElement.src.includes("seat_selecting.svg")) {
+	    	const index = selectedSeats.indexOf(seatName);
+	        if (index !== -1) {
+	            selectedSeats.splice(index, 1);
+	        }
 	        imageElement.src = seatActiveSrc; 
 	        spanElement.style.color = ""; 
 	        selectedSeatsCount--;
+	        let seatsText = String(selectedSeatsCount).concat(" Ghế");
+	        let totalPrice = selectedSeatsCount * ${price};
+	        let formattedTotalPrice = totalPrice.toLocaleString('vi-VN');
+	        let totalPriceText = String(formattedTotalPrice).concat("đ");
+	        
+	        document.querySelector('.number').innerHTML = seatsText;
+	        document.querySelector('.seat').textContent = selectedSeats.join(', ');
+	        document.querySelector('.price').innerHTML = totalPriceText;
+	        document.querySelector('.ticket-price').innerHTML = totalPriceText;
+	        document.querySelector('.total').innerHTML = totalPriceText;
 	    }
 	}
 	
