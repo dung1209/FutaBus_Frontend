@@ -271,6 +271,7 @@
 								data-destination="${destination}"
 								data-departureDate="${departureDate}"
 								data-returnDate="${returnDate}"
+								data-id-trip="${chuyen.tripId}"
 								data-start-time="${chuyen.thoiDiemDi}"
 								data-end-time="${chuyen.thoiDiemDen}"
 								data-loai="${chuyen.tenLoai}"
@@ -378,6 +379,7 @@
                 const end = this.dataset.end;
                 const departureDate = this.dataset.departuredate;
                 const returnDate = this.dataset.returndate;
+                const idTrip = this.dataset.idTrip;
                 const startTime = this.dataset.startTime;
                 const endTime = this.dataset.endTime;
                 const loai = this.dataset.loai;
@@ -395,6 +397,7 @@
                 url.searchParams.append("end", this.dataset.end);
                 url.searchParams.append("departureDate", this.dataset.departuredate);
                 url.searchParams.append("returnDate", this.dataset.returndate);
+                url.searchParams.append("idTrip", this.dataset.idTrip);
                 url.searchParams.append("startTime", this.dataset.startTime);
                 url.searchParams.append("endTime", this.dataset.endTime);
                 url.searchParams.append("loai", this.dataset.loai);
@@ -422,6 +425,7 @@
                         '&end=' + end +
                         '&departureDate=' + departureDate +
                         (isRoundTrip ? '&returnDate=' + returnDate : '') +
+                        '&idTrip=' + idTrip +
                         '&startTime=' + startTime +
                         '&endTime=' + endTime +
                         '&loai=' + loai +

@@ -7,6 +7,7 @@
 <meta charset="utf-8">
 <title>Thanh toán</title>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/assets/user/css/checkout.css">
 <link
@@ -20,11 +21,26 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+	
 
 </head>
 <body>
 	<div id="toast"></div>
-
+	<div id="confirmModal" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 class="modal-title">Xác nhận</h2>
+				<span class="close" id="modalClose">&times;</span>
+			</div>
+			<div class="modal-body">
+				<p class="title-question">Bạn có muốn xác nhận đặt vé không?</p>
+			</div>
+			<div class="modal-footer">
+				<button id="confirmYes" class="btn btn-yes">Có</button>
+				<button id="confirmNo" class="btn btn-no">Không</button>
+			</div>
+		</div>
+	</div>
 	<header class="header-container">
 		<img
 			src="<%=request.getContextPath()%>/assets/user/image/home_banner.png"
@@ -65,8 +81,8 @@
 	<nav>
 		<div class="flex h-10 cursor-pointer items-center px-6">Quay lại</div>
 		<div class="content">
-			<p>TP.Hồ Chí Minh - Đà Lạt</p>
-			<p>Thứ 3, 14/01</p>
+			<p>${departure}-${destination}</p>
+			<p>${weekday},${departureDate}</p>
 		</div>
 	</nav>
 
@@ -145,41 +161,41 @@
 				<div class="departure-information">
 					<p class="item">Thông tin khách hàng</p>
 					<div class="trip-information">
-						<span class="title">Họ và tên</span><span class="road">Dũng Nguyễn</span>
+						<span class="title">Họ và tên</span><span class="road">${nameValue}</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Số điện thoại</span><span class="phone">0327729280</span>
+						<span class="title">Số điện thoại</span><span class="phone">${phoneValue}</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Email</span><span class="number">dung@gmail.com</span>
+						<span class="title">Email</span><span class="number">${emailValue}</span>
 					</div>
 				</div>
 				
 				<div class="round-trip-information">
 					<p class="item">Thông tin lượt đi</p>
 					<div class="trip-information">
-						<span class="title">Tuyến xe</span><span class="road">Mien Tay - Da Lat</span>
+						<span class="title">Tuyến xe</span><span class="road">${start} - ${end}</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Thời gian xuất bến</span><span class="time">09:30 12/02/2025</span>
+						<span class="title">Thời gian xuất bến</span><span class="time">${formattedStartTime}</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Số lượng ghế</span><span class="number">1 Ghế</span>
+						<span class="title">Số lượng ghế</span><span class="number">${selectedSeatsCount} Ghế</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Số ghế</span><span class="number">B16</span>
+						<span class="title">Số ghế</span><span class="number">${selectedSeats}</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Điểm lên xe</span><span class="number">BX Miền Tây</span>
+						<span class="title">Điểm lên xe</span><span class="number">${start}</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Thời gian tới nơi đón</span><span class="number">trước 09:15 12/02/2025</span>
+						<span class="title">Thời gian tới nơi đón</span><span class="number">${formattedStartTime}</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Điểm trả khách</span><span class="number">DA LAT</span>
+						<span class="title">Điểm trả khách</span><span class="number">${end}</span>
 					</div>
 					<div class="trip-information">
-						<span class="title">Tổng tiền lượt đi</span><span class="time">290.000đ</span>
+						<span class="title">Tổng tiền lượt đi</span><span class="time"><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true"/>đ</span>
 					</div>
 				</div>
 
@@ -187,7 +203,7 @@
 					<p class="item">Chi tiết giá</p>
 					<div class="price-infor">
 						<span class="title">Giá vé lượt đi</span><span
-							class="ticket-price">240.000đ</span>
+							class="ticket-price"><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true"/>đ</span>
 					</div>
 					<div class="price-infor">
 						<span class="title">Phí thanh toán</span><span class="fee">0đ</span>
@@ -196,7 +212,7 @@
 					<div class="divide"></div>
 
 					<div class="price-infor">
-						<span class="title">Tổng tiền</span><span class="total">240.000đ</span>
+						<span class="title">Tổng tiền</span><span class="total"><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true"/>đ</span>
 					</div>
 				</div>
 			</div>
@@ -346,6 +362,102 @@
 	    });
 
 	    updateButtonVisibility();
+	    
+	    cashPaymentButton.addEventListener("click", function (e) {
+			
+	    	console.log("--------------------");
+	    	
+	    	const now = new Date();
+	        const formattedTime = now.toLocaleString("vi-VN", {
+	            year: "numeric",
+	            month: "2-digit",
+	            day: "2-digit",
+	            hour: "2-digit",
+	            minute: "2-digit",
+	            second: "2-digit"
+	        });
+	    	
+			console.log("thoiGianDatVe: ", formattedTime);
+			console.log("soLuongVe: ", ${selectedSeatsCount});
+			console.log("tongTien: ", ${totalPrice});
+			console.log("trangThai: ", 1);
+			console.log("thoiGianCapNhat: ", formattedTime);
+			console.log("hoTen: ", '${nameValue}');
+			console.log("soDienThoai: ", '${phoneValue}');
+			console.log("email: ", '${emailValue}');
+			console.log("idNguoiDung: ", 1);
+			console.log("idChuyenXe: ", ${idTrip});
+			console.log("--------------------");
+			console.log("trangThai: ", 1);
+			console.log("idViTriGhe: ", ${selectedSeatIds});
+			console.log("idPhieuDatVe: ", 1);
+			console.log("--------------------");
+			
+			const selectedSeatsCount = ${selectedSeatsCount};  
+			const totalPrice = ${totalPrice};    
+			const nameValue = "${nameValue}";       
+			const phoneValue = "${phoneValue}";
+			const emailValue = "${emailValue}";
+			const idTrip = ${idTrip};                       
+			const selectedSeatIds = "${selectedSeatIds}";     
+			
+			const bookingData = {   
+				    soLuongVe: selectedSeatsCount, 
+				    tongTien: totalPrice,                           
+				    hoTen: nameValue,                
+				    soDienThoai: phoneValue,     
+				    email: emailValue,                   
+				    idChuyenXe: idTrip,    
+				    idViTriGhe: selectedSeatIds,  
+			};
+			
+			e.preventDefault();
+		    const confirmModal = document.getElementById('confirmModal');
+		    confirmModal.classList.add("show");
+
+		    document.getElementById('confirmYes').onclick = function () {
+		        confirmModal.classList.remove("show");
+		        
+		        console.log("Booking Data:", bookingData);
+		        
+		        fetch("http://localhost:8085/FutaBus_Backend/api/user/confirmBooking", {
+		            method: "POST",
+		            headers: {
+		                "Content-Type": "application/json"
+		            },
+		            body: JSON.stringify(bookingData)
+		        })
+		        .then(response => {
+		            if (!response.ok) {
+		                throw new Error("HTTP error " + response.status);
+		            }
+		            return response.json();
+		        })
+		        .then(data => {
+		            console.log("Dữ liệu lưu thành công!", data);
+		            window.location.href = "/FutaBus_Frontend/thank-you";
+		        })
+		        .catch(error => {
+		            console.error("Lỗi khi lưu dữ liệu:", error.message);
+		            console.error("Chi tiết lỗi:", error);
+		        });
+		    };
+
+		    document.getElementById('confirmNo').onclick = function () {
+		    	confirmModal.classList.remove("show");
+		    };
+
+		    document.getElementById('modalClose').onclick = function () {
+		    	confirmModal.classList.remove("show");
+		    };
+		    
+		    window.onclick = function(event) {
+		        const confirmModal = document.getElementById('confirmModal');
+		        if (event.target === confirmModal) {
+		        	confirmModal.classList.remove("show");
+		        }
+		    };
+	    });
 	});
 
 	</script>

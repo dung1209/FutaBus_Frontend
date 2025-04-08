@@ -1076,7 +1076,6 @@ table {
     cursor: not-allowed;
 }
 
-/****************toast*****************/
 #toast {
   position: fixed;
   top: 32px;
@@ -1193,7 +1192,8 @@ table {
 }
 
 .modal {
-    display: none;
+    opacity: 0;                   
+    pointer-events: none;      
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -1201,27 +1201,42 @@ table {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    opacity: 1;
+    pointer-events: auto;  
 }
 
 .modal-content {
     background-color: #fff;
-    margin: 15% auto;
+    margin: 12% auto;
     border-radius: 8px;
     width: 400px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #007bffe3;
+    background-color: #db8e03;
     color: white;
     padding: 10px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    height: 45px;
 }
 
 .modal-title {
@@ -1229,6 +1244,8 @@ table {
     margin-left: 25px;
     padding-top: 7px;
     padding-bottom: 3px;
+    margin-bottom: 0px;
+    color: white;
 }
 
 .close {
@@ -1239,7 +1256,7 @@ table {
 }
 
 .close:hover {
-    color: #ff0000;
+    color: #f8f8f8;
 }
 
 .modal-body {
@@ -1251,7 +1268,6 @@ table {
     display: flex;
     justify-content: center;
     padding: 10px;
-    border-top: 1px solid #eaeaea;
 }
 
 button {
@@ -1264,11 +1280,10 @@ button {
 }
 
 .btn-yes {
-    background-color: #1083ffd4;
+    background-color: #3d98fbd4;
     color: white;
     margin-right: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 5px 23px;
 }
 
 .btn-yes:hover {
@@ -1279,6 +1294,7 @@ button {
 .btn-no {
     background-color: #f14545db;
     color: white;
+    padding: 5px 11px;
 }
 
 .btn-no:hover {
@@ -1290,7 +1306,6 @@ p.title-question {
     margin-bottom: -20px;
     font-size: 17px;
 }
-/**************************************/
 
 .customer-info {
     max-width: 900px;
@@ -1629,3 +1644,4 @@ h2.text-green {
 .payment-instructions {
     padding: 0 20px;
 }
+
