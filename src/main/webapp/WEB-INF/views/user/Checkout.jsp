@@ -435,7 +435,16 @@
 		        })
 		        .then(data => {
 		            console.log("Dữ liệu lưu thành công!", data);
-		            window.location.href = "/FutaBus_Frontend/thank-you";
+		            let redirectURL = '/FutaBus_Frontend/thank-you?' +
+                    'start=' + encodeURIComponent('${start}') +
+                    '&end=' + encodeURIComponent('${end}') +
+                    '&departure=' + encodeURIComponent('${departure}') +
+                    '&destination=' + encodeURIComponent('${destination}') +
+                    '&departureDate=' + encodeURIComponent('${departureDate}') +
+                    '&selectedSeatsCount=' + encodeURIComponent(selectedSeatsCount) +
+                    '&totalPrice=' + encodeURIComponent(totalPrice);
+		            
+		            window.location.href = redirectURL;
 		        })
 		        .catch(error => {
 		            console.error("Lỗi khi lưu dữ liệu:", error.message);

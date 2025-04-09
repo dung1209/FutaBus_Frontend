@@ -280,7 +280,25 @@ public class UserViewController {
     }
 
     @GetMapping("/thank-you")
-    public String thankYouPage() {
+    public String thankYouPage(
+            @RequestParam("start") String start,
+            @RequestParam("end") String end,
+            @RequestParam("departure") String departure,
+            @RequestParam("destination") String destination,
+            @RequestParam("departureDate") String departureDate,
+            @RequestParam("selectedSeatsCount") int selectedSeatsCount,
+            @RequestParam("totalPrice") double totalPrice,
+            Model model) {
+
+        model.addAttribute("start", start);
+        model.addAttribute("end", end);
+        model.addAttribute("departure", departure);
+        model.addAttribute("destination", destination);
+        model.addAttribute("departureDate", departureDate);
+        model.addAttribute("selectedSeatsCount", selectedSeatsCount);
+        model.addAttribute("totalPrice", totalPrice);
+
         return "user/Thankyou";
     }
+
 }

@@ -17,7 +17,7 @@
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <!--<link rel="stylesheet" type="text/css"
 	href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">-->
-<link rel="icon" href="/favicon.ico">
+<!--<link rel="icon" href="/favicon.ico">-->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet"

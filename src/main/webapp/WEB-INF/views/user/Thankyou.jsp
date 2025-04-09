@@ -7,6 +7,7 @@
 <meta charset="utf-8">
 <title>Cảm ơn</title>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/assets/user/css/thankyou.css">
 <link
@@ -86,10 +87,10 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>2023-12-02 07:00:00</td>
-					<td>Sài Gòn - Cần Thơ</td>
-					<td>1</td>
-					<td>150.000</td>
+					<td>${departureDate}</td>
+					<td>${start} - ${end}</td>
+					<td>${selectedSeatsCount}</td>
+					<td><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true"/>đ</td>
 				</tr>
 			</tbody>
 		</table>
