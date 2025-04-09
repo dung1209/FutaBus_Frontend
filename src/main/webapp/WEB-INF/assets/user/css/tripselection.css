@@ -596,7 +596,7 @@ span.dropdown-icon {
 
 .filter-section {
     width: 35%;
-    max-height: 560px;
+    height: 560px;
     background: white;
     padding: 20px;
     border-radius: 8px;
@@ -687,9 +687,10 @@ span.dropdown-icon {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    /*max-height: 500px;
+    /*kích thước ô in ra*/
+    max-height: 500px;
     overflow-y: auto;	
-    scrollbar-width: none;*/
+    scrollbar-width: none;
 }
 
 .trip-item {
@@ -699,6 +700,7 @@ span.dropdown-icon {
     border-radius: 8px;
     background: #fff;
     justify-content: space-between;
+  	margin-bottom: 20px;
 }
 
 .trip-time {
@@ -1055,3 +1057,48 @@ p.duration {
 button.search-button:hover {
     filter: brightness(97%);
 }
+
+.tab-container {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.tab {
+	flex: 1;
+	text-align: center;
+  padding: 10px 20px;
+  font-weight: 600;
+  color: #626161;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.tab.active {
+  color: #f15a24;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background-color: #f15a24;
+}
+
+.trip-list,
+.trip-list2 {
+  display: none;
+}
+
+.trip-list.active,
+.trip-list2.active {
+  display: block;
+}
+
+

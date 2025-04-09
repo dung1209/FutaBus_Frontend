@@ -26,6 +26,9 @@ import FutaBus.bean.ViTriGhe;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Locale;
+
 import org.springframework.http.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -77,9 +80,24 @@ public class UserViewController {
         Map<String, Object> responseData = response.getBody();
 
         List<Map<String, Object>> chuyenXeList = (List<Map<String, Object>>) responseData.get("chuyenXeResultList");
+        List<Map<String, Object>> chuyenXeReturnList = (List<Map<String, Object>>) responseData.get("chuyenXeReturnList");
 
         SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat targetFormat = new SimpleDateFormat("HH:mm"); 
+        
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy", new Locale("vi", "VN"));
+
+        LocalDate departureLocalDate = LocalDate.parse(departureDate, inputFormatter);
+        String formattedDepartureDateWithDay = departureLocalDate.format(dayFormatter);
+        
+        if (returnDate != null && !returnDate.trim().isEmpty()) {
+            LocalDate returnLocalDate = LocalDate.parse(returnDate, inputFormatter);
+            String formattedReturnDateWithDay = returnLocalDate.format(dayFormatter);
+            model.addAttribute("formattedReturnDateWithDay", formattedReturnDateWithDay);
+        } else {
+            model.addAttribute("formattedReturnDateWithDay", "");
+        }
 
         for (Map<String, Object> chuyen : chuyenXeList) {
 
@@ -99,9 +117,31 @@ public class UserViewController {
                 e.printStackTrace();
             }
         }
+        
+        for (Map<String, Object> chuyenxe : chuyenXeReturnList) {
 
+            String thoiDiemDi = (String) chuyenxe.get("thoiDiemDi");
+            String thoiDiemDen = (String) chuyenxe.get("thoiDiemDen");
+
+            try {
+                Date dateDi = originalFormat.parse(thoiDiemDi);
+                Date dateDen = originalFormat.parse(thoiDiemDen);
+                String formattedThoiDiemDiReturn = targetFormat.format(dateDi);
+                String formattedThoiDiemDenReturn = targetFormat.format(dateDen);
+
+                chuyenxe.put("thoiDiemDiReturnFormatted", formattedThoiDiemDiReturn);
+                chuyenxe.put("thoiDiemDenReturnFormatted", formattedThoiDiemDenReturn);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        model.addAttribute("formattedDepartureDateWithDay", formattedDepartureDateWithDay);
         model.addAttribute("numberOfTrips", responseData.get("numberOfTrips"));
+        model.addAttribute("numberOfTripReturns", responseData.get("numberOfTripReturns"));
         model.addAttribute("chuyenXeResultList", chuyenXeList); 
+        model.addAttribute("chuyenXeReturnList", chuyenXeReturnList); 
         model.addAttribute("departureId", departureId);
         model.addAttribute("departure", departure);
         model.addAttribute("destinationId", destinationId);

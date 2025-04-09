@@ -198,7 +198,7 @@
 
 		<div class="result-section">
 			<div class="search-location-section">
-				<h3>${departure}-${destination} (${numberOfTrips})</h3>
+				<h3 id="trip-direction-header">${departure}-${destination} (${numberOfTrips})</h3>
 				<div class="result-filters">
 					<button class="btn-result-filter">
 						<img
@@ -218,7 +218,12 @@
 				</div>
 			</div>
 
-			<div class="trip-list">
+			<div class="tab-container" id="tab-container">
+				<div class="tab active" data-target="trip-list">CHUYẾN ĐI - ${formattedDepartureDateWithDay}</div>
+				<div class="tab" data-target="trip-list2">CHUYẾN VỀ - ${formattedReturnDateWithDay}</div>
+			</div>
+			
+			<div class="trip-list active" id="trip-list">
 				<c:forEach var="chuyen" items="${chuyenXeResultList}">
 					<div class="trip-item">
 						<div class="trip-details">
@@ -278,6 +283,71 @@
 								data-price="${chuyen.giaHienHanh}"
 								data-so-ghe="${chuyen.soGheTrong}"
 								data-id-xe="${chuyen.idXe}">Chọn chuyến</button>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
+
+			<div class="trip-list2" id="trip-list2">
+				<c:forEach var="chuyenxe" items="${chuyenXeReturnList}">
+					<div class="trip-item">
+						<div class="trip-details">
+							<div class="trip-info">
+								<div class="time-info">
+									<p class="duration">${chuyenxe.thoiDiemDiReturnFormatted}</p>
+									<img
+										src="<%=request.getContextPath()%>/assets/user/image/pickup.svg"
+										width="22" height="22" alt="pickup"> <span
+										class="flex-1 border-b-2 border-dotted"></span>
+									<p>
+										<fmt:formatNumber var="formattedTime"
+											value="${chuyenxe.thoiGianDiChuyenTB}" type="number"
+											maxFractionDigits="1" minFractionDigits="0" />
+										<span class="time">${formattedTime} giờ</span> <span
+											class="timezone">(Asian/Ho Chi Minh)</span>
+									</p>
+									<span class="flex-1 border-b-2 border-dotted"></span> <img
+										src="<%=request.getContextPath()%>/assets/user/image/station.svg"
+										width="22" height="22" alt="station">
+									<p class="duration">${chuyenxe.thoiDiemDenReturnFormatted}</p>
+								</div>
+
+								<div class="location-info">
+									<p>${chuyenxe.tenBenXeDi}</p>
+									<p>${chuyenxe.tenBenXeDen}</p>
+								</div>
+							</div>
+
+							<div class="trip-summary">
+								<span class="kind">${chuyenxe.tenLoai}</span> <span class="blank">${chuyenxe.soGheTrong}
+									chỗ trống</span>
+								<fmt:formatNumber var="formattedGiaHienHanh"
+									value="${chuyenxe.giaHienHanh}" type="number" pattern="#,###" />
+								<span class="price">${formattedGiaHienHanh} VND</span>
+							</div>
+						</div>
+
+						<div class="divide"></div>
+
+						<div class="trip-action">
+							<span>Chọn ghế</span> <span>Lịch trình</span> <span>Trung
+								chuyển</span> <span>Chính sách</span>
+							<button class="btn-select" 
+								data-departureId="${departureId}"
+								data-start="${chuyenxe.tenBenXeDi}"
+								data-departure="${departure}"
+								data-destinationId="${destinationId}"
+								data-end="${chuyenxe.tenBenXeDen}"
+								data-destination="${destination}"
+								data-departureDate="${departureDate}"
+								data-returnDate="${returnDate}"
+								data-id-trip="${chuyenxe.tripId}"
+								data-start-time="${chuyenxe.thoiDiemDi}"
+								data-end-time="${chuyenxe.thoiDiemDen}"
+								data-loai="${chuyenxe.tenLoai}"
+								data-price="${chuyenxe.giaHienHanh}"
+								data-so-ghe="${chuyenxe.soGheTrong}"
+								data-id-xe="${chuyenxe.idXe}">Chọn chuyến</button>
 						</div>
 					</div>
 				</c:forEach>
@@ -366,6 +436,7 @@
         const destinationInput = document.getElementById("destination");
         const dropdownDeparture = document.getElementById("dropdown-list-departure");
         const dropdownDestination = document.getElementById("dropdown-list-destination");
+        const tabContainer = document.getElementById("tab-container");
         
         const buttons = document.querySelectorAll(".btn-select");
 
@@ -538,10 +609,12 @@
             roundTripRadio.checked = true;
             returnDateGroup.classList.remove("hidden");
             returnDateInput.disabled = false;
+            tabContainer.style.display = "flex";
         } else {
             oneWayRadio.checked = true;
             returnDateGroup.classList.add("hidden");
             returnDateInput.disabled = true;
+            tabContainer.style.display = "none";
         }
 
         oneWayRadio.addEventListener("change", function() {
@@ -553,6 +626,38 @@
             returnDateGroup.classList.remove("hidden");
             returnDateInput.disabled = false; 
         });
+        
+        const tabs = document.querySelectorAll('.tab');
+        const tripHeader = document.getElementById("trip-direction-header");
+  		const lists = {
+    		"trip-list": document.getElementById('trip-list'),
+    		"trip-list2": document.getElementById('trip-list2')
+  		};
+
+  		tabs.forEach(tab => {
+  		    tab.addEventListener("click", function () {
+  		        tabs.forEach(t => t.classList.remove("active"));
+  		        this.classList.add("active");
+
+  		        const target = this.dataset.target;
+  		        document.querySelectorAll(".trip-list, .trip-list2").forEach(list => {
+  		            list.classList.remove("active");
+  		        });
+  		        document.getElementById(target).classList.add("active");
+
+  		        const departure = "${departure}";
+  		        const destination = "${destination}";
+  		        const numberOfTrips = (target === "trip-list") 
+  		            ? "${numberOfTrips}" 
+  		            : "${numberOfTripReturns}";
+
+  		        if (target === "trip-list") {
+  		            tripHeader.innerText = `${departure} - ${destination} (${numberOfTrips})`;
+  		        } else {
+  		            tripHeader.innerText = `${destination} - ${departure} (${numberOfTripReturns})`;
+  		        }
+  		    });
+  		});
         
         function toast({ title = "", message = "", type = "info", duration = 3000 }) {
     		const main = document.getElementById("toast");
