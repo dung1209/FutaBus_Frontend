@@ -148,57 +148,91 @@
 
 	<div class="filter-container">
 		<div class="filter-section">
-			<div class="filter-header">
-				<h5>BỘ LỌC TÌM KIẾM</h5>
-				<div class="filter-actions">
-					<button class="reset-filter">Bỏ lọc</button>
-					<img
-						src="<%=request.getContextPath()%>/assets/user/image/delete.svg"
-						width="22" height="22" alt="delete">
+			<div class="booking-card" style="display: none;">
+				<div class="booking-title">CHUYẾN ĐI CỦA BẠN</div>
+
+				<div class="booking-info">
+					<div class="booking-date-section">
+						<div class="booking-index">1</div>
+						<div class="booking-date-content">
+							<div class="booking-date">Thứ 5, 10/04/2025</div>
+							<div class="booking-route">Da Lat - Mien Dong moi</div>
+						</div>
+					</div>
+
+					<div class="booking-time-section">
+						<div class="booking-time-point">
+							<div class="booking-time">14:35</div>
+							<div class="booking-location">Bến Xe Đà Lạt</div>
+						</div>
+
+						<div class="booking-duration">
+							<span class="booking-dot-line"></span> <span
+								class="booking-duration-text">8 giờ</span> <span
+								class="booking-dot-line"></span>
+						</div>
+
+						<div class="booking-time-point">
+							<div class="booking-time">22:35</div>
+							<div class="booking-location">BX Miền Đông Mới</div>
+						</div>
+					</div>
 				</div>
 			</div>
 
-			<div class="filter-group">
-				<label>Giờ đi</label>
-				<div class="filter-options">
-					<label><input type="checkbox"> Sáng sớm 00:00 -
-						06:00 (0)</label> <label><input type="checkbox"> Buổi sáng
-						06:00 - 12:00 (0)</label> <label><input type="checkbox">
-						Buổi chiều 12:00 - 18:00 (0)</label> <label><input type="checkbox">
-						Buổi tối 18:00 - 24:00 (31)</label>
+			<div class="filter-content">
+				<div class="filter-header">
+					<h5>BỘ LỌC TÌM KIẾM</h5>
+					<div class="filter-actions">
+						<button class="reset-filter">Bỏ lọc</button>
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/delete.svg"
+							width="22" height="22" alt="delete">
+					</div>
 				</div>
-			</div>
-			<div class="divide"></div>
-			<div class="filter-group">
-				<label>Loại xe</label>
-				<div class="filter-options">
-					<button class="btn-filter">Ghế</button>
-					<button class="btn-filter">Giường</button>
-					<button class="btn-filter">Limousine</button>
+
+				<div class="filter-group">
+					<label>Giờ đi</label>
+					<div class="filter-options">
+						<label><input type="checkbox"> Sáng sớm 00:00 -
+							06:00 (0)</label> <label><input type="checkbox"> Buổi
+							sáng 06:00 - 12:00 (0)</label> <label><input type="checkbox">
+							Buổi chiều 12:00 - 18:00 (0)</label> <label><input
+							type="checkbox"> Buổi tối 18:00 - 24:00 (31)</label>
+					</div>
 				</div>
-			</div>
-			<div class="divide"></div>
-			<div class="filter-group">
-				<label>Hàng ghế</label>
-				<div class="filter-options">
-					<button class="btn-filter">Hàng đầu</button>
-					<button class="btn-filter">Hàng giữa</button>
-					<button class="btn-filter">Hàng cuối</button>
+				<div class="divide"></div>
+				<div class="filter-group">
+					<label>Loại xe</label>
+					<div class="filter-options">
+						<button class="btn-filter">Ghế</button>
+						<button class="btn-filter">Giường</button>
+						<button class="btn-filter">Limousine</button>
+					</div>
 				</div>
-			</div>
-			<div class="divide"></div>
-			<div class="filter-group">
-				<label>Tầng</label>
-				<div class="filter-options">
-					<button class="btn-filter">Tầng trên</button>
-					<button class="btn-filter">Tầng dưới</button>
+				<div class="divide"></div>
+				<div class="filter-group">
+					<label>Hàng ghế</label>
+					<div class="filter-options">
+						<button class="btn-filter">Hàng đầu</button>
+						<button class="btn-filter">Hàng giữa</button>
+						<button class="btn-filter">Hàng cuối</button>
+					</div>
+				</div>
+				<div class="divide"></div>
+				<div class="filter-group">
+					<label>Tầng</label>
+					<div class="filter-options">
+						<button class="btn-filter">Tầng trên</button>
+						<button class="btn-filter">Tầng dưới</button>
+					</div>
 				</div>
 			</div>
 		</div>
 
 		<div class="result-section">
 			<div class="search-location-section">
-				<h3 id="trip-direction-header">${departure}-${destination} (${numberOfTrips})</h3>
+				<h3 id="trip-direction-header">${departure} - ${destination} (${numberOfTrips})</h3>
 				<div class="result-filters">
 					<button class="btn-result-filter">
 						<img
@@ -267,7 +301,9 @@
 						<div class="trip-action">
 							<span>Chọn ghế</span> <span>Lịch trình</span> <span>Trung
 								chuyển</span> <span>Chính sách</span>
-							<button class="btn-select" 
+							<button class="btn-select trip-go" 
+								data-formatted-departure-date-with-day="${formattedDepartureDateWithDay}"
+								data-formatted-time="${formattedTime}"
 								data-departureId="${departureId}"
 								data-start="${chuyen.tenBenXeDi}"
 								data-departure="${departure}"
@@ -332,13 +368,15 @@
 						<div class="trip-action">
 							<span>Chọn ghế</span> <span>Lịch trình</span> <span>Trung
 								chuyển</span> <span>Chính sách</span>
-							<button class="btn-select" 
-								data-departureId="${departureId}"
+							<button class="btn-select trip-return" 
+								data-formatted-return-date-with-day="${formattedReturnDateWithDay}"
+								data-formatted-time="${formattedTime}"
+								data-departureId="${destinationId}"
 								data-start="${chuyenxe.tenBenXeDi}"
-								data-departure="${departure}"
-								data-destinationId="${destinationId}"
+								data-departure="${destination}"
+								data-destinationId="${departureId}"
 								data-end="${chuyenxe.tenBenXeDen}"
-								data-destination="${destination}"
+								data-destination="${departure}"
 								data-departureDate="${departureDate}"
 								data-returnDate="${returnDate}"
 								data-id-trip="${chuyenxe.tripId}"
@@ -437,82 +475,235 @@
         const dropdownDeparture = document.getElementById("dropdown-list-departure");
         const dropdownDestination = document.getElementById("dropdown-list-destination");
         const tabContainer = document.getElementById("tab-container");
-        
         const buttons = document.querySelectorAll(".btn-select");
+        let selectedDepartureTrip = null;
+        let selectedReturnTrip = null;
+        const isRoundTrip = true;
 
         buttons.forEach(btn => {
             btn.addEventListener("click", function () {
-            	const departureId = this.dataset.departureid;
-                const departure = this.dataset.departure;
-                const destinationId = this.dataset.destinationid;
-                const destination = this.dataset.destination;
-                const start = this.dataset.start;
-                const end = this.dataset.end;
-                const departureDate = this.dataset.departuredate;
-                const returnDate = this.dataset.returndate;
-                const idTrip = this.dataset.idTrip;
-                const startTime = this.dataset.startTime;
-                const endTime = this.dataset.endTime;
-                const loai = this.dataset.loai;
-                const price = this.dataset.price;
-                const soGhe = this.dataset.soGhe;
-                const idXe = this.dataset.idXe;
+            	const returnDate = this.dataset.returndate;
+            	const bookingCard = document.querySelector('.booking-card');
 
-                const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/book-tickets');
-                
-                url.searchParams.append("departureId", this.dataset.departureid);
-                url.searchParams.append("departure", this.dataset.departure);
-                url.searchParams.append("destinationId", this.dataset.destinationid);
-                url.searchParams.append("destination", this.dataset.destination);
-                url.searchParams.append("start", this.dataset.start);
-                url.searchParams.append("end", this.dataset.end);
-                url.searchParams.append("departureDate", this.dataset.departuredate);
-                url.searchParams.append("returnDate", this.dataset.returndate);
-                url.searchParams.append("idTrip", this.dataset.idTrip);
-                url.searchParams.append("startTime", this.dataset.startTime);
-                url.searchParams.append("endTime", this.dataset.endTime);
-                url.searchParams.append("loai", this.dataset.loai);
-                url.searchParams.append("price", this.dataset.price);
-                url.searchParams.append("soGhe", this.dataset.soGhe);
-                url.searchParams.append("idXe", this.dataset.idXe);
+            	if (!returnDate || returnDate.trim() === ""){
+            		const departureId = this.dataset.departureid;
+                    const departure = this.dataset.departure;
+                    const destinationId = this.dataset.destinationid;
+                    const destination = this.dataset.destination;
+                    const start = this.dataset.start;
+                    const end = this.dataset.end;
+                    const departureDate = this.dataset.departuredate;
+                    const returnDate = this.dataset.returndate;
+                    const idTrip = this.dataset.idTrip;
+                    const startTime = this.dataset.startTime;
+                    const endTime = this.dataset.endTime;
+                    const loai = this.dataset.loai;
+                    const price = this.dataset.price;
+                    const soGhe = this.dataset.soGhe;
+                    const idXe = this.dataset.idXe;
 
-                fetch(url, {
-                    method: 'GET',  
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Dữ liệu đã nhận thành công!", data);
-                    const isRoundTrip = false;
-                    if (data.status === "success") { 
-                    	let redirectURL = '/FutaBus_Frontend/book-tickets?' +
-                        'departureId=' + departureId +
-                        '&departure=' + departure +
-                        '&destinationId=' + destinationId +
-                        '&destination=' + destination +
-                        '&start=' + start +
-                        '&end=' + end +
-                        '&departureDate=' + departureDate +
-                        (isRoundTrip ? '&returnDate=' + returnDate : '') +
-                        '&idTrip=' + idTrip +
-                        '&startTime=' + startTime +
-                        '&endTime=' + endTime +
-                        '&loai=' + loai +
-                        '&price=' + price +
-                        '&soGhe=' + soGhe +
-                        '&idXe=' + idXe;
+                    const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/book-tickets');
+                    
+                    url.searchParams.append("departureId", this.dataset.departureid);
+                    url.searchParams.append("departure", this.dataset.departure);
+                    url.searchParams.append("destinationId", this.dataset.destinationid);
+                    url.searchParams.append("destination", this.dataset.destination);
+                    url.searchParams.append("start", this.dataset.start);
+                    url.searchParams.append("end", this.dataset.end);
+                    url.searchParams.append("departureDate", this.dataset.departuredate);
+                    url.searchParams.append("returnDate", this.dataset.returndate);
+                    url.searchParams.append("idTrip", this.dataset.idTrip);
+                    url.searchParams.append("startTime", this.dataset.startTime);
+                    url.searchParams.append("endTime", this.dataset.endTime);
+                    url.searchParams.append("loai", this.dataset.loai);
+                    url.searchParams.append("price", this.dataset.price);
+                    url.searchParams.append("soGhe", this.dataset.soGhe);
+                    url.searchParams.append("idXe", this.dataset.idXe);
 
-      					window.location.href = redirectURL;
+                    fetch(url, {
+                        method: 'GET',  
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Dữ liệu đã nhận thành công!", data);
+                        const isRoundTrip = false;
+                        if (data.status === "success") { 
+                        	let redirectURL = '/FutaBus_Frontend/book-tickets?' +
+                            'departureId=' + departureId +
+                            '&departure=' + departure +
+                            '&destinationId=' + destinationId +
+                            '&destination=' + destination +
+                            '&start=' + start +
+                            '&end=' + end +
+                            '&departureDate=' + departureDate +
+                            (isRoundTrip ? '&returnDate=' + returnDate : '') +
+                            '&idTrip=' + idTrip +
+                            '&startTime=' + startTime +
+                            '&endTime=' + endTime +
+                            '&loai=' + loai +
+                            '&price=' + price +
+                            '&soGhe=' + soGhe +
+                            '&idXe=' + idXe;
+
+          					window.location.href = redirectURL;
+                        } else {
+                            console.error("❌ Lỗi phản hồi từ API:", data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("❌ Lỗi khi lấy dữ liệu:", error.message);
+                        console.error("🔍 Chi tiết lỗi:", error);
+                    });
+            	} else {
+            		bookingCard.style.display = 'block';
+            		const tripType = this.closest(".trip-list") ? "go" : "return";
+
+                    if (tripType === "go") {
+                    	selectedDepartureTrip = {
+                    		    departureId: this.dataset.departureid,
+                    		    departure: this.dataset.departure,
+                    		    destinationId: this.dataset.destinationid,
+                    		    destination: this.dataset.destination,
+                    		    start: this.dataset.start,
+                    		    end: this.dataset.end,
+                    		    departureDate: this.dataset.departuredate,
+                    		    returnDate: this.dataset.returndate,
+                    		    idTrip: this.dataset.idTrip,
+                    		    startTime: this.dataset.startTime,
+                    		    endTime: this.dataset.endTime,
+                    		    loai: this.dataset.loai,
+                    		    price: this.dataset.price,
+                    		    soGhe: this.dataset.soGhe,
+                    		    idXe: this.dataset.idXe
+                    		};
+                        let startTime = this.dataset.startTime.split(' ')[1].slice(0, 5); 
+                        let endTime = this.dataset.endTime.split(' ')[1].slice(0, 5);  
+                        
+                        bookingCard.querySelector('.booking-date').textContent = this.dataset.formattedDepartureDateWithDay;
+                        bookingCard.querySelector('.booking-duration-text').textContent = this.dataset.formattedTime + ' giờ';
+                        bookingCard.querySelector('.booking-title').textContent = 'CHUYẾN ĐI CỦA BẠN';
+                        bookingCard.querySelector('.booking-route').textContent = this.dataset.departure;
+                        bookingCard.querySelectorAll('.booking-time')[0].textContent = startTime;
+                        bookingCard.querySelectorAll('.booking-time')[1].textContent = endTime;
+                        bookingCard.querySelectorAll('.booking-location')[0].textContent = this.dataset.start;
+                        bookingCard.querySelectorAll('.booking-location')[1].textContent = this.dataset.end;
                     } else {
-                        console.error("❌ Lỗi phản hồi từ API:", data);
+                    	selectedReturnTrip = {
+                    		    departureId: this.dataset.departureid,
+                    		    departure: this.dataset.departure,
+                    		    destinationId: this.dataset.destinationid,
+                    		    destination: this.dataset.destination,
+                    		    start: this.dataset.start,
+                    		    end: this.dataset.end,
+                    		    departureDate: this.dataset.departuredate,
+                    		    returnDate: this.dataset.returndate,
+                    		    idTrip: this.dataset.idTrip,
+                    		    startTime: this.dataset.startTime,
+                    		    endTime: this.dataset.endTime,
+                    		    loai: this.dataset.loai,
+                    		    price: this.dataset.price,
+                    		    soGhe: this.dataset.soGhe,
+                    		    idXe: this.dataset.idXe
+                    		};
+                        let startTime = this.dataset.startTime.split(' ')[1].slice(0, 5); 
+                        let endTime = this.dataset.endTime.split(' ')[1].slice(0, 5); 
+                        
+                        bookingCard.querySelector('.booking-date').textContent = this.dataset.formattedReturnDateWithDay;
+                        bookingCard.querySelector('.booking-duration-text').textContent = this.dataset.formattedTime + ' giờ';
+                        bookingCard.querySelector('.booking-title').textContent = 'CHUYẾN VỀ CỦA BẠN';
+                        bookingCard.querySelector('.booking-route').textContent = this.dataset.departure;
+                        bookingCard.querySelectorAll('.booking-time')[0].textContent = startTime;
+                        bookingCard.querySelectorAll('.booking-time')[1].textContent = endTime;
+                        bookingCard.querySelectorAll('.booking-location')[0].textContent = this.dataset.start;
+                        bookingCard.querySelectorAll('.booking-location')[1].textContent = this.dataset.end;
                     }
-                })
-                .catch(error => {
-                    console.error("❌ Lỗi khi lấy dữ liệu:", error.message);
-                    console.error("🔍 Chi tiết lỗi:", error);
-                });
+
+                    if (selectedDepartureTrip && selectedReturnTrip) {
+                    	toast({
+                            title: "Đã lấy dữ liệu cả 2",
+                            message: `Từ ${tripData.departure} đến ${tripData.destination}`,
+                            type: "success",
+                            duration: 2000
+                        });
+                    	
+                    	console.log("selectedDepartureTrip: ", selectedDepartureTrip);
+                    	console.log("selectedReturnTrip: ", selectedReturnTrip);
+                    	
+                    	const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/book-tickets/round-trip');
+                    	url.searchParams.set('departureId', selectedDepartureTrip.departureId);
+                    	url.searchParams.set('departure', selectedDepartureTrip.departure);
+                    	url.searchParams.set('destinationId', selectedDepartureTrip.destinationId);
+                    	url.searchParams.set('destination', selectedDepartureTrip.destination);
+                    	url.searchParams.append("start", this.dataset.start);
+                        url.searchParams.append("end", this.dataset.end);
+                    	url.searchParams.set('departureDate', selectedDepartureTrip.departureDate);
+                    	url.searchParams.set('returnDate', selectedReturnTrip.returnDate);
+                    	url.searchParams.set('idTrip', selectedDepartureTrip.idTrip);
+                    	url.searchParams.set('startTime', selectedDepartureTrip.startTime);
+                    	url.searchParams.set('endTime', selectedDepartureTrip.endTime);
+                    	url.searchParams.set('idTripReturn', selectedReturnTrip.idTrip);
+                    	url.searchParams.set('startTimeReturn', selectedReturnTrip.startTime);
+                    	url.searchParams.set('endTimeReturn', selectedReturnTrip.endTime);
+                    	url.searchParams.set('price', selectedDepartureTrip.price);
+                    	url.searchParams.set('priceReturn', selectedReturnTrip.price);
+                    	url.searchParams.set('soGhe', selectedDepartureTrip.soGhe);
+                    	url.searchParams.set('soGheReturn', selectedReturnTrip.soGhe);
+                    	url.searchParams.set('idXe', selectedDepartureTrip.idXe);
+                    	url.searchParams.set('idXeReturn', selectedReturnTrip.idXe);
+
+                        const tripData = {
+                            departureTrip: selectedDepartureTrip,
+                            returnTrip: selectedReturnTrip
+                        };
+
+                        fetch(url, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === "success") {
+                                console.log("Đã lưu thành công cả 2 chuyến:", data);
+
+                                const redirectURL = '/FutaBus_Frontend/book-tickets/round-trip?' +
+                                'departureId=' + selectedDepartureTrip.departureId +
+                                '&departure=' + selectedDepartureTrip.departure +
+                                '&destinationId=' + selectedDepartureTrip.destinationId +
+                                '&destination=' + selectedDepartureTrip.destination +
+                                '&start=' + selectedDepartureTrip.start +
+                                '&end=' + selectedDepartureTrip.end +
+                                '&departureDate=' + selectedDepartureTrip.departureDate +
+                                '&returnDate=' + selectedReturnTrip.returnDate +
+                                '&idTrip=' + selectedDepartureTrip.idTrip +
+                                '&startTime=' + selectedDepartureTrip.startTime +
+                                '&endTime=' + selectedDepartureTrip.endTime +
+                                '&idTripReturn=' + selectedReturnTrip.idTrip +
+                                '&startTimeReturn=' + selectedReturnTrip.startTime +
+                                '&endTimeReturn=' + selectedReturnTrip.endTime +
+                                '&price=' + selectedDepartureTrip.price +
+                                '&priceReturn=' + selectedReturnTrip.price +
+                                '&soGhe=' + selectedDepartureTrip.soGhe +
+                                '&soGheReturn=' + selectedReturnTrip.soGhe +
+                                '&idXe=' + selectedDepartureTrip.idXe +
+                                '&idXeReturn=' + selectedReturnTrip.idXe;
+
+
+
+                                window.location.href = redirectURL;
+                            } else {
+                                console.error("❌ API trả về lỗi:", data.message || data);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("❌ Lỗi khi gọi API:", error);
+                        });
+                    }
+            	}
             });
         });
 
@@ -658,7 +849,7 @@
   		        }
   		    });
   		});
-        
+
         function toast({ title = "", message = "", type = "info", duration = 3000 }) {
     		const main = document.getElementById("toast");
     		if (main) {

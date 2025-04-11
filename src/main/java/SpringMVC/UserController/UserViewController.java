@@ -56,7 +56,7 @@ public class UserViewController {
     private final RestTemplate restTemplate = new RestTemplate();
     
     @GetMapping("/trip-selection")
-    public String tripSelectionPage(
+    public String tripSelectionOneWay(
             @RequestParam int departureId,
             @RequestParam String departure,
             @RequestParam int destinationId,
@@ -231,6 +231,143 @@ public class UserViewController {
     	model.addAttribute("idXe", idXe);
     	model.addAttribute("viTriGheTangDuoiList", viTriGheTangDuoiList);
     	model.addAttribute("viTriGheTangTrenList", viTriGheTangTrenList);
+
+        return "user/BookTickets";
+    }
+    
+    @GetMapping("/book-tickets/round-trip")
+    public String bookRoundTripTicketsPage(
+            @RequestParam String departureId,
+            @RequestParam String departure,
+            @RequestParam String destinationId,
+            @RequestParam String destination,
+            @RequestParam String start,
+            @RequestParam String end,
+            @RequestParam String departureDate,
+            @RequestParam String returnDate,
+            @RequestParam int idTrip,
+            @RequestParam String startTime,
+            @RequestParam String endTime,
+            @RequestParam int idTripReturn,
+            @RequestParam String startTimeReturn,
+            @RequestParam String endTimeReturn,
+            @RequestParam String price,
+            @RequestParam String priceReturn,
+            @RequestParam String soGhe,
+            @RequestParam String soGheReturn,
+            @RequestParam String idXe,
+            @RequestParam String idXeReturn,
+            Model model) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate departureLocalDate = LocalDate.parse(departureDate, formatter);
+        LocalDate returnLocalDate = LocalDate.parse(returnDate, formatter);
+        DayOfWeek departureDayOfWeek = departureLocalDate.getDayOfWeek();
+        DayOfWeek returnDayOfWeek = returnLocalDate.getDayOfWeek();
+
+        String[] weekdays = {
+            "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"
+        };
+        String departureWeekday = weekdays[departureDayOfWeek.getValue() - 1];
+        String returnWeekday = weekdays[returnDayOfWeek.getValue() - 1];
+
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
+
+        LocalDateTime startDateTimeGo = LocalDateTime.parse(startTime, inputFormatter);
+        LocalDateTime startDateTimeReturn = LocalDateTime.parse(startTimeReturn, inputFormatter);
+
+        String formattedStartTimeGo = startDateTimeGo.format(outputFormatter);
+        String formattedStartTimeReturn = startDateTimeReturn.format(outputFormatter);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String apiUrlWithParams = API_URL + "/book-tickets/round-trip?"
+        		+ "departureId=" + departureId
+                + "&departure=" + departure
+                + "&destinationId=" + destinationId
+                + "&destination=" + destination
+                + "&start=" + start
+    	        + "&end=" + end
+                + "&departureDate=" + departureDate
+                + "&returnDate=" + returnDate
+                + "&idTrip=" + idTrip
+                + "&startTime=" + startTime
+                + "&endTime=" + endTime
+                + "&idTripReturn=" + idTripReturn
+                + "&startTimeReturn=" + startTimeReturn
+                + "&endTimeReturn=" + endTimeReturn
+                + "&price=" + price
+                + "&priceReturn=" + priceReturn
+                + "&soGhe=" + soGhe
+                + "&soGheReturn=" + soGheReturn
+                + "&idXe=" + idXe
+                + "&idXeReturn=" + idXeReturn;
+
+        ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
+        Map<String, Object> responseData = response.getBody();
+        List<ViTriGhe> viTriGheGoDuoi = (List<ViTriGhe>) responseData.get("viTriGheTangDuoiList");
+        List<ViTriGhe> viTriGheGoTren = (List<ViTriGhe>) responseData.get("viTriGheTangTrenList");
+
+        List<ViTriGhe> viTriGheReturnDuoi = (List<ViTriGhe>) responseData.get("viTriGheTangDuoiList");
+        List<ViTriGhe> viTriGheReturnTren = (List<ViTriGhe>) responseData.get("viTriGheTangTrenList");
+        
+        System.out.println("===== THÔNG TIN CHUYẾN ĐI (GO) =====");
+        System.out.println("departureId: " + departureId);
+        System.out.println("departure: " + departure);
+        System.out.println("destinationId: " + destinationId);
+        System.out.println("destination: " + destination);
+        model.addAttribute("start", start);
+    	model.addAttribute("end", end);
+        System.out.println("departureDate: " + departureDate);
+        System.out.println("idTrip: " + idTrip);
+        System.out.println("startTime: " + startTime);
+        System.out.println("endTime: " + endTime);
+        System.out.println("price: " + price);
+        System.out.println("soGhe: " + soGhe);
+        System.out.println("idXe: " + idXe);
+
+        System.out.println("===== THÔNG TIN CHUYẾN VỀ (RETURN) =====");
+        System.out.println("departureId: " + destinationId);
+        System.out.println("departure: " + destination);
+        System.out.println("destinationId: " + departureId);
+        System.out.println("destination: " + departure);
+        System.out.println("returnDate: " + returnDate);
+        System.out.println("idTripReturn: " + idTripReturn);
+        System.out.println("startTimeReturn: " + startTimeReturn);
+        System.out.println("endTimeReturn: " + endTimeReturn);
+        System.out.println("priceReturn: " + priceReturn);
+        System.out.println("soGheReturn: " + soGheReturn);
+        System.out.println("idXeReturn: " + idXeReturn);
+
+        model.addAttribute("departureId", departureId);
+        model.addAttribute("departure", departure);
+        model.addAttribute("destinationId", destinationId);
+        model.addAttribute("destination", destination);
+        model.addAttribute("departureDate", departureDate);
+        model.addAttribute("returnDate", returnDate);
+        model.addAttribute("departureWeekday", departureWeekday);
+        model.addAttribute("returnWeekday", returnWeekday);
+
+        model.addAttribute("idTrip", idTrip);
+        model.addAttribute("startTime", startTime);
+        model.addAttribute("endTime", endTime);
+        model.addAttribute("formattedStartTime", formattedStartTimeGo);
+        model.addAttribute("price", price);
+        model.addAttribute("soGhe", soGhe);
+        model.addAttribute("idXe", idXe);
+        model.addAttribute("viTriGheTangDuoiList", viTriGheGoDuoi);
+        model.addAttribute("viTriGheTangTrenList", viTriGheGoTren);
+
+        model.addAttribute("idTripReturn", idTripReturn);
+        model.addAttribute("startTimeReturn", startTimeReturn);
+        model.addAttribute("endTimeReturn", endTimeReturn);
+        model.addAttribute("formattedStartTimeReturn", formattedStartTimeReturn);
+        model.addAttribute("priceReturn", priceReturn);
+        model.addAttribute("soGheReturn", soGheReturn);
+        model.addAttribute("idXeReturn", idXeReturn);
+        model.addAttribute("viTriGheReturnDuoi", viTriGheReturnDuoi);
+        model.addAttribute("viTriGheReturnTren", viTriGheReturnTren);
 
         return "user/BookTickets";
     }
