@@ -309,8 +309,8 @@ public class UserViewController {
         List<ViTriGhe> viTriGheGoDuoi = (List<ViTriGhe>) responseData.get("viTriGheTangDuoiList");
         List<ViTriGhe> viTriGheGoTren = (List<ViTriGhe>) responseData.get("viTriGheTangTrenList");
 
-        List<ViTriGhe> viTriGheReturnDuoi = (List<ViTriGhe>) responseData.get("viTriGheTangDuoiList");
-        List<ViTriGhe> viTriGheReturnTren = (List<ViTriGhe>) responseData.get("viTriGheTangTrenList");
+        List<ViTriGhe> viTriGheReturnDuoi = (List<ViTriGhe>) responseData.get("viTriGheTangDuoiReturnList");
+        List<ViTriGhe> viTriGheReturnTren = (List<ViTriGhe>) responseData.get("viTriGheTangTrenReturnList");
         
         System.out.println("===== THÔNG TIN CHUYẾN ĐI (GO) =====");
         System.out.println("departureId: " + departureId);
@@ -366,8 +366,8 @@ public class UserViewController {
         model.addAttribute("priceReturn", priceReturn);
         model.addAttribute("soGheReturn", soGheReturn);
         model.addAttribute("idXeReturn", idXeReturn);
-        model.addAttribute("viTriGheReturnDuoi", viTriGheReturnDuoi);
-        model.addAttribute("viTriGheReturnTren", viTriGheReturnTren);
+        model.addAttribute("viTriGheTangDuoiReturnList", viTriGheReturnDuoi);
+        model.addAttribute("viTriGheTangTrenReturnList", viTriGheReturnTren);
 
         return "user/BookTickets";
     }
@@ -375,12 +375,15 @@ public class UserViewController {
     @GetMapping("/checkout")
     public String checkoutPage(
         @RequestParam("selectedSeatsCount") int selectedSeatsCount,
+        @RequestParam(value = "selectedSeatsCountReturn", required = false) Integer selectedSeatsCountReturn,
         @RequestParam("totalPrice") double totalPrice,
         @RequestParam("nameValue") String nameValue,
         @RequestParam("phoneValue") String phoneValue,
         @RequestParam("emailValue") String emailValue,
         @RequestParam("selectedSeats") String selectedSeats,
         @RequestParam("selectedSeatIds") String selectedSeatIds,
+        @RequestParam(value = "selectedSeatsReturn", required = false) String selectedSeatsReturn,
+        @RequestParam(value = "selectedSeatIdsReturn", required = false) String selectedSeatIdsReturn,
         @RequestParam("idTrip") Long idTrip,
         @RequestParam("formattedStartTime") String formattedStartTime,
         @RequestParam("weekday") String weekday,
@@ -398,9 +401,16 @@ public class UserViewController {
         @RequestParam("price") double price,
         @RequestParam("soGhe") int soGhe,
         @RequestParam("idXe") Long idXe,
+        @RequestParam(value = "totalPriceReturn", required = false) Double totalPriceReturn,
+        @RequestParam(value = "idTripReturn", required = false) Long idTripReturn,
+        @RequestParam(value = "startTimeReturn", required = false) String startTimeReturn,
+        @RequestParam(value = "endTimeReturn", required = false) String endTimeReturn,
+        @RequestParam(value = "formattedStartTimeReturn", required = false) String formattedStartTimeReturn,
+        @RequestParam(value = "priceReturn", required = false) Double priceReturn,
+        @RequestParam(value = "soGheReturn", required = false) Integer soGheReturn,
+        @RequestParam(value = "idXeReturn", required = false) Long idXeReturn,
         Model model) {
 
-        // Debug log
         System.out.println("*********************FrontEND*************************");
         System.out.println("selectedSeatsCount: " + selectedSeatsCount);
         System.out.println("totalPrice: " + totalPrice);
@@ -452,6 +462,32 @@ public class UserViewController {
         model.addAttribute("price", price);
         model.addAttribute("soGhe", soGhe);
         model.addAttribute("idXe", idXe);
+        if (idTripReturn != null) {
+        	model.addAttribute("totalPriceReturn", totalPriceReturn);
+            model.addAttribute("idTripReturn", idTripReturn);
+            model.addAttribute("startTimeReturn", startTimeReturn);
+            model.addAttribute("endTimeReturn", endTimeReturn);
+            model.addAttribute("formattedStartTimeReturn", formattedStartTimeReturn);
+            model.addAttribute("priceReturn", priceReturn);
+            model.addAttribute("soGheReturn", soGheReturn);
+            model.addAttribute("idXeReturn", idXeReturn);
+            model.addAttribute("selectedSeatsCountReturn", selectedSeatsCountReturn);
+            model.addAttribute("selectedSeatsReturn", selectedSeatsReturn);
+            model.addAttribute("selectedSeatIdsReturn", selectedSeatIdsReturn);
+        } else {
+            model.addAttribute("returnDate", null);
+            model.addAttribute("totalPriceReturn", 0);
+            model.addAttribute("idTripReturn", "null");
+            model.addAttribute("startTimeReturn", null);
+            model.addAttribute("endTimeReturn", null);
+            model.addAttribute("formattedStartTimeReturn", null);
+            model.addAttribute("priceReturn", 0);
+            model.addAttribute("soGheReturn", 0);
+            model.addAttribute("idXeReturn", null);
+            model.addAttribute("selectedSeatsCountReturn", 0);
+            model.addAttribute("selectedSeatsReturn", "");
+            model.addAttribute("selectedSeatIdsReturn", "");
+        }
 
         return "user/Checkout";
     }

@@ -68,7 +68,7 @@
 		<div class="flex h-10 cursor-pointer items-center px-6">Quay lại</div>
 		<div class="content">
 			<p>${departure} - ${destination}</p>
-			<p>${weekday}, ${departureDate}</p>
+			<p id="departInfo">${weekday}, ${departureDate}</p>
 		</div>
 	</nav>
 
@@ -80,6 +80,8 @@
 					<button class="reset-filter">Thông tin xe</button>
 				</div>
 			</div>
+			
+			<div class="center-text" style="display: none;">Chuyến đi</div>
 
 			<div class="seating-list">
 				<div class="filter-group">
@@ -196,7 +198,7 @@
 												<img width="32"
 													src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
 													alt="seat icon" data-id="${viTriGheTangTrenList[1].idViTriGhe}" onclick="selectSeat(this)">
-												<span class="absolute">${viTriGheTangTrenList[1].tenViTri}</span>
+												<span class="absolute seat-label">${viTriGheTangTrenList[1].tenViTri}</span>
 											</c:otherwise>
 										</c:choose></td>
 								</tr>
@@ -229,6 +231,182 @@
 
 										<c:if
 											test="${(status.index - 2) % 3 == 2 || status.index == fn:length(viTriGheTangDuoiList) - 1}">
+											</tr>
+										</c:if>
+									</c:if>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="filter-group">
+					<div class="filter-options">
+						<span class="sold"><img
+							src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+							width="22" height="22" alt="seat_disabled">Đã bán</span> <span
+							class="vacant"><img
+							src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+							width="22" height="22" alt="seat_active">Còn trống</span> <span
+							class="selecting"><img
+							src="<%=request.getContextPath()%>/assets/user/image/seat_selecting.svg"
+							width="22" height="22" alt="seat_selecting">Đang chọn</span>
+					</div>
+				</div>
+			</div>
+			
+			<div class="divide"  style="display: none;"></div>
+			
+			<div class="center-text-return" style="display: none;">Chuyến về</div>
+
+			<div class="seating-list" style="display: none;">
+				<div class="filter-group">
+					<label>Tầng dưới</label>
+					<div class="filter-options">
+						<table>
+							<tbody>
+								<tr class="flex items-center gap-1 justify-between">
+									<td class="relative"><c:choose>
+											<c:when test="${viTriGheTangDuoiReturnList[0].trangThai == 1}">
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+													alt="seat icon">
+												<span class="absolute">${viTriGheTangDuoiReturnList[0].tenViTri}</span>
+											</c:when>
+											<c:otherwise>
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+													alt="seat icon" data-id="${viTriGheTangDuoiReturnList[0].idViTriGhe}" onclick="selectSeatReturn(this)">
+												<span class="absolute seat-label">${viTriGheTangDuoiReturnList[0].tenViTri}</span>
+											</c:otherwise>
+										</c:choose></td>
+
+									<td style="position: relative; width: 24px;"></td>
+									<td style="position: relative;"></td>
+									<td style="position: relative; width: 24px;"></td>
+
+									<td class="relative"><c:choose>
+											<c:when test="${viTriGheTangDuoiReturnList[1].trangThai == 1}">
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+													alt="seat icon">
+												<span class="absolute">${viTriGheTangDuoiReturnList[1].tenViTri}</span>
+											</c:when>
+											<c:otherwise>
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+													alt="seat icon" data-id="${viTriGheTangDuoiReturnList[1].idViTriGhe}" onclick="selectSeatReturn(this)">
+												<span class="absolute seat-label">${viTriGheTangDuoiReturnList[1].tenViTri}</span>
+											</c:otherwise>
+										</c:choose></td>
+								</tr>
+
+								<c:forEach var="seat" items="${viTriGheTangDuoiReturnList}"
+									varStatus="status">
+									<c:if test="${status.index >= 2}">
+										<c:if test="${(status.index - 2) % 3 == 0}">
+											<tr>
+										</c:if>
+
+										<td class="relative"><c:choose>
+												<c:when test="${seat.trangThai == 1}">
+													<img width="32"
+														src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+														alt="seat icon">
+													<span class="absolute">${seat.tenViTri}</span>
+												</c:when>
+												<c:otherwise>
+													<img width="32"
+														src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+														alt="seat icon" data-id="${seat.idViTriGhe}" onclick="selectSeatReturn(this)">
+													<span class="absolute seat-label">${seat.tenViTri}</span>
+												</c:otherwise>
+											</c:choose></td>
+
+										<c:if test="${(status.index - 2) % 3 != 2}">
+											<td style="width: 24px;"></td>
+										</c:if>
+
+										<c:if
+											test="${(status.index - 2) % 3 == 2 || status.index == fn:length(viTriGheTangDuoiReturnList) - 1}">
+											</tr>
+										</c:if>
+									</c:if>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="filter-group">
+					<label>Tầng trên</label>
+					<div class="filter-options">
+						<table>
+							<tbody>
+								<tr class="flex items-center gap-1 justify-between">
+									<td class="relative"><c:choose>
+											<c:when test="${viTriGheTangTrenReturnList[0].trangThai == 1}">
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+													alt="seat icon">
+												<span class="absolute">${viTriGheTangTrenReturnList[0].tenViTri}</span>
+											</c:when>
+											<c:otherwise>
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+													alt="seat icon" data-id="${viTriGheTangTrenReturnList[0].idViTriGhe}" onclick="selectSeatReturn(this)">
+												<span class="absolute seat-label">${viTriGheTangTrenReturnList[0].tenViTri}</span>
+											</c:otherwise>
+										</c:choose></td>
+
+									<td style="position: relative; width: 24px;"></td>
+									<td style="position: relative;"></td>
+									<td style="position: relative; width: 24px;"></td>
+
+									<td class="relative"><c:choose>
+											<c:when test="${viTriGheTangTrenReturnList[1].trangThai == 1}">
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+													alt="seat icon">
+												<span class="absolute">${viTriGheTangTrenReturnList[1].tenViTri}</span>
+											</c:when>
+											<c:otherwise>
+												<img width="32"
+													src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+													alt="seat icon" data-id="${viTriGheTangTrenReturnList[1].idViTriGhe}" onclick="selectSeatReturn(this)">
+												<span class="absolute seat-label">${viTriGheTangTrenReturnList[1].tenViTri}</span>
+											</c:otherwise>
+										</c:choose></td>
+								</tr>
+
+								<c:forEach var="seat" items="${viTriGheTangTrenReturnList}"
+									varStatus="status">
+									<c:if test="${status.index >= 2}">
+										<c:if test="${(status.index - 2) % 3 == 0}">
+											<tr>
+										</c:if>
+
+										<td class="relative"><c:choose>
+												<c:when test="${seat.trangThai == 1}">
+													<img width="32"
+														src="<%=request.getContextPath()%>/assets/user/image/seat_disabled.svg"
+														alt="seat icon">
+													<span class="absolute">${seat.tenViTri}</span>
+												</c:when>
+												<c:otherwise>
+													<img width="32"
+														src="<%=request.getContextPath()%>/assets/user/image/seat_active.svg"
+														alt="seat icon" data-id="${seat.idViTriGhe}" onclick="selectSeatReturn(this)">
+													<span class="absolute seat-label">${seat.tenViTri}</span>
+												</c:otherwise>
+											</c:choose></td>
+
+										<c:if test="${(status.index - 2) % 3 != 2}">
+											<td style="width: 24px;"></td>
+										</c:if>
+
+										<c:if
+											test="${(status.index - 2) % 3 == 2 || status.index == fn:length(viTriGheTangDuoiReturnList) - 1}">
 											</tr>
 										</c:if>
 									</c:if>
@@ -326,12 +504,36 @@
 						<span class="title">Tổng tiền lượt đi</span><span class="price">0đ</span>
 					</div>
 				</div>
+				
+				<div class="destination-information"  style="display: none;">
+					<p class="item">Thông tin lượt về</p>
+					<div class="trip-information">
+						<span class="title">Tuyến xe</span><span class="road">${end} - ${start}</span>
+					</div>
+					<div class="trip-information">
+						<span class="title">Thời gian xuất bến</span><span class="time">${formattedStartTimeReturn}</span>
+					</div>
+					<div class="trip-information">
+						<span class="title">Số lượng ghế</span><span class="number-return">0
+							Ghế</span>
+					</div>
+					<div class="trip-information">
+						<span class="title">Số ghế</span><span class="seat-return"></span>
+					</div>
+					<div class="trip-information">
+						<span class="title">Tổng tiền lượt đi</span><span class="price-return">0đ</span>
+					</div>
+				</div>
 
 				<div class="price-information">
 					<p class="item">Chi tiết giá</p>
 					<div class="price-infor">
 						<span class="title">Giá vé lượt đi</span><span
 							class="ticket-price">0đ</span>
+					</div>
+					<div class="price-infor"  style="display: none;">
+						<span class="title">Giá vé lượt về</span><span
+							class="ticket-price-return">0đ</span>
 					</div>
 					<div class="price-infor">
 						<span class="title">Phí thanh toán</span><span class="fee">0đ</span>
@@ -422,6 +624,12 @@
 	let selectedSeatIds = [];
 	let idTrip = "${idTrip}";
 	
+	let selectedSeatsCountReturn = 0;
+	const maxSeatsReturn = 5;
+	let selectedSeatsReturn = [];
+	let selectedSeatIdsReturn = [];
+	let totalPriceReturn = 0;
+	
 	function selectSeat(imageElement) {
 	    const parentElement = imageElement.parentElement;
 	    const spanElement = parentElement.querySelector('.seat-label');
@@ -434,7 +642,7 @@
 	    	if (selectedSeatsCount >= maxSeats) {
 	    		toast({
 	                title: "Chú ý!",
-	                message: "Đã chọn đủ số ghế.",
+	                message: "Đã chọn đủ số ghế cho lượt đi.",
 	                type: "error",
 	                duration: 1000
 	            });
@@ -475,6 +683,82 @@
 	        document.querySelector('.ticket-price').innerHTML = totalPriceText;
 	        document.querySelector('.total').innerHTML = totalPriceText;
 	    }
+	}
+	
+	function selectSeatReturn(imageElement) {
+	    const parentElement = imageElement.parentElement;
+	    const spanElement = parentElement.querySelector('.seat-label');
+	    const seatName = spanElement.textContent;
+	    const seatId = imageElement.getAttribute('data-id');
+	    const seatActiveSrc = "<%=request.getContextPath()%>/assets/user/image/seat_active.svg";
+	    const seatSelectingSrc = "<%=request.getContextPath()%>/assets/user/image/seat_selecting.svg";
+
+	    if (imageElement.src.includes("seat_active.svg")) {
+	        if (selectedSeatsCountReturn >= maxSeatsReturn) {
+	            toast({
+	                title: "Chú ý!",
+	                message: "Đã chọn đủ số ghế lượt về.",
+	                type: "error",
+	                duration: 1000
+	            });
+	            return;
+	        }
+	        selectedSeatsReturn.push(seatName);
+	        selectedSeatIdsReturn.push(seatId);
+	        imageElement.src = seatSelectingSrc;
+	        spanElement.style.color = "#ef5222"; 
+	        selectedSeatsCountReturn++;
+	        
+	        let seatsText = String(selectedSeatsCountReturn).concat(" Ghế");
+	        let totalPriceReturn = selectedSeatsCountReturn * ${price};
+	        let formattedTotalPrice = totalPriceReturn.toLocaleString('vi-VN');
+	        let totalPriceText = String(formattedTotalPrice).concat("đ");
+
+	        document.querySelector('.number-return').innerHTML = seatsText;
+	        document.querySelector('.seat-return').textContent = selectedSeatsReturn.join(', ');
+	        document.querySelector('.price-return').innerHTML = totalPriceText;
+	        document.querySelector('.ticket-price-return').innerHTML = totalPriceText;
+
+	        updateTotal();
+	    } else if (imageElement.src.includes("seat_selecting.svg")) {
+	        const index = selectedSeatsReturn.indexOf(seatName);
+	        if (index !== -1) {
+	            selectedSeatsReturn.splice(index, 1);
+	            selectedSeatIdsReturn.splice(index, 1);
+	        }
+	        imageElement.src = seatActiveSrc; 
+	        spanElement.style.color = ""; 
+	        selectedSeatsCountReturn--;
+	        
+	        let seatsText = String(selectedSeatsCountReturn).concat(" Ghế");
+	        let totalPriceReturn = selectedSeatsCountReturn * ${price}; 
+	        let formattedTotalPrice = totalPriceReturn.toLocaleString('vi-VN');
+	        let totalPriceText = String(formattedTotalPrice).concat("đ");
+
+	        document.querySelector('.number-return').innerHTML = seatsText;
+	        document.querySelector('.seat-return').textContent = selectedSeatsReturn.join(', ');
+	        document.querySelector('.price-return').innerHTML = totalPriceText;
+	        document.querySelector('.ticket-price-return').innerHTML = totalPriceText;
+
+	        updateTotal();
+	    }
+	}
+
+	function updateTotal() {
+	    let totalAll = (selectedSeatsCount * ${price}) + (selectedSeatsCountReturn * ${price});
+	    let formattedTotalAll = totalAll.toLocaleString('vi-VN');
+	    document.querySelector('.total').innerHTML = formattedTotalAll.concat("đ");
+	}
+	
+	const returnDate = "${returnDate}";
+	if (returnDate && returnDate.trim() !== "") {
+	    document.querySelector('.center-text')?.style.removeProperty('display');
+	    document.querySelector('.divide')?.style.removeProperty('display');
+	    document.querySelector('.center-text-return')?.style.removeProperty('display');
+	    document.querySelectorAll('.seating-list').forEach(el => el.style.removeProperty('display'));
+	    document.querySelector('.destination-information')?.style.removeProperty('display');
+	    document.querySelectorAll('.price-infor').forEach(el => el.style.removeProperty('display'));
+	    document.getElementById("departInfo").textContent = "${departureDate} - ${returnDate}";
 	}
 	
 	function toast({ title = "", message = "", type = "info", duration = 3000 }) {
@@ -617,113 +901,192 @@
         }
         
         if (isFormValid) {
-        	let totalPrice = selectedSeatsCount * ${price};
+        	const returnDate = "${returnDate}";
+        	
+        	if (!returnDate || returnDate.trim() === "") {
+        		let totalPrice = selectedSeatsCount * ${price};
+                
+                let selectedSeatsStr = selectedSeats.join(',');
+                let selectedSeatIdsStr = selectedSeatIds.join(',');
 
-            console.log("*******************************");
-            console.log("Số lượng vé: ", selectedSeatsCount);
-            console.log("Tổng tiền: ", totalPrice);
-            console.log("Họ tên: ", nameValue);
-            console.log("SĐT: ", phoneValue);
-            console.log("Email: ", emailValue);
-            console.log("ViTriGhe: ", selectedSeats);
-            console.log("idViTriGhe: ", selectedSeatIds);
-            console.log("idPhieuDatVe: ", idTrip);
-            console.log("---------------------------------");
-            console.log("formattedStartTime", '${formattedStartTime}');
-            console.log("weekday", '${weekday}');
-            console.log("departureId", ${departureId});
-            console.log("departure", '${departure}');
-            console.log("destinationId", ${destinationId});
-            console.log("destination", '${destination}');
-            console.log("start", '${start}');
-            console.log("end", '${end}');
-            console.log("departureDate", ${departureDate});
-            console.log("returnDate", ${returnDate});
-            console.log("idTrip", ${idTrip});
-            console.log("startTime", '${startTime}');
-            console.log("endTime", '${endTime}');
-            console.log("loai", '${loai}');
-            console.log("price", ${price});
-            console.log("soGhe", ${soGhe});
-            console.log("idXe", ${idXe});
-            console.log("*******************************");
-            
-            let selectedSeatsStr = selectedSeats.join(',');
-            let selectedSeatIdsStr = selectedSeatIds.join(',');
+                const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/checkout');
+                
+                url.searchParams.append("selectedSeatsCount", selectedSeatsCount);
+                url.searchParams.append("totalPrice", totalPrice);
+                url.searchParams.append("nameValue", nameValue);
+                url.searchParams.append("phoneValue", phoneValue);
+                url.searchParams.append("emailValue", emailValue);
+                url.searchParams.append("selectedSeats", selectedSeatsStr);
+                url.searchParams.append("selectedSeatIds", selectedSeatIdsStr);
+                url.searchParams.append("idTrip", idTrip);
+                url.searchParams.append("formattedStartTime", '${formattedStartTime}');
+                url.searchParams.append("weekday", '${weekday}');
+                url.searchParams.append("departureId", ${departureId});
+                url.searchParams.append("departure", '${departure}');
+                url.searchParams.append("destinationId", ${destinationId});
+                url.searchParams.append("destination", '${destination}');
+                url.searchParams.append("start", '${start}');
+                url.searchParams.append("end", '${end}');
+                url.searchParams.append("departureDate", '${departureDate}');
+                url.searchParams.append("returnDate", '${returnDate}');
+                url.searchParams.append("startTime", '${startTime}');
+                url.searchParams.append("endTime", '${endTime}');
+                url.searchParams.append("loai", '${loai}');
+                url.searchParams.append("price", ${price});
+                url.searchParams.append("soGhe", ${soGhe});
+                url.searchParams.append("idXe", ${idXe});
 
-            const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/checkout');
-            
-            url.searchParams.append("selectedSeatsCount", selectedSeatsCount);
-            url.searchParams.append("totalPrice", totalPrice);
-            url.searchParams.append("nameValue", nameValue);
-            url.searchParams.append("phoneValue", phoneValue);
-            url.searchParams.append("emailValue", emailValue);
-            url.searchParams.append("selectedSeats", selectedSeatsStr);
-            url.searchParams.append("selectedSeatIds", selectedSeatIdsStr);
-            url.searchParams.append("idTrip", idTrip);
-            url.searchParams.append("formattedStartTime", '${formattedStartTime}');
-            url.searchParams.append("weekday", '${weekday}');
-            url.searchParams.append("departureId", ${departureId});
-            url.searchParams.append("departure", '${departure}');
-            url.searchParams.append("destinationId", ${destinationId});
-            url.searchParams.append("destination", '${destination}');
-            url.searchParams.append("start", '${start}');
-            url.searchParams.append("end", '${end}');
-            url.searchParams.append("departureDate", '${departureDate}');
-            url.searchParams.append("returnDate", '${returnDate}');
-            url.searchParams.append("startTime", '${startTime}');
-            url.searchParams.append("endTime", '${endTime}');
-            url.searchParams.append("loai", '${loai}');
-            url.searchParams.append("price", ${price});
-            url.searchParams.append("soGhe", ${soGhe});
-            url.searchParams.append("idXe", ${idXe});
+                fetch(url, {
+                    method: 'GET',  
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Dữ liệu đã nhận thành công!", data);
+                    const isRoundTrip = false;
+                    if (data.status === "success") { 
+                    	let redirectURL = '/FutaBus_Frontend/checkout?' +
+                        'selectedSeatsCount=' + selectedSeatsCount +
+                        '&totalPrice=' + totalPrice +
+                        '&nameValue=' + nameValue +
+                        '&phoneValue=' + phoneValue +
+                        '&emailValue=' + emailValue +
+                        '&selectedSeats=' + selectedSeatsStr + 
+                        '&selectedSeatIds=' + selectedSeatIdsStr +
+                        '&idTrip=' + idTrip +
+                    	'&formattedStartTime=' + encodeURIComponent('${formattedStartTime}') +
+                        '&weekday=' + encodeURIComponent('${weekday}') +
+                        '&departureId=' + encodeURIComponent(${departureId}) +
+                        '&departure=' + encodeURIComponent('${departure}') +
+                        '&destinationId=' + encodeURIComponent(${destinationId}) +
+                        '&destination=' + encodeURIComponent('${destination}') +
+                        '&start=' + encodeURIComponent('${start}') +
+                        '&end=' + encodeURIComponent('${end}') +
+                        '&departureDate=' + encodeURIComponent('${departureDate}') +
+                        '&returnDate=' + encodeURIComponent('${returnDate}') +
+                        '&startTime=' + encodeURIComponent('${startTime}') +
+                        '&endTime=' + encodeURIComponent('${endTime}') +
+                        '&loai=' + encodeURIComponent('${loai}') +
+                        '&price=' + encodeURIComponent(${price}) +
+                        '&soGhe=' + encodeURIComponent(${soGhe}) +
+                        '&idXe=' + encodeURIComponent(${idXe});
 
-            fetch(url, {
-                method: 'GET',  
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Dữ liệu đã nhận thành công!", data);
-                const isRoundTrip = false;
-                if (data.status === "success") { 
-                	let redirectURL = '/FutaBus_Frontend/checkout?' +
-                    'selectedSeatsCount=' + selectedSeatsCount +
-                    '&totalPrice=' + totalPrice +
-                    '&nameValue=' + nameValue +
-                    '&phoneValue=' + phoneValue +
-                    '&emailValue=' + emailValue +
-                    '&selectedSeats=' + selectedSeatsStr + 
-                    '&selectedSeatIds=' + selectedSeatIdsStr +
-                    '&idTrip=' + idTrip +
-                	'&formattedStartTime=' + encodeURIComponent('${formattedStartTime}') +
-                    '&weekday=' + encodeURIComponent('${weekday}') +
-                    '&departureId=' + encodeURIComponent(${departureId}) +
-                    '&departure=' + encodeURIComponent('${departure}') +
-                    '&destinationId=' + encodeURIComponent(${destinationId}) +
-                    '&destination=' + encodeURIComponent('${destination}') +
-                    '&start=' + encodeURIComponent('${start}') +
-                    '&end=' + encodeURIComponent('${end}') +
-                    '&departureDate=' + encodeURIComponent('${departureDate}') +
-                    '&returnDate=' + encodeURIComponent('${returnDate}') +
-                    '&startTime=' + encodeURIComponent('${startTime}') +
-                    '&endTime=' + encodeURIComponent('${endTime}') +
-                    '&loai=' + encodeURIComponent('${loai}') +
-                    '&price=' + encodeURIComponent(${price}) +
-                    '&soGhe=' + encodeURIComponent(${soGhe}) +
-                    '&idXe=' + encodeURIComponent(${idXe});
+      					window.location.href = redirectURL;
+                    } else {
+                        console.error("❌ Lỗi phản hồi từ API:", data);
+                    }
+                })
+                .catch(error => {
+                    console.error("❌ Lỗi khi lấy dữ liệu:", error.message);
+                    console.error("🔍 Chi tiết lỗi:", error);
+                });
+        	} else {
+				let totalPrice = selectedSeatsCount * ${price};
+				let totalPriceReturn = selectedSeatsCountReturn * ${price};
+                
+				let selectedSeatsStr = selectedSeats.join(',');
+                let selectedSeatIdsStr = selectedSeatIds.join(',');
+                let selectedSeatsReturnStr = selectedSeatsReturn.join(',');
+                let selectedSeatIdsReturnStr = selectedSeatIdsReturn.join(',');
 
-  					window.location.href = redirectURL;
-                } else {
-                    console.error("❌ Lỗi phản hồi từ API:", data);
-                }
-            })
-            .catch(error => {
-                console.error("❌ Lỗi khi lấy dữ liệu:", error.message);
-                console.error("🔍 Chi tiết lỗi:", error);
-            });
+                const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/checkout');
+                
+                url.searchParams.append("selectedSeatsCount", selectedSeatsCount);
+                url.searchParams.append("selectedSeatsCountReturn", selectedSeatsCountReturn);
+                url.searchParams.append("totalPrice", totalPrice);
+                url.searchParams.append("nameValue", nameValue);
+                url.searchParams.append("phoneValue", phoneValue);
+                url.searchParams.append("emailValue", emailValue);
+                url.searchParams.append("selectedSeats", selectedSeatsStr);
+                url.searchParams.append("selectedSeatIds", selectedSeatIdsStr);
+                url.searchParams.append("selectedSeatsReturn", selectedSeatsReturnStr);
+                url.searchParams.append("selectedSeatIdsReturn", selectedSeatIdsReturnStr);
+                url.searchParams.append("idTrip", idTrip);
+                url.searchParams.append("formattedStartTime", '${formattedStartTime}');
+                url.searchParams.append("weekday", '${weekday}');
+                url.searchParams.append("departureId", ${departureId});
+                url.searchParams.append("departure", '${departure}');
+                url.searchParams.append("destinationId", ${destinationId});
+                url.searchParams.append("destination", '${destination}');
+                url.searchParams.append("start", '${start}');
+                url.searchParams.append("end", '${end}');
+                url.searchParams.append("departureDate", '${departureDate}');
+                url.searchParams.append("returnDate", '${returnDate}');
+                url.searchParams.append("startTime", '${startTime}');
+                url.searchParams.append("endTime", '${endTime}');
+                url.searchParams.append("loai", '${loai}');
+                url.searchParams.append("price", ${price});
+                url.searchParams.append("soGhe", ${soGhe});
+                url.searchParams.append("idXe", ${idXe});
+                url.searchParams.append("totalPriceReturn", totalPriceReturn);
+                url.searchParams.append("idTripReturn", ${idTripReturn});
+                url.searchParams.append("startTimeReturn", '${startTimeReturn}');
+                url.searchParams.append("endTimeReturn", '${endTimeReturn}');
+                url.searchParams.append("formattedStartTimeReturn", '${formattedStartTimeReturn}');
+                url.searchParams.append("priceReturn", ${priceReturn});
+                url.searchParams.append("soGheReturn", ${soGheReturn});
+                url.searchParams.append("idXeReturn", ${idXeReturn});
+
+                fetch(url, {
+                    method: 'GET',  
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Dữ liệu đã nhận thành công!", data);
+                    const isRoundTrip = false;
+                    if (data.status === "success") { 
+                    	let redirectURL = '/FutaBus_Frontend/checkout?' +
+                        'selectedSeatsCount=' + selectedSeatsCount +
+                        '&selectedSeatsCountReturn=' + selectedSeatsCountReturn +
+                        '&totalPrice=' + totalPrice +
+                        '&nameValue=' + nameValue +
+                        '&phoneValue=' + phoneValue +
+                        '&emailValue=' + emailValue +
+                        '&selectedSeats=' + selectedSeatsStr + 
+                        '&selectedSeatIds=' + selectedSeatIdsStr +
+                        '&selectedSeatsReturn=' + selectedSeatsReturnStr + 
+                        '&selectedSeatIdsReturn=' + selectedSeatIdsReturnStr +
+                        '&idTrip=' + idTrip +
+                    	'&formattedStartTime=' + encodeURIComponent('${formattedStartTime}') +
+                        '&weekday=' + encodeURIComponent('${weekday}') +
+                        '&departureId=' + encodeURIComponent(${departureId}) +
+                        '&departure=' + encodeURIComponent('${departure}') +
+                        '&destinationId=' + encodeURIComponent(${destinationId}) +
+                        '&destination=' + encodeURIComponent('${destination}') +
+                        '&start=' + encodeURIComponent('${start}') +
+                        '&end=' + encodeURIComponent('${end}') +
+                        '&departureDate=' + encodeURIComponent('${departureDate}') +
+                        '&returnDate=' + encodeURIComponent('${returnDate}') +
+                        '&startTime=' + encodeURIComponent('${startTime}') +
+                        '&endTime=' + encodeURIComponent('${endTime}') +
+                        '&loai=' + encodeURIComponent('${loai}') +
+                        '&price=' + encodeURIComponent(${price}) +
+                        '&soGhe=' + encodeURIComponent(${soGhe}) +
+                        '&idXe=' + encodeURIComponent(${idXe}) +
+                        '&totalPriceReturn=' + totalPriceReturn +
+                        '&idTripReturn=' + encodeURIComponent(${idTripReturn}) +
+                        '&startTimeReturn=' + encodeURIComponent('${startTimeReturn}') +
+                        '&endTimeReturn=' + encodeURIComponent('${endTimeReturn}') +
+                        '&formattedStartTimeReturn=' + encodeURIComponent('${formattedStartTimeReturn}') +
+                        '&priceReturn=' + encodeURIComponent(${priceReturn}) +
+                        '&soGheReturn=' + encodeURIComponent(${soGheReturn}) +
+                        '&idXeReturn=' + encodeURIComponent(${idXeReturn});
+
+      					window.location.href = redirectURL;
+                    } else {
+                        console.error("❌ Lỗi phản hồi từ API:", data);
+                    }
+                })
+                .catch(error => {
+                    console.error("❌ Lỗi khi lấy dữ liệu:", error.message);
+                    console.error("🔍 Chi tiết lỗi:", error);
+                });
+        	}
         }
     });
 

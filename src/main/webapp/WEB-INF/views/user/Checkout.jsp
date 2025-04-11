@@ -81,8 +81,8 @@
 	<nav>
 		<div class="flex h-10 cursor-pointer items-center px-6">Quay lại</div>
 		<div class="content">
-			<p>${departure}-${destination}</p>
-			<p>${weekday},${departureDate}</p>
+			<p>${departure} - ${destination}</p>
+			<p id="departInfo">${weekday}, ${departureDate}</p>
 		</div>
 	</nav>
 
@@ -198,12 +198,44 @@
 						<span class="title">Tổng tiền lượt đi</span><span class="time"><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true"/>đ</span>
 					</div>
 				</div>
+				
+				<div class="round-trip-information" style="display: none;">
+					<p class="item">Thông tin lượt về</p>
+					<div class="trip-information">
+						<span class="title">Tuyến xe</span><span class="road">${end} - ${start}</span>
+					</div>
+					<div class="trip-information">
+						<span class="title">Thời gian xuất bến</span><span class="time">${formattedStartTimeReturn}</span>
+					</div>
+					<div class="trip-information">
+						<span class="title">Số lượng ghế</span><span class="number">${selectedSeatsCountReturn} Ghế</span>
+					</div>
+					<div class="trip-information">
+						<span class="title">Số ghế</span><span class="number">${selectedSeatsReturn}</span>
+					</div>
+					<div class="trip-information">
+						<span class="title">Điểm lên xe</span><span class="number">${end}</span>
+					</div>
+					<div class="trip-information">
+						<span class="title">Thời gian tới nơi đón</span><span class="number">${formattedStartTimeReturn}</span>
+					</div>
+					<div class="trip-information">
+						<span class="title">Điểm trả khách</span><span class="number">${start}</span>
+					</div>
+					<div class="trip-information">
+						<span class="title">Tổng tiền lượt đi</span><span class="time"><fmt:formatNumber value="${totalPriceReturn}" type="number" groupingUsed="true"/>đ</span>
+					</div>
+				</div>
 
 				<div class="price-information">
 					<p class="item">Chi tiết giá</p>
 					<div class="price-infor">
 						<span class="title">Giá vé lượt đi</span><span
 							class="ticket-price"><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true"/>đ</span>
+					</div>
+					<div class="price-infor" style="display: none;">
+						<span class="title">Giá vé lượt về</span><span
+							class="ticket-price"><fmt:formatNumber value="${totalPriceReturn}" type="number" groupingUsed="true"/>đ</span>
 					</div>
 					<div class="price-infor">
 						<span class="title">Phí thanh toán</span><span class="fee">0đ</span>
@@ -212,7 +244,7 @@
 					<div class="divide"></div>
 
 					<div class="price-infor">
-						<span class="title">Tổng tiền</span><span class="total"><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true"/>đ</span>
+						<span class="title">Tổng tiền</span><span class="total"><fmt:formatNumber value="${totalPrice + totalPriceReturn}" type="number" groupingUsed="true"/>đ</span>
 					</div>
 				</div>
 			</div>
@@ -341,6 +373,13 @@
 		}
     }
 	
+	const returnDate = "${returnDate}";
+	if (returnDate && returnDate.trim() !== "") {
+	    document.getElementById("departInfo").textContent = "${departureDate} - ${returnDate}";
+	    document.querySelectorAll('.price-infor').forEach(el => el.style.removeProperty('display'));
+	    document.querySelectorAll('.round-trip-information').forEach(el => el.style.removeProperty('display'));
+	}
+	
 	document.addEventListener("DOMContentLoaded", function() {
 	    let paymentRadios = document.getElementsByName("payment");
 	    let cashPaymentButton = document.getElementById("cashPayment");
@@ -411,6 +450,27 @@
 				    idViTriGhe: selectedSeatIds,  
 			};
 			
+			let bookingDataReturn = null;
+			
+			const returnDate = "${returnDate}";
+			if (returnDate && returnDate.trim() !== "") {
+				console.log("Lỗi tới đâyyyy");
+				const selectedSeatsCountReturn = ${selectedSeatsCountReturn};  
+				const totalPriceReturn = ${totalPriceReturn};    
+				const idTripReturn = ${idTripReturn};                       
+				const selectedSeatIdsReturn = "${selectedSeatIdsReturn}";  
+				
+				bookingDataReturn = {   
+					    soLuongVe: selectedSeatsCountReturn, 
+					    tongTien: totalPriceReturn,                           
+					    hoTen: nameValue,                
+					    soDienThoai: phoneValue,     
+					    email: emailValue,                   
+					    idChuyenXe: idTripReturn,    
+					    idViTriGhe: selectedSeatIdsReturn,  
+				};
+			}
+
 			e.preventDefault();
 		    const confirmModal = document.getElementById('confirmModal');
 		    confirmModal.classList.add("show");
@@ -418,14 +478,27 @@
 		    document.getElementById('confirmYes').onclick = function () {
 		        confirmModal.classList.remove("show");
 		        
-		        console.log("Booking Data:", bookingData);
+		        console.log("Booking Data: ", bookingData);
+		        //console.log("Booking DataReturn: ", bookingDataReturn);
+		        
+		        let bodyData = {
+    				bookingData: bookingData
+				};
+
+				if (returnDate && returnDate !== "null" && returnDate.trim() !== "") {
+    				bodyData.bookingDataReturn = bookingDataReturn;
+				}
 		        
 		        fetch("http://localhost:8085/FutaBus_Backend/api/user/confirmBooking", {
 		            method: "POST",
 		            headers: {
 		                "Content-Type": "application/json"
 		            },
-		            body: JSON.stringify(bookingData)
+		            body: JSON.stringify({
+		                bookingData: bookingData,
+		                bookingDataReturn: bookingDataReturn
+		            })
+		            //body: JSON.stringify(bookingData)
 		        })
 		        .then(response => {
 		            if (!response.ok) {

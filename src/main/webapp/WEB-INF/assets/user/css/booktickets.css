@@ -707,6 +707,14 @@ span.dropdown-icon {
     margin-top: 30px;
 }
 
+.destination-information {
+    padding: 15px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.05), inset 0 0 0 1px #d1d5db;
+    border-radius: 8px;
+    background: #fff;
+    margin-top: 10px;
+}
+
 .price-information {
 	padding: 15px;
     box-shadow: 0 0 0 1px rgba(0,0,0,.05), inset 0 0 0 1px #d1d5db;
@@ -1398,6 +1406,15 @@ h2 {
     justify-content: space-between;
 }
 
+.destination-information {
+    align-items: center;
+    padding: 20px 20px 15px 20px;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,.05), inset 0 0 0 0.5px #d1d5db;
+    border-radius: 8px;
+    background: #fff;
+    justify-content: space-between;
+}
+
 .price-information {
 	align-items: center;
     padding: 20px 20px 15px 20px;
@@ -1413,6 +1430,12 @@ h2 {
     margin-bottom: 10px;
 }
 
+.destination-information .trip-information {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
 .price-information .price-infor {
 	display: flex;
     justify-content: space-between;
@@ -1422,10 +1445,15 @@ h2 {
 .departure-information span {
     display: inline-block;
 }
+
+.destination-information span {
+    display: inline-block;
+}
  
 .price-information span {
     display: inline-block;
     color: #ef5222;
+    font-weight: 500;
 }
   
 p.item {
@@ -1449,4 +1477,21 @@ span.total {
 
 span.fee {
     color: black;
+}
+
+.center-text {
+ 	text-align: center;
+  	font-size: 17px;
+    margin-bottom: 17px;
+    color: #ef5222;
+    font-weight: bold;
+}
+
+.center-text-return {
+ 	text-align: center;
+  	font-size: 17px;
+    margin-bottom: 17px;
+    color: #ef5222;
+    font-weight: bold;
+    margin-top: 30px;
 }
