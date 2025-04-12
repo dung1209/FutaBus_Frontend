@@ -92,6 +92,12 @@
 					<td>${selectedSeatsCount}</td>
 					<td><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true"/>đ</td>
 				</tr>
+				<tr id="returnRow" style="display: none">
+					<td>${departureDateReturn}</td>
+					<td>${end} - ${start}</td>
+					<td>${selectedSeatsCountReturn}</td>
+					<td><fmt:formatNumber value="${totalPriceReturn}" type="number" groupingUsed="true"/>đ</td>
+				</tr>
 			</tbody>
 		</table>
 
@@ -163,6 +169,10 @@
 	</footer>
 
 	<script>
+	const returnDate = "${returnDate}";
+	if (returnDate && returnDate.trim() !== "") {
+	    document.querySelector('#returnRow')?.style.removeProperty('display');
+	}
 		document
 				.getElementById("backHomeBtn")
 				.addEventListener(

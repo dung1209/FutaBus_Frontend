@@ -908,6 +908,7 @@
                 
                 let selectedSeatsStr = selectedSeats.join(',');
                 let selectedSeatIdsStr = selectedSeatIds.join(',');
+                const returnDate = "${returnDate}";
 
                 const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/checkout');
                 
@@ -965,7 +966,14 @@
                         '&start=' + encodeURIComponent('${start}') +
                         '&end=' + encodeURIComponent('${end}') +
                         '&departureDate=' + encodeURIComponent('${departureDate}') +
-                        '&returnDate=' + encodeURIComponent('${returnDate}') +
+                        (isRoundTrip ? 
+                        		'&returnDate=' + returnDate +
+                        		'&idTripReturn=' + idTripReturn + 
+                                '&startTimeReturn=' + startTimeReturn + 
+                                '&endTimeReturn=' + endTimeReturn + 
+                                '&priceReturn=' + priceReturn + 
+                                '&soGheReturn=' + soGheReturn + 
+                                '&idXeReturn=' + idXeReturn : '') +
                         '&startTime=' + encodeURIComponent('${startTime}') +
                         '&endTime=' + encodeURIComponent('${endTime}') +
                         '&loai=' + encodeURIComponent('${loai}') +

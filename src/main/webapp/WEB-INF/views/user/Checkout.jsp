@@ -479,7 +479,6 @@
 		        confirmModal.classList.remove("show");
 		        
 		        console.log("Booking Data: ", bookingData);
-		        //console.log("Booking DataReturn: ", bookingDataReturn);
 		        
 		        let bodyData = {
     				bookingData: bookingData
@@ -498,7 +497,6 @@
 		                bookingData: bookingData,
 		                bookingDataReturn: bookingDataReturn
 		            })
-		            //body: JSON.stringify(bookingData)
 		        })
 		        .then(response => {
 		            if (!response.ok) {
@@ -513,9 +511,13 @@
                     '&end=' + encodeURIComponent('${end}') +
                     '&departure=' + encodeURIComponent('${departure}') +
                     '&destination=' + encodeURIComponent('${destination}') +
-                    '&departureDate=' + encodeURIComponent('${departureDate}') +
-                    '&selectedSeatsCount=' + encodeURIComponent(selectedSeatsCount) +
-                    '&totalPrice=' + encodeURIComponent(totalPrice);
+                    '&departureDate=' + encodeURIComponent('${formattedStartTime}') +
+                    '&selectedSeatsCount=' + encodeURIComponent(${selectedSeatsCount}) +
+                    '&totalPrice=' + encodeURIComponent(${totalPrice}) +
+                    '&returnDate=' + encodeURIComponent('${returnDate}') +
+                    '&departureDateReturn=' + encodeURIComponent('${formattedStartTimeReturn}') +
+                    '&selectedSeatsCountReturn=' + encodeURIComponent(${selectedSeatsCountReturn}) +
+                    '&totalPriceReturn=' + encodeURIComponent(${totalPriceReturn});
 		            
 		            window.location.href = redirectURL;
 		        })

@@ -261,7 +261,7 @@ public class UserViewController {
 			@RequestParam("departure") String departure, @RequestParam("destinationId") int destinationId,
 			@RequestParam("destination") String destination, @RequestParam("start") String start,
 			@RequestParam("end") String end, @RequestParam("departureDate") String departureDate,
-			@RequestParam("returnDate") String returnDate, @RequestParam("startTime") String startTime,
+			@RequestParam(value = "returnDate", required = false) String returnDate, @RequestParam("startTime") String startTime,
 			@RequestParam("endTime") String endTime, @RequestParam("loai") String loai,
 			@RequestParam("price") double price, @RequestParam("soGhe") int soGhe, @RequestParam("idXe") Long idXe,
 			@RequestParam(value = "totalPriceReturn", required = false) Double totalPriceReturn,
@@ -317,7 +317,6 @@ public class UserViewController {
 		model.addAttribute("start", start);
 		model.addAttribute("end", end);
 		model.addAttribute("departureDate", departureDate);
-		model.addAttribute("returnDate", returnDate);
 		model.addAttribute("startTime", startTime);
 		model.addAttribute("endTime", endTime);
 		model.addAttribute("loai", loai);
@@ -325,6 +324,7 @@ public class UserViewController {
 		model.addAttribute("soGhe", soGhe);
 		model.addAttribute("idXe", idXe);
 		if (idTripReturn != null) {
+			model.addAttribute("returnDate", returnDate);
 			model.addAttribute("totalPriceReturn", totalPriceReturn);
 			model.addAttribute("idTripReturn", idTripReturn);
 			model.addAttribute("startTimeReturn", startTimeReturn);
@@ -355,10 +355,17 @@ public class UserViewController {
 	}
 
 	@GetMapping("/thank-you")
-	public String thankYouPage(@RequestParam("start") String start, @RequestParam("end") String end,
-			@RequestParam("departure") String departure, @RequestParam("destination") String destination,
+	public String thankYouPage(@RequestParam("start") String start, 
+			@RequestParam("end") String end,
+			@RequestParam("departure") String departure, 
+			@RequestParam("destination") String destination,
 			@RequestParam("departureDate") String departureDate,
-			@RequestParam("selectedSeatsCount") int selectedSeatsCount, @RequestParam("totalPrice") double totalPrice,
+			@RequestParam("selectedSeatsCount") int selectedSeatsCount, 
+			@RequestParam("totalPrice") double totalPrice,
+			@RequestParam(value = "returnDate", required = false) String returnDate,
+			@RequestParam(value = "departureDateReturn", required = false) String departureDateReturn,
+			@RequestParam(value = "selectedSeatsCountReturn", required = false) Integer selectedSeatsCountReturn,
+			@RequestParam(value = "totalPriceReturn", required = false) Double totalPriceReturn,
 			Model model) {
 
 		model.addAttribute("start", start);
@@ -368,6 +375,18 @@ public class UserViewController {
 		model.addAttribute("departureDate", departureDate);
 		model.addAttribute("selectedSeatsCount", selectedSeatsCount);
 		model.addAttribute("totalPrice", totalPrice);
+
+		if (returnDate != null) {
+			model.addAttribute("returnDate", returnDate);
+			model.addAttribute("departureDateReturn", departureDateReturn);
+			model.addAttribute("selectedSeatsCountReturn", selectedSeatsCountReturn);
+			model.addAttribute("totalPriceReturn", totalPriceReturn);
+		} else {
+			model.addAttribute("returnDate", "");
+			model.addAttribute("departureDateReturn", "");
+			model.addAttribute("selectedSeatsCountReturn", 0);
+			model.addAttribute("totalPriceReturn", 0);
+		}
 
 		return "user/Thankyou";
 	}
