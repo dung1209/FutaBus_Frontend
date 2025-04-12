@@ -539,7 +539,14 @@
                             '&start=' + start +
                             '&end=' + end +
                             '&departureDate=' + departureDate +
-                            (isRoundTrip ? '&returnDate=' + returnDate : '') +
+                            (isRoundTrip ? 
+                            		'&returnDate=' + returnDate +
+                            		'&idTripReturn=' + idTripReturn + 
+                                    '&startTimeReturn=' + startTimeReturn + 
+                                    '&endTimeReturn=' + endTimeReturn + 
+                                    '&priceReturn=' + priceReturn + 
+                                    '&soGheReturn=' + soGheReturn + 
+                                    '&idXeReturn=' + idXeReturn : '') +
                             '&idTrip=' + idTrip +
                             '&startTime=' + startTime +
                             '&endTime=' + endTime +
@@ -622,17 +629,9 @@
                     }
 
                     if (selectedDepartureTrip && selectedReturnTrip) {
-                    	toast({
-                            title: "Đã lấy dữ liệu cả 2",
-                            message: `Từ ${tripData.departure} đến ${tripData.destination}`,
-                            type: "success",
-                            duration: 2000
-                        });
+                    	let loai = this.dataset.loai;
                     	
-                    	console.log("selectedDepartureTrip: ", selectedDepartureTrip);
-                    	console.log("selectedReturnTrip: ", selectedReturnTrip);
-                    	
-                    	const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/book-tickets/round-trip');
+                    	const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/book-tickets'); 
                     	url.searchParams.set('departureId', selectedDepartureTrip.departureId);
                     	url.searchParams.set('departure', selectedDepartureTrip.departure);
                     	url.searchParams.set('destinationId', selectedDepartureTrip.destinationId);
@@ -644,6 +643,7 @@
                     	url.searchParams.set('idTrip', selectedDepartureTrip.idTrip);
                     	url.searchParams.set('startTime', selectedDepartureTrip.startTime);
                     	url.searchParams.set('endTime', selectedDepartureTrip.endTime);
+                    	url.searchParams.set('loai', loai);
                     	url.searchParams.set('idTripReturn', selectedReturnTrip.idTrip);
                     	url.searchParams.set('startTimeReturn', selectedReturnTrip.startTime);
                     	url.searchParams.set('endTimeReturn', selectedReturnTrip.endTime);
@@ -669,8 +669,9 @@
                         .then(data => {
                             if (data.status === "success") {
                                 console.log("Đã lưu thành công cả 2 chuyến:", data);
+                                const loai = this.dataset.loai;
 
-                                const redirectURL = '/FutaBus_Frontend/book-tickets/round-trip?' +
+                                const redirectURL = '/FutaBus_Frontend/book-tickets?' +
                                 'departureId=' + selectedDepartureTrip.departureId +
                                 '&departure=' + selectedDepartureTrip.departure +
                                 '&destinationId=' + selectedDepartureTrip.destinationId +
@@ -682,6 +683,7 @@
                                 '&idTrip=' + selectedDepartureTrip.idTrip +
                                 '&startTime=' + selectedDepartureTrip.startTime +
                                 '&endTime=' + selectedDepartureTrip.endTime +
+                                '&loai=' + loai +
                                 '&idTripReturn=' + selectedReturnTrip.idTrip +
                                 '&startTimeReturn=' + selectedReturnTrip.startTime +
                                 '&endTimeReturn=' + selectedReturnTrip.endTime +
@@ -691,8 +693,6 @@
                                 '&soGheReturn=' + selectedReturnTrip.soGhe +
                                 '&idXe=' + selectedDepartureTrip.idXe +
                                 '&idXeReturn=' + selectedReturnTrip.idXe;
-
-
 
                                 window.location.href = redirectURL;
                             } else {

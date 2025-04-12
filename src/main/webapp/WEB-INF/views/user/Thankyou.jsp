@@ -99,7 +99,7 @@
 			thắc mắc xin vui lòng liên hệ số điện thoại sau: 090-080-070</span>
 
 		<form class="booking-form">
-			<button type="submit" class="back-button">QUAY LẠI TRANG CHỦ</button>
+			<button type="submit" class="back-button" id="backHomeBtn">QUAY LẠI TRANG CHỦ</button>
 			<button type="submit" class="search-button">ĐƠN HÀNG CỦA TÔI</button>
 		</form>
 	</section>
@@ -161,6 +161,17 @@
 				Thông</p>
 		</div>
 	</footer>
+
+	<script>
+		document
+				.getElementById("backHomeBtn")
+				.addEventListener(
+						"click",
+						function(event) {
+							event.preventDefault();
+							window.location.href = "http://localhost:8086/FutaBus_Frontend/";
+						});
+	</script>
 
 </body>
 </html>
