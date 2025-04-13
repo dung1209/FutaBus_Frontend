@@ -16,9 +16,18 @@
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" type="text/css"
 	href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+	integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+	crossorigin="anonymous" />
 
 </head>
 <body>
+	<div id="toast"></div>
 	<header>
 	<div class="hero-container">
 		<div class="items-start">
@@ -68,8 +77,8 @@
 
         <form id="login-form">
             <div class="input-group">
-                <img src="<%=request.getContextPath()%>/assets/user/image/phone.svg" alt="Phone Icon" class="phone-icon">
-                <input type="text" placeholder="Nhập số điện thoại">
+                <img src="<%=request.getContextPath()%>/assets/user/image/email.png" alt="Email Icon" class="email-icon">
+                <input type="text" id="email" placeholder="Nhập email">
             </div>
             <div class="input-group">
                 <img src="<%=request.getContextPath()%>/assets/user/image/password.svg" alt="password" class="password-icon">
@@ -82,16 +91,18 @@
 
         <form id="register-form" style="display: none;">
             <div class="input-group">
-                <img src="<%=request.getContextPath()%>/assets/user/image/phone.svg" alt="Phone Icon" class="phone-icon">
-                <input type="text" placeholder="Nhập số điện thoại">
+                <img src="<%=request.getContextPath()%>/assets/user/image/email.png" alt="Email Icon" class="email-icon">
+                <input type="text" id="register-email" placeholder="Nhập email">
             </div>
+            <button type="submit" class="btn" id="send-otp-button">Gửi mã</button>
+        </form>
+        
+        <form id="otp-form" style="display: none;">
             <div class="input-group">
-                <img src="<%=request.getContextPath()%>/assets/user/image/password.svg" alt="password" class="password-icon">
-                <input type="password" placeholder="Nhập mật khẩu">
-                <img src="<%=request.getContextPath()%>/assets/user/image/hide.png" alt="eye" class="eye-icon" onclick="togglePassword()">
+                <img src="<%=request.getContextPath()%>/assets/user/image/email.png" alt="Email Icon" class="email-icon">
+                <input type="text" placeholder="Nhập mã OTP">
             </div>
-            <button type="submit" class="btn" id="register-button">Đăng ký</button>
-            <a href="#" class="forgot-password">Quên mật khẩu</a>
+            <button type="button" class="btn" id="register-button">Xác minh</button>
         </form>
             </div>
         </div>
@@ -181,6 +192,7 @@
 	    document.getElementById('form-title').innerText = 'Đăng nhập tài khoản';
 	    document.getElementById('login-form').style.display = 'block'; 
 	    document.getElementById('register-form').style.display = 'none'; 
+	    document.getElementById('otp-form').style.display = 'none'; 
 	    document.getElementById('login-button').style.display = 'inline-block';
 	    document.getElementById('register-button').style.display = 'none';
 	    
@@ -195,6 +207,7 @@
 	    document.getElementById('form-title').innerText = 'Đăng ký tài khoản';
 	    document.getElementById('register-form').style.display = 'block'; 
 	    document.getElementById('login-form').style.display = 'none'; 
+	    document.getElementById('otp-form').style.display = 'none'; 
 	    document.getElementById('register-button').style.display = 'inline-block';
 	    document.getElementById('login-button').style.display = 'none'; 
 	    
@@ -204,6 +217,149 @@
 	    registerButton.classList.add('active');
 	    loginButton.classList.remove('active');
 	}
+	
+	function showOTPForm() {
+	    document.getElementById('register-form').style.display = 'none';
+	    document.getElementById('login-form').style.display = 'none';
+	    document.getElementById('otp-form').style.display = 'block';
+	    document.getElementById('form-title').innerText = 'Xác thực mã OTP';
+	}
+	
+	document.getElementById("login-form").addEventListener("submit", function(event) {
+	    event.preventDefault();
+
+	    const email = document.getElementById("email").value.trim();
+	    const password = document.getElementById("password").value.trim();
+	    
+	    var isValid = true;
+
+	    if (email === "") {
+	    	toast({
+	      		title: "Chú ý!",
+	      		message: "Vui lòng nhập email để đăng nhập!",
+	       		type: "error",
+	    		duration: 1000
+	        });
+	        isValid = false;
+	    }
+
+	    if (!email.endsWith("@gmail.com") && email !== "") {
+	    	toast({
+	      		title: "Chú ý!",
+	      		message: "Email phải có đuôi @gmail.com!",
+	       		type: "error",
+	    		duration: 1000
+	        });
+	        isValid = false;
+	    }
+
+	    if (password === "") {
+	    	toast({
+	      		title: "Chú ý!",
+	      		message: "Vui lòng nhập mật khẩu!",
+	       		type: "error",
+	    		duration: 1000
+	        });
+	        isValid = false;
+	    }
+	    
+	    if (isValid) {
+	    	toast({
+	      		title: "Dũng!",
+	      		message: "dữ liệu đúng rồi!",
+	       		type: "error",
+	    		duration: 1000
+	        });
+	    }
+
+	});
+	
+	document.getElementById("register-form").addEventListener("submit", function(event) {
+	    event.preventDefault();
+
+	    const email = document.getElementById("register-email").value.trim();
+	    
+	    var isValid = true;
+
+	    if (email === "") {
+	    	toast({
+	      		title: "Chú ý!",
+	      		message: "Vui lòng nhập email để đăng ký!",
+	       		type: "error",
+	    		duration: 1000
+	        });
+	        isValid = false;
+	    }
+
+	    if (!email.endsWith("@gmail.com") && email !== "") {
+	    	toast({
+	      		title: "Chú ý!",
+	      		message: "Email phải có đuôi @gmail.com!",
+	       		type: "error",
+	    		duration: 1000
+	        });
+	        isValid = false;
+	    }
+
+	    if (isValid) {
+	    	showOTPForm();
+	    }
+
+	});
+	
+	function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+		const main = document.getElementById("toast");
+		if (main) {
+			const toast = document.createElement("div");
+			
+    	    const autoRemoveId = setTimeout(function () {
+    	      main.removeChild(toast);
+    	    }, duration + 1000);
+
+    	    toast.onclick = function (e) {
+    	      if (e.target.closest(".toast__close")) {
+    	        main.removeChild(toast);
+    	        clearTimeout(autoRemoveId);
+    	      }
+    	    };
+
+    	    const icons = {
+    	      success: "fas fa-check-circle",
+    	      info: "fas fa-info-circle",
+    	      warning: "fas fa-exclamation-circle",
+    	      error: "fas fa-exclamation-circle"
+    	    };
+    	    const icon = icons[type];
+    	    const delay = (duration / 1000).toFixed(2);
+
+    	    toast.classList.add("toast", `toast--${type}`);
+    	    toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+    	    toast.innerHTML = `
+    	                    <div class="toast__icon">
+    	                        <i class="${icon}"></i>
+    	                    </div>
+    	                    <div class="toast__body">
+    	                        <h3 class="toast__title">${title}</h3>
+    	                        <p class="toast__msg">${message}</p>
+    	                    </div>
+    	                    <div class="toast__close">
+    	                        <i class="fas fa-times"></i>
+    	                    </div>
+    	                `;
+    	    const toastIcon = toast.querySelector('.toast__icon');
+			if (toastIcon) {
+    			const iconElement = document.createElement('i');
+    			iconElement.className = icon;
+    			toastIcon.appendChild(iconElement);
+			}
+    	    const toastMessage = toast.querySelector('.toast__msg');
+    	    toastMessage.textContent = message; 
+    	    const toastTitle = toast.querySelector('.toast__title');
+    	    toastTitle.textContent = title; 
+    	    main.appendChild(toast);
+		}
+    }
 	</script>
 
 </body>

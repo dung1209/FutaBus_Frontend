@@ -838,10 +838,24 @@
             event.preventDefault();
             toast({
                 title: "Chú ý!",
-                message: "Vui lòng chọn ít nhất một ghế để tiếp tục thanh toán.",
+                message: "Chọn ít nhất một ghế cho chuyến đi để thanh toán.",
                 type: "error",
                 duration: 1000
             });
+        }
+        
+        const returnDate = "${returnDate}";
+        if(returnDate) {
+        	if (selectedSeatsReturn.length === 0) {
+            	isFormValid = false;
+                event.preventDefault();
+                toast({
+                    title: "Chú ý!",
+                    message: "Chọn ít nhất một ghế cho chuyến về để thanh toán.",
+                    type: "error",
+                    duration: 1000
+                });
+            }
         }
         
         if (nameValue === '' || phoneValue === '' || emailValue === '') {

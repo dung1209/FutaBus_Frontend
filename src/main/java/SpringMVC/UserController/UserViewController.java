@@ -212,7 +212,7 @@ public class UserViewController {
 		model.addAttribute("destination", destination);
 		model.addAttribute("departureDate", departureDate);
 		model.addAttribute("returnDate", returnDate);
-		model.addAttribute("departureWeekday", departureWeekday);
+		model.addAttribute("weekday", departureWeekday);
 
 		model.addAttribute("start", start);
 		model.addAttribute("end", end);
