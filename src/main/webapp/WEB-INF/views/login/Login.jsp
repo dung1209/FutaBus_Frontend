@@ -55,8 +55,8 @@
 
 		<div class="justify-end">
 			<img src="<%=request.getContextPath()%>/assets/user/image/person.svg"
-				width="26" style="margin: 0 10px" alt="download app icon"> <a
-				class="gap-3"> Đăng nhập/Đăng ký </a>
+				width="26" style="margin: 0 10px" alt="download app icon"> <a href="javascript:void(0)"
+				class="gap-3 cursor-pointer" onclick="redirectToLogin()"> Đăng nhập/Đăng ký </a>
 		</div>
 	</div>
 	</header>
@@ -225,6 +225,10 @@
 	    document.getElementById('form-title').innerText = 'Xác thực mã OTP';
 	}
 	
+	function redirectToLogin() {
+        window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+    }
+	
 	document.getElementById("login-form").addEventListener("submit", function(event) {
 	    event.preventDefault();
 
@@ -264,11 +268,44 @@
 	    }
 	    
 	    if (isValid) {
-	    	toast({
-	      		title: "Dũng!",
-	      		message: "dữ liệu đúng rồi!",
-	       		type: "error",
-	    		duration: 1000
+	    	fetch("http://localhost:8085/FutaBus_Backend/api/user/login", {
+	            method: "POST",
+	            headers: {
+	                "Content-Type": "application/json"
+	            },
+	            credentials: "include",
+	            body: JSON.stringify({
+	                email: email,
+	                matKhau: password
+	            })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.status === "success") {
+	            	toast({
+	    	      		title: "Thành công!",
+	    	      		message: "Đăng nhập thành công.",
+	    	       		type: "error",
+	    	    		duration: 1000
+	    	        });
+	            	
+	            	if (data.nguoiDung.idPhanQuyen === 3) {
+	                	window.location.href = "http://localhost:8086/FutaBus_Frontend/admin";
+	            	} else {
+	            		window.location.href = "http://localhost:8086/FutaBus_Frontend";
+	            	}
+	            } else {
+	            	toast({
+	    	      		title: "Chú ý!",
+	    	      		message: "Email hoặc mật khẩu chưa chính xác!",
+	    	       		type: "error",
+	    	    		duration: 1000
+	    	        });
+	            }
+	        })
+	        .catch(error => {
+	            console.error("Lỗi khi gửi yêu cầu đăng nhập:", error);
+	            showToast("Lỗi hệ thống, vui lòng thử lại sau!");
 	        });
 	    }
 
@@ -295,7 +332,7 @@
 	    	toast({
 	      		title: "Chú ý!",
 	      		message: "Email phải có đuôi @gmail.com!",
-	       		type: "error",
+	       		type: "success",
 	    		duration: 1000
 	        });
 	        isValid = false;

@@ -780,3 +780,13 @@ img.ketnoi-image {
 .fa-check-circle:before {
     color: #47d864;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+a.gap-3.cursor-pointer {
+    color: #565656;
+    text-decoration: none;
+}
+

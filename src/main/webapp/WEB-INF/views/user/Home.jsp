@@ -59,8 +59,8 @@
 
 		<div class="justify-end">
 			<img src="<%=request.getContextPath()%>/assets/user/image/person.svg"
-				width="26" style="margin: 0 10px" alt="download app icon"> <a
-				class="gap-3"> Đăng nhập/Đăng ký </a>
+				width="26" style="margin: 0 10px" alt="download app icon"> <a href="javascript:void(0)"
+				class="gap-3 cursor-pointer" onclick="redirectToLogin()"> Đăng nhập/Đăng ký </a>
 		</div>
 	</div>
 
@@ -241,6 +241,10 @@
     </script>
 
 	<script>
+	function redirectToLogin() {
+        window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+    }
+	
     document.addEventListener("DOMContentLoaded", function () {
         const departureInput = document.getElementById("departure");
         const destinationInput = document.getElementById("destination");
