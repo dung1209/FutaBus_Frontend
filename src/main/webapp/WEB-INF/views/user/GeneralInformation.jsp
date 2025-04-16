@@ -5,11 +5,11 @@
 <head>
 
 <meta charset="utf-8">
-<title>Cảm ơn</title>
+<title>Thông tin chung</title>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/assets/user/css/thankyou.css">
+	href="<%=request.getContextPath()%>/assets/user/css/generalinformation.css">
 <link
 	href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
 	rel="stylesheet">
@@ -53,10 +53,12 @@
 
 		<div class="justify-end">
 			<img src="<%=request.getContextPath()%>/assets/user/image/person.svg"
-				width="26" style="margin: 0 10px" alt="download app icon"> <a href="javascript:void(0)"
-				class="gap-3 cursor-pointer" id="userGreeting" onclick="redirectToLogin()"> Đăng nhập/Đăng ký </a>
+				width="26" style="margin: 0 10px" alt="download app icon"> <a
+				href="javascript:void(0)" class="gap-3 cursor-pointer"
+				id="userGreeting" onclick="redirectToLogin()"> Đăng nhập/Đăng ký
+			</a>
 		</div>
-		
+
 		<div class="user-modal" id="userModal">
 			<div class="user-modal__content">
 				<div class="user-modal__item">
@@ -86,7 +88,7 @@
 
 	<nav>
 		<ul>
-			<li><a href="#" class="border-choice">TRANG CHỦ</a></li>
+			<li><a href="#">TRANG CHỦ</a></li>
 			<li><a href="#">LỊCH TRÌNH</a></li>
 			<li><a href="#">TRA CỨU VÉ</a></li>
 			<li><a href="#">TIN TỨC</a></li>
@@ -96,45 +98,81 @@
 		</ul>
 	</nav>
 
-	<section class="search-section">
-		<img src="<%=request.getContextPath()%>/assets/user/image/success.png"
-			alt="success" class="success-image">
 
-		<h2>Đơn đặt hàng thành công</h2>
+	<div class="container">
+		<div class="sidebar">
+			<ul class="nav">
+				<li class="active"><a
+					href="http://localhost:8086/FutaBus_Frontend/general-information">
+						<img
+						src="<%=request.getContextPath()%>/assets/user/image/infor_user.svg"
+						alt="profile" /> Thông tin tài khoản
+				</a></li>
+				<li><a
+					href="http://localhost:8086/FutaBus_Frontend/purchase-history">
+						<img
+						src="<%=request.getContextPath()%>/assets/user/image/history.svg"
+						alt="history" /> Lịch sử mua vé
+				</a></li>
+				<li><a
+					href="http://localhost:8086/FutaBus_Frontend/reset-password"> <img
+						src="<%=request.getContextPath()%>/assets/user/image/change_password.svg"
+						alt="chang-pass" /> Đặt lại mật khẩu
+				</a></li>
+				<li><a href="http://localhost:8086/FutaBus_Frontend/logout">
+						<img
+						src="<%=request.getContextPath()%>/assets/user/image/logout.svg"
+						alt="logout" /> Đăng xuất
+				</a></li>
+			</ul>
+		</div>
 
-		<table class="ticket-table">
-			<thead>
-				<tr>
-					<th>Thời gian</th>
-					<th>Chuyến xe</th>
-					<th>Số lượng ghế</th>
-					<th>Thành tiền</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>${departureDate}</td>
-					<td>${start} - ${end}</td>
-					<td>${selectedSeatsCount}</td>
-					<td><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true"/>đ</td>
-				</tr>
-				<tr id="returnRow" style="display: none">
-					<td>${departureDateReturn}</td>
-					<td>${end} - ${start}</td>
-					<td>${selectedSeatsCountReturn}</td>
-					<td><fmt:formatNumber value="${totalPriceReturn}" type="number" groupingUsed="true"/>đ</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="main-content">
+			<h2>Thông tin tài khoản</h2>
+			<p class="desc">Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
 
-		<span>Cảm ơn bạn đã tin tưởng sử dụng dịch vụ chúng tôi</span> <span>Mọi
-			thắc mắc xin vui lòng liên hệ số điện thoại sau: 090-080-070</span>
+			<div class="profile-card">
+				<div class="avatar-section">
+					<img
+						src="<%=request.getContextPath()%>/assets/user/image/avatar_test.svg"
+						alt="avatar" />
+				</div>
 
-		<form class="booking-form">
-			<button type="submit" class="back-button" id="backHomeBtn">QUAY LẠI TRANG CHỦ</button>
-			<button type="submit" class="search-button">ĐƠN HÀNG CỦA TÔI</button>
-		</form>
-	</section>
+				<div class="info-section">
+					<div class="info-row">
+						<label>Họ và tên:</label><span>Nguyễn Văn Dũng</span>
+					</div>
+					<div class="info-row">
+						<label>Giới tính:</label>
+						<div class="custom-select-wrapper">
+							<select id="gender-select">
+								<option value="">-- Chọn giới tính --</option>
+								<option value="nam">Nam</option>
+								<option value="nu">Nữ</option>
+								<option value="khac">Khác</option>
+							</select> <img
+								src="<%=request.getContextPath()%>/assets/user/image/down-arrow.png"
+								alt="arrow" class="dropdown-icon">
+						</div>
+					</div>
+					<div class="info-row">
+						<label>Ngày sinh:</label><span>Invalid date</span>
+					</div>
+					<div class="info-row">
+						<label>Số điện thoại:</label><span>0916430832</span>
+					</div>
+					<div class="info-row">
+						<label>Email:</label><span>--</span>
+					</div>
+
+					<div class="info-row">
+						<label>Địa chỉ:</label><span>--</span>
+					</div>
+					<button class="update-btn">Cập nhật</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<footer>
 		<div class="footer-container">
@@ -195,52 +233,32 @@
 	</footer>
 
 	<script>
-	
-	function redirectToLogin() {
-		const nguoiDungStr = localStorage.getItem("nguoiDung");
-        if (nguoiDungStr) {
-        	toggleModal();
-        } else {
-        	window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
-        }
-    }
-	
-	const nguoiDungStr = localStorage.getItem("nguoiDung");
-    if (nguoiDungStr) {
-        const nguoiDung = JSON.parse(nguoiDungStr);
-        console.log("Thông tin người dùng:", nguoiDung);
-        
-        const greetingLink = document.getElementById("userGreeting");
-        if (greetingLink) {
-            greetingLink.innerText = "Chào, " + nguoiDung.hoTen;
+		function redirectToLogin() {
+			const nguoiDungStr = localStorage.getItem("nguoiDung");
+			if (nguoiDungStr) {
+				toggleModal();
+			} else {
+				window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+			}
+		}
 
-            //greetingLink.onclick = function () {
-                // Ví dụ mở menu người dùng hoặc chuyển trang tài khoản
-                //window.location.href = "/FutaBus_Frontend/thong-tin-ca-nhan";
-            //};
-        }
-    } else {
-        console.log("Không tìm thấy người dùng trong localStorage");
-    }
-	
-	const returnDate = "${returnDate}";
-	if (returnDate && returnDate.trim() !== "") {
-	    document.querySelector('#returnRow')?.style.removeProperty('display');
-	}
-		document
-				.getElementById("backHomeBtn")
-				.addEventListener(
-						"click",
-						function(event) {
-							event.preventDefault();
-							window.location.href = "http://localhost:8086/FutaBus_Frontend/";
-						});
-	
-	function toggleModal() {
-		var modal = document.getElementById("userModal");
-		modal.classList.toggle("show");
-	}
-		
+		const nguoiDungStr = localStorage.getItem("nguoiDung");
+		if (nguoiDungStr) {
+			const nguoiDung = JSON.parse(nguoiDungStr);
+			console.log("Thông tin người dùng:", nguoiDung);
+
+			const greetingLink = document.getElementById("userGreeting");
+			if (greetingLink) {
+				greetingLink.innerText = "Chào, " + nguoiDung.hoTen;
+			}
+		} else {
+			console.log("Không tìm thấy người dùng trong localStorage");
+		}
+
+		function toggleModal() {
+			var modal = document.getElementById("userModal");
+			modal.classList.toggle("show");
+		}
 	</script>
 
 </body>

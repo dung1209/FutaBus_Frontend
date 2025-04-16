@@ -1645,3 +1645,76 @@ h2.text-green {
     padding: 0 20px;
 }
 
+a.gap-3.cursor-pointer {
+    color: #565656;
+    text-decoration: none;
+}
+
+.user-modal {
+    position: absolute;
+    top: 60px; 
+    right: 133px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    display: none;
+    z-index: 100;
+    margin-right: 17px;
+    min-width: 270px;
+}
+
+.user-modal.show {
+    display: block;
+}
+
+.user-modal__content {
+    padding: 5px 10px 0px 10px;
+    text-align: left;
+}
+
+.user-modal__item {
+	display: flex;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    align-items: center;
+}
+
+.user-modal__item img {
+	margin-right: 13px;
+}
+
+.user-modal__item .logout img {
+	margin-right: 10px;
+	filter: brightness(0) saturate(100%) invert(19%) sepia(99%) saturate(7482%) hue-rotate(358deg) brightness(97%) contrast(105%);
+}
+
+.user-modal__item:hover {
+    background: #f1f1f1;
+}
+
+.logout {
+    color: #ff0000b3;
+    font-weight: bold;
+}
+
+.user-modal .user-modal__content p {
+	color: #667085;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 7px;
+}
+
+.user-modal .user-modal__content p strong {
+    font-size: 15px;
+}
+
+hr {
+    margin-bottom: 7px;
+    margin-top: 7px;
+}
+
+img.log-out {
+    filter: brightness(0) saturate(100%) invert(19%) sepia(99%) saturate(7482%) hue-rotate(358deg) brightness(97%) contrast(105%);
+}

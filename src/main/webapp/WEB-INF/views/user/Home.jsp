@@ -60,7 +60,33 @@
 		<div class="justify-end">
 			<img src="<%=request.getContextPath()%>/assets/user/image/person.svg"
 				width="26" style="margin: 0 10px" alt="download app icon"> <a href="javascript:void(0)"
-				class="gap-3 cursor-pointer" onclick="redirectToLogin()"> Đăng nhập/Đăng ký </a>
+				class="gap-3 cursor-pointer" id="userGreeting" onclick="redirectToLogin()"> Đăng nhập/Đăng ký </a>
+		</div>
+		
+		<div class="user-modal" id="userModal">
+			<div class="user-modal__content">
+				<div class="user-modal__item">
+					<img
+						src="<%=request.getContextPath()%>/assets/user/image/infor_user.svg"
+						alt="profile" /> Thông tin tài khoản
+				</div>
+				<div class="user-modal__item">
+					<img
+						src="<%=request.getContextPath()%>/assets/user/image/history.svg"
+						alt="profile" /> Lịch sử mua vé
+				</div>
+				<div class="user-modal__item">
+					<img
+						src="<%=request.getContextPath()%>/assets/user/image/change_password.svg"
+						alt="profile" /> Đặt lại mật khẩu
+				</div>
+				<hr>
+				<div class="user-modal__item logout" id="logoutBtn">
+					<img
+						src="<%=request.getContextPath()%>/assets/admin/image/log-out.png"
+						alt="log-out" class="log-out" /> Đăng xuất
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -242,8 +268,20 @@
 
 	<script>
 	function redirectToLogin() {
-        window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+		const nguoiDungStr = localStorage.getItem("nguoiDung");
+        if (nguoiDungStr) {
+        	toggleModal();
+        } else {
+        	window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+        }
     }
+	
+	document.getElementById("logoutBtn").addEventListener("click", function () {
+	    localStorage.removeItem("nguoiDung");
+
+	    window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+	});
+
 	
     document.addEventListener("DOMContentLoaded", function () {
         const departureInput = document.getElementById("departure");
@@ -354,6 +392,24 @@
             returnDateInput.disabled = false; 
             returnDate.value = departureDate.value; 
         });
+        
+        const nguoiDungStr = localStorage.getItem("nguoiDung");
+        if (nguoiDungStr) {
+            const nguoiDung = JSON.parse(nguoiDungStr);
+            console.log("Thông tin người dùng:", nguoiDung);
+            
+            const greetingLink = document.getElementById("userGreeting");
+            if (greetingLink) {
+                greetingLink.innerText = "Chào, " + nguoiDung.hoTen;
+
+                //greetingLink.onclick = function () {
+                    // Ví dụ mở menu người dùng hoặc chuyển trang tài khoản
+                    //window.location.href = "/FutaBus_Frontend/thong-tin-ca-nhan";
+                //};
+            }
+        } else {
+            console.log("Không tìm thấy người dùng trong localStorage");
+        }
         
         function toast({ title = "", message = "", type = "info", duration = 3000 }) {
     		const main = document.getElementById("toast");
@@ -501,6 +557,12 @@
             }
         });
     });
+    
+    function toggleModal() {
+		var modal = document.getElementById("userModal");
+		modal.classList.toggle("show");
+	}
+
     </script>
 
 </body>

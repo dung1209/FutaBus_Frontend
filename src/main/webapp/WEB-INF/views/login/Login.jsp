@@ -78,11 +78,11 @@
         <form id="login-form">
             <div class="input-group">
                 <img src="<%=request.getContextPath()%>/assets/user/image/email.png" alt="Email Icon" class="email-icon">
-                <input type="text" id="email" placeholder="Nhập email">
+                <input type="text" id="email" placeholder="Nhập email" autocomplete="username">
             </div>
             <div class="input-group">
                 <img src="<%=request.getContextPath()%>/assets/user/image/password.svg" alt="password" class="password-icon">
-                <input type="password" placeholder="Nhập mật khẩu" id="password">
+                <input type="password" placeholder="Nhập mật khẩu" id="password" autocomplete="current-password">
                 <img src="<%=request.getContextPath()%>/assets/user/image/hide.png" alt="eye" class="eye-icon" onclick="togglePassword()">
             </div>
             <button type="submit" class="btn" id="login-button">Đăng nhập</button>
@@ -92,7 +92,7 @@
         <form id="register-form" style="display: none;">
             <div class="input-group">
                 <img src="<%=request.getContextPath()%>/assets/user/image/email.png" alt="Email Icon" class="email-icon">
-                <input type="text" id="register-email" placeholder="Nhập email">
+                <input type="text" id="register-email" placeholder="Nhập email" autocomplete="username">
             </div>
             <button type="submit" class="btn" id="send-otp-button">Gửi mã</button>
         </form>
@@ -290,8 +290,10 @@
 	    	        });
 	            	
 	            	if (data.nguoiDung.idPhanQuyen === 3) {
+	            		localStorage.setItem("nguoiDung", JSON.stringify(data.nguoiDung));
 	                	window.location.href = "http://localhost:8086/FutaBus_Frontend/admin";
 	            	} else {
+	            		localStorage.setItem("nguoiDung", JSON.stringify(data.nguoiDung));
 	            		window.location.href = "http://localhost:8086/FutaBus_Frontend";
 	            	}
 	            } else {

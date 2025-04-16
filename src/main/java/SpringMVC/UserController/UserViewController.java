@@ -21,6 +21,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import FutaBus.bean.ChuyenXeResult;
+import FutaBus.bean.NguoiDung;
 import FutaBus.bean.ViTriGhe;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,7 +43,7 @@ public class UserViewController {
 	private static final String API_URL = "http://localhost:8085/FutaBus_Backend/api/user/";
 
 	@GetMapping("/")
-	public String homePage(Model model) {
+	public String homePage(Model model, HttpSession session) {
 		RestTemplate restTemplate = new RestTemplate();
 		String apiUrlWithParams = API_URL + "tinhthanh";
 		ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
@@ -389,6 +390,42 @@ public class UserViewController {
 		}
 
 		return "user/Thankyou";
+	}
+	
+	@GetMapping("/general-information")
+	public String informationPage(Model model, HttpSession session) {
+//		RestTemplate restTemplate = new RestTemplate();
+//		String apiUrlWithParams = API_URL + "tinhthanh";
+//		ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
+//
+//		Map<String, Object> responseData = response.getBody();
+//		model.addAttribute("tinhThanhList", responseData.get("tinhThanhList"));
+
+		return "user/GeneralInformation";
+	}
+	
+	@GetMapping("/reset-password")
+	public String resetPasswordPage(Model model, HttpSession session) {
+//		RestTemplate restTemplate = new RestTemplate();
+//		String apiUrlWithParams = API_URL + "tinhthanh";
+//		ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
+//
+//		Map<String, Object> responseData = response.getBody();
+//		model.addAttribute("tinhThanhList", responseData.get("tinhThanhList"));
+
+		return "user/ResetPassword";
+	}
+	
+	@GetMapping("/purchase-history")
+	public String purchaseHistoryPage(Model model, HttpSession session) {
+//		RestTemplate restTemplate = new RestTemplate();
+//		String apiUrlWithParams = API_URL + "tinhthanh";
+//		ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
+//
+//		Map<String, Object> responseData = response.getBody();
+//		model.addAttribute("tinhThanhList", responseData.get("tinhThanhList"));
+
+		return "user/PurchaseHistory";
 	}
 
 }
