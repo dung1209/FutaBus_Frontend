@@ -100,9 +100,9 @@
         <form id="otp-form" style="display: none;">
             <div class="input-group">
                 <img src="<%=request.getContextPath()%>/assets/user/image/email.png" alt="Email Icon" class="email-icon">
-                <input type="text" placeholder="Nhập mã OTP">
+                <input type="text" placeholder="Nhập mã OTP" id="otp-code">
             </div>
-            <button type="button" class="btn" id="register-button">Xác minh</button>
+            <button type="submit" class="btn" id="register-button">Xác minh</button>
         </form>
             </div>
         </div>
@@ -341,9 +341,96 @@
 	    }
 
 	    if (isValid) {
-	    	showOTPForm();
+	    	const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/send-otp');
+	    	
+	    	fetch(url, {
+	            method: "POST",
+	            headers: {
+	                "Content-Type": "application/json"
+	            },
+	            credentials: "include",
+	            body: JSON.stringify({ email: email })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	            	showOTPForm();
+	            } else {
+	            	toast({
+	    	      		title: "Chú ý!",
+	    	      		message: "Email đã được đăng ký!",
+	    	       		type: "error",
+	    	    		duration: 1000
+	    	        });
+	            }
+	        })
+	        .catch(error => {
+	        	toast({
+    	      		title: "Chú ý!",
+    	      		message: "Đã có lỗi xảy ra!",
+    	       		type: "error",
+    	    		duration: 1000
+    	        });
+	            console.error("Lỗi:", error);
+	        });
 	    }
+	});
+	
+	document.getElementById("otp-form").addEventListener("submit", function (event) {
+	    event.preventDefault();
 
+	    const email = document.getElementById("register-email").value.trim();
+	    const otp = document.getElementById("otp-code").value.trim();
+
+	    if (otp === "") {
+	        toast({
+	            title: "Chú ý!",
+	            message: "Vui lòng nhập mã OTP!",
+	            type: "error",
+	            duration: 1000
+	        });
+	        return;
+	    }
+	    
+	    const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/verify-otp');
+
+	    fetch(url, {
+	        method: "POST",
+	        headers: {
+	            "Content-Type": "application/json"
+	        },
+	        credentials: "include",
+	        body: JSON.stringify({ email: email, otp: otp })
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        if (data.success) {
+	            toast({
+	                title: "Thành công!",
+	                message: "Đăng ký thành công!",
+	                type: "success",
+	                duration: 1500
+	            });
+	            // có thể chuyển trang, hoặc reset form
+	            // window.location.href = "/login";
+	        } else {
+	            toast({
+	                title: "Lỗi!",
+	                message: "OTP không đúng hoặc đã hết hạn!",
+	                type: "error",
+	                duration: 1000
+	            });
+	        }
+	    })
+	    .catch(error => {
+	        console.error("Lỗi:", error);
+	        toast({
+	            title: "Lỗi!",
+	            message: "Đã có lỗi khi xác thực OTP!",
+	            type: "error",
+	            duration: 1000
+	        });
+	    });
 	});
 	
 	function toast({ title = "", message = "", type = "info", duration = 3000 }) {

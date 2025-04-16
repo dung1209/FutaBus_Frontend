@@ -1569,3 +1569,10 @@ hr {
 img.log-out {
     filter: brightness(0) saturate(100%) invert(19%) sepia(99%) saturate(7482%) hue-rotate(358deg) brightness(97%) contrast(105%);
 }
+
+.user-modal__item a {
+    color: black;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}

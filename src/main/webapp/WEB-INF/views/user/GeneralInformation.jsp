@@ -62,22 +62,22 @@
 		<div class="user-modal" id="userModal">
 			<div class="user-modal__content">
 				<div class="user-modal__item">
-					<img
-						src="<%=request.getContextPath()%>/assets/user/image/infor_user.svg"
-						alt="profile" /> Thông tin tài khoản
+					<a href="http://localhost:8086/FutaBus_Frontend/general-information">
+        				<img src="<%=request.getContextPath()%>/assets/user/image/infor_user.svg" alt="profile" /> Thông tin tài khoản
+    				</a>
 				</div>
 				<div class="user-modal__item">
-					<img
-						src="<%=request.getContextPath()%>/assets/user/image/history.svg"
-						alt="profile" /> Lịch sử mua vé
+    				<a href="http://localhost:8086/FutaBus_Frontend/purchase-history">
+        				<img src="<%=request.getContextPath()%>/assets/user/image/history.svg" alt="profile" /> Lịch sử mua vé
+    				</a>
 				</div>
 				<div class="user-modal__item">
-					<img
-						src="<%=request.getContextPath()%>/assets/user/image/change_password.svg"
-						alt="profile" /> Đặt lại mật khẩu
+    				<a href="http://localhost:8086/FutaBus_Frontend/reset-password">
+        				<img src="<%=request.getContextPath()%>/assets/user/image/change_password.svg" alt="profile" /> Đặt lại mật khẩu
+    				</a>
 				</div>
 				<hr>
-				<div class="user-modal__item logout">
+				<div class="user-modal__item logout" id="logoutBtn">
 					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/log-out.png"
 						alt="log-out" class="log-out" /> Đăng xuất
@@ -241,6 +241,12 @@
 				window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
 			}
 		}
+		
+		document.getElementById("logoutBtn").addEventListener("click", function () {
+		    localStorage.removeItem("nguoiDung");
+
+		    window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+		});
 
 		const nguoiDungStr = localStorage.getItem("nguoiDung");
 		if (nguoiDungStr) {
@@ -249,8 +255,24 @@
 
 			const greetingLink = document.getElementById("userGreeting");
 			if (greetingLink) {
-				greetingLink.innerText = "Chào, " + nguoiDung.hoTen;
+				greetingLink.innerText = "Chào " + nguoiDung.hoTen;
 			}
+			
+			const url = 'http://localhost:8085/FutaBus_Backend/api/user/general-information/' + nguoiDung.idNguoiDung;
+
+			fetch(url, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(response => response.json())
+			.then(data => {
+				console.log("✅ Dữ liệu người dùng đã nhận:", data);
+			})
+			.catch(error => {
+				console.error("❌ Lỗi khi lấy dữ liệu người dùng:", error.message);
+			});
 		} else {
 			console.log("Không tìm thấy người dùng trong localStorage");
 		}

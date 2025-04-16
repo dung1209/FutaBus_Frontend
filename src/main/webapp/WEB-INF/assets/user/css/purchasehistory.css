@@ -1071,3 +1071,9 @@ a {
     text-decoration: none;
 }
 
+.user-modal__item a {
+    color: black;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
