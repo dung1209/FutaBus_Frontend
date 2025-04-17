@@ -83,7 +83,7 @@
             <div class="input-group">
                 <img src="<%=request.getContextPath()%>/assets/user/image/password.svg" alt="password" class="password-icon">
                 <input type="password" placeholder="Nhập mật khẩu" id="password" autocomplete="current-password">
-                <img src="<%=request.getContextPath()%>/assets/user/image/hide.png" alt="eye" class="eye-icon" onclick="togglePassword()">
+                <img src="<%=request.getContextPath()%>/assets/user/image/hide.png" alt="eye" class="eye-icon" onclick="togglePassword(this)">
             </div>
             <button type="submit" class="btn" id="login-button">Đăng nhập</button>
             <a href="#" class="forgot-password">Quên mật khẩu</a>
@@ -103,6 +103,21 @@
                 <input type="text" placeholder="Nhập mã OTP" id="otp-code">
             </div>
             <button type="submit" class="btn" id="register-button">Xác minh</button>
+        </form>
+        
+        <form id="password-form" style="display: none;">
+        	<input type="text" name="username" id="username" autocomplete="username" hidden value="<%= session.getAttribute("email") %>">
+            <div class="input-group">
+                <img src="<%=request.getContextPath()%>/assets/user/image/password.svg" alt="password" class="password-icon">
+                <input type="password" placeholder="Nhập mật khẩu" id="password1" autocomplete="current-password">
+                <img src="<%=request.getContextPath()%>/assets/user/image/hide.png" alt="eye" class="eye-icon" onclick="togglePassword(this)">
+            </div>
+            <div class="input-group">
+                <img src="<%=request.getContextPath()%>/assets/user/image/password.svg" alt="password" class="password-icon">
+                <input type="password" placeholder="Nhập lại mật khẩu" id="password2" autocomplete="current-password">
+                <img src="<%=request.getContextPath()%>/assets/user/image/hide.png" alt="eye" class="eye-icon" onclick="togglePassword(this)">
+            </div>
+            <button type="submit" class="btn" id="create-account-button">Xác nhận</button>
         </form>
             </div>
         </div>
@@ -175,24 +190,25 @@
 	</footer>
 	
 	<script>
-	function togglePassword() {
-	    var passwordField = document.getElementById("password");
-	    var eyeIcon = document.querySelector(".eye-icon");
+	function togglePassword(icon) {
+	    var passwordField = icon.previousElementSibling;
 
 	    if (passwordField.type === "password") {
-	        passwordField.type = "text"; 
-	        eyeIcon.src = "<%=request.getContextPath()%>/assets/user/image/eye.png"; 
+	        passwordField.type = "text";
+	        icon.src = "<%=request.getContextPath()%>/assets/user/image/eye.png";
 	    } else {
-	        passwordField.type = "password"; 
-	        eyeIcon.src = "<%=request.getContextPath()%>/assets/user/image/hide.png"; 
+	        passwordField.type = "password";
+	        icon.src = "<%=request.getContextPath()%>/assets/user/image/hide.png";
 	    }
 	}
+
 	
 	function showLoginForm() {
 	    document.getElementById('form-title').innerText = 'Đăng nhập tài khoản';
 	    document.getElementById('login-form').style.display = 'block'; 
 	    document.getElementById('register-form').style.display = 'none'; 
 	    document.getElementById('otp-form').style.display = 'none'; 
+	    document.getElementById('password-form').style.display = 'none';
 	    document.getElementById('login-button').style.display = 'inline-block';
 	    document.getElementById('register-button').style.display = 'none';
 	    
@@ -208,6 +224,7 @@
 	    document.getElementById('register-form').style.display = 'block'; 
 	    document.getElementById('login-form').style.display = 'none'; 
 	    document.getElementById('otp-form').style.display = 'none'; 
+	    document.getElementById('password-form').style.display = 'none';
 	    document.getElementById('register-button').style.display = 'inline-block';
 	    document.getElementById('login-button').style.display = 'none'; 
 	    
@@ -221,8 +238,17 @@
 	function showOTPForm() {
 	    document.getElementById('register-form').style.display = 'none';
 	    document.getElementById('login-form').style.display = 'none';
+	    document.getElementById('password-form').style.display = 'none';
 	    document.getElementById('otp-form').style.display = 'block';
 	    document.getElementById('form-title').innerText = 'Xác thực mã OTP';
+	}
+	
+	function passwordForm() {
+	    document.getElementById('register-form').style.display = 'none';
+	    document.getElementById('login-form').style.display = 'none';
+	    document.getElementById('otp-form').style.display = 'none';
+	    document.getElementById('password-form').style.display = 'block';
+	    document.getElementById('form-title').innerText = 'Xác nhận mật khẩu';
 	}
 	
 	function redirectToLogin() {
@@ -405,14 +431,7 @@
 	    .then(response => response.json())
 	    .then(data => {
 	        if (data.success) {
-	            toast({
-	                title: "Thành công!",
-	                message: "Đăng ký thành công!",
-	                type: "success",
-	                duration: 1500
-	            });
-	            // có thể chuyển trang, hoặc reset form
-	            // window.location.href = "/login";
+	            passwordForm();
 	        } else {
 	            toast({
 	                title: "Lỗi!",
@@ -431,6 +450,113 @@
 	            duration: 1000
 	        });
 	    });
+	});
+	
+	document.getElementById("password-form").addEventListener("submit", function (event) {
+	    event.preventDefault();
+
+	    const email = document.getElementById("register-email").value.trim();
+	    const otp = document.getElementById("otp-code").value.trim();
+	    const password1 = document.getElementById("password1").value.trim();
+	    const password2 = document.getElementById("password2").value.trim();
+	    var isValid = true;
+	    let specialCharPattern = /[^A-Za-z0-9]/;
+	    let whitespacePattern = /\s/;
+	    
+	    if (password1 === "") {
+	    	toast({
+	      		title: "Chú ý!",
+	      		message: "Không được để trống mật khẩu!",
+	       		type: "error",
+	    		duration: 1000
+	        });
+	        isValid = false;
+	    } 
+	    
+	    else if (whitespacePattern.test(password1)) {
+	        toast({
+	            title: "Chú ý!",
+	            message: "Mật khẩu không được chứa khoảng trắng!",
+	            type: "error",
+	            duration: 1000
+	        });
+	        isValid = false;
+	    } 
+	    
+	    else if (specialCharPattern.test(password1)) {
+	        toast({
+	            title: "Chú ý!",
+	            message: "Mật khẩu không được chứa ký tự đặc biệt!",
+	            type: "error",
+	            duration: 1000
+	        });
+	        isValid = false;
+	    }
+	    
+	    else if (password2 === "" && password1 !== "") {
+	    	toast({
+	      		title: "Chú ý!",
+	      		message: "Vui lòng xác nhận lại mật khẩu!",
+	       		type: "error",
+	    		duration: 1000
+	        });
+	        isValid = false;
+	    } 
+	    
+	    else if (password2 !== password1 && password1 !== "") {
+	        toast({
+	            title: "Chú ý!",
+	            message: "Mật khẩu không trùng nhau!",
+	            type: "error",
+	            duration: 1000
+	        });
+	        isValid = false;
+	    } 
+	    
+	    if (isValid) {
+	        console.log("email: ", email);
+	        console.log("pass: ", password1);
+	        console.log("otp: ", otp);
+	        const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/create-account');
+
+		    fetch(url, {
+		        method: "POST",
+		        headers: {
+		            "Content-Type": "application/json"
+		        },
+		        credentials: "include",
+		        body: JSON.stringify({ email: email, otp: otp, password: password1 })
+		    })
+		    .then(response => response.json())
+		    .then(data => {
+		        if (data.success) {
+		            toast({
+		                title: "Thành công!",
+		                message: "Tạo tài khoản thành công!",
+		                type: "success",
+		                duration: 1500
+		            });
+		            showLoginForm();
+		        } else {
+		            toast({
+		                title: "Lỗi!",
+		                message: "OTP không đúng hoặc đã hết hạn!",
+		                type: "error",
+		                duration: 1000
+		            });
+		        }
+		    })
+		    .catch(error => {
+		        console.error("Lỗi:", error);
+		        toast({
+		            title: "Lỗi!",
+		            message: "Đã có lỗi khi xác thực OTP!",
+		            type: "error",
+		            duration: 1000
+		        });
+		    });
+	    } 
+
 	});
 	
 	function toast({ title = "", message = "", type = "info", duration = 3000 }) {
