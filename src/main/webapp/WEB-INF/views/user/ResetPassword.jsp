@@ -17,10 +17,14 @@
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" type="text/css"
 	href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
-
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+	integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+	crossorigin="anonymous" />
+	
 </head>
 <body>
-
+	<div id="toast"></div>
 	<header class="header-container">
 		<img
 			src="<%=request.getContextPath()%>/assets/user/image/home_banner.png"
@@ -135,7 +139,7 @@
 			<div class="change-password-card">
 				<div class="phone-number">(+84) 0916430832</div>
 
-				<form class="change-password-form">
+				<form id="password-form" class="change-password-form">
 					<div class="form-group">
 						<label for="old-password">* Mật khẩu cũ</label>
 						<div class="input-wrapper">
@@ -255,6 +259,22 @@
 			if (greetingLink) {
 				greetingLink.innerText = "Chào " + nguoiDung.hoTen;
 			}
+			
+			const url = 'http://localhost:8085/FutaBus_Backend/api/user/general-information/' + nguoiDung.idNguoiDung;
+
+			fetch(url, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(response => response.json())
+			.then(data => {
+				
+			})
+			.catch(error => {
+				console.error("❌ Lỗi khi lấy dữ liệu người dùng:", error.message);
+			});
 		} else {
 			console.log("Không tìm thấy người dùng trong localStorage");
 		}
@@ -272,7 +292,73 @@
 		      
 		      this.style.opacity = isPassword ? '1' : '0.5';
 		    });
-		  });
+		});
+		
+		document.getElementById("password-form").addEventListener("submit", function (event) {
+		    event.preventDefault();
+
+		    const oldPassword = document.getElementById("old-password").value;
+		    const newPassword = document.getElementById("new-password").value;
+		    const confirmPassword = document.getElementById("confirm-password").value;
+
+		    console.log("Mật khẩu cũ: " + oldPassword);
+		    console.log("Mật khẩu mới: " + newPassword);
+		    console.log("Xác nhận mật khẩu: " + confirmPassword);
+		});
+		
+		function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+    		const main = document.getElementById("toast");
+    		if (main) {
+    			const toast = document.createElement("div");
+    			
+        	    const autoRemoveId = setTimeout(function () {
+        	      main.removeChild(toast);
+        	    }, duration + 1000);
+
+        	    toast.onclick = function (e) {
+        	      if (e.target.closest(".toast__close")) {
+        	        main.removeChild(toast);
+        	        clearTimeout(autoRemoveId);
+        	      }
+        	    };
+
+        	    const icons = {
+        	      success: "fas fa-check-circle",
+        	      info: "fas fa-info-circle",
+        	      warning: "fas fa-exclamation-circle",
+        	      error: "fas fa-exclamation-circle"
+        	    };
+        	    const icon = icons[type];
+        	    const delay = (duration / 1000).toFixed(2);
+
+        	    toast.classList.add("toast", `toast--${type}`);
+        	    toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+        	    toast.innerHTML = `
+        	                    <div class="toast__icon">
+        	                        <i class="${icon}"></i>
+        	                    </div>
+        	                    <div class="toast__body">
+        	                        <h3 class="toast__title">${title}</h3>
+        	                        <p class="toast__msg">${message}</p>
+        	                    </div>
+        	                    <div class="toast__close">
+        	                        <i class="fas fa-times"></i>
+        	                    </div>
+        	                `;
+        	    const toastIcon = toast.querySelector('.toast__icon');
+    			if (toastIcon) {
+        			const iconElement = document.createElement('i');
+        			iconElement.className = icon;
+        			toastIcon.appendChild(iconElement);
+    			}
+        	    const toastMessage = toast.querySelector('.toast__msg');
+        	    toastMessage.textContent = message; 
+        	    const toastTitle = toast.querySelector('.toast__title');
+        	    toastTitle.textContent = title; 
+        	    main.appendChild(toast);
+    		}
+        }
 	</script>
 
 </body>
