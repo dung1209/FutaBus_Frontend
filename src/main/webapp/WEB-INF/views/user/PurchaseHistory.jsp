@@ -62,19 +62,26 @@
 		<div class="user-modal" id="userModal">
 			<div class="user-modal__content">
 				<div class="user-modal__item">
-					<a href="http://localhost:8086/FutaBus_Frontend/general-information">
-        				<img src="<%=request.getContextPath()%>/assets/user/image/infor_user.svg" alt="profile" /> Thông tin tài khoản
-    				</a>
+					<a
+						href="http://localhost:8086/FutaBus_Frontend/general-information">
+						<img
+						src="<%=request.getContextPath()%>/assets/user/image/infor_user.svg"
+						alt="profile" /> Thông tin tài khoản
+					</a>
 				</div>
 				<div class="user-modal__item">
-    				<a href="http://localhost:8086/FutaBus_Frontend/purchase-history">
-        				<img src="<%=request.getContextPath()%>/assets/user/image/history.svg" alt="profile" /> Lịch sử mua vé
-    				</a>
+					<a href="http://localhost:8086/FutaBus_Frontend/purchase-history">
+						<img
+						src="<%=request.getContextPath()%>/assets/user/image/history.svg"
+						alt="profile" /> Lịch sử mua vé
+					</a>
 				</div>
 				<div class="user-modal__item">
-    				<a href="http://localhost:8086/FutaBus_Frontend/reset-password">
-        				<img src="<%=request.getContextPath()%>/assets/user/image/change_password.svg" alt="profile" /> Đặt lại mật khẩu
-    				</a>
+					<a href="http://localhost:8086/FutaBus_Frontend/reset-password">
+						<img
+						src="<%=request.getContextPath()%>/assets/user/image/change_password.svg"
+						alt="profile" /> Đặt lại mật khẩu
+					</a>
 				</div>
 				<hr>
 				<div class="user-modal__item logout" id="logoutBtn">
@@ -171,15 +178,25 @@
 			<table class="ticket-table">
 				<thead>
 					<tr>
-						<th>Mã vé</th>
-						<th>Số vé</th>
 						<th>Tuyến đường</th>
 						<th>Ngày đi</th>
+						<th>Số vé</th>
 						<th>Số tiền</th>
-						<th>Thời gian</th>
+						<th>Trạng thái</th>
+						<th>Thao tác</th>
 					</tr>
 				</thead>
 				<tbody>
+					<tr>
+						<td>Hà Nội - Hồ Chí Minh</td>
+						<td>10:00 25/04/2025</td>
+						<td>2</td>
+						<td>1.200.000đ</td>
+						<td>Đã thanh toán</td>
+						<td>
+							<button>Hủy</button>
+						</td>
+					</tr>
 					<tr class="no-data">
 						<td colspan="6">
 							<div class="no-data-icon">📭</div>
@@ -258,12 +275,16 @@
 				window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
 			}
 		}
-		
-		document.getElementById("logoutBtn").addEventListener("click", function () {
-		    localStorage.removeItem("nguoiDung");
 
-		    window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
-		});
+		document
+				.getElementById("logoutBtn")
+				.addEventListener(
+						"click",
+						function() {
+							localStorage.removeItem("nguoiDung");
+
+							window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+						});
 
 		const nguoiDungStr = localStorage.getItem("nguoiDung");
 		if (nguoiDungStr) {

@@ -140,11 +140,13 @@
 				<div class="phone-number">(+84) 0916430832</div>
 
 				<form id="password-form" class="change-password-form">
+					<input type="text" id="username" name="username" style="display: none;" autocomplete="username" />
+					
 					<div class="form-group">
 						<label for="old-password">* Mật khẩu cũ</label>
 						<div class="input-wrapper">
 							<input type="password" id="old-password"
-								placeholder="Nhập mật khẩu cũ" class="password-input"/> <span class="toggle-password">&#128065;</span>
+								placeholder="Nhập mật khẩu cũ" class="password-input" autocomplete="current-password"/> <span class="toggle-password">&#128065;</span>
 							<!-- icon con mắt -->
 						</div>
 					</div>
@@ -153,7 +155,7 @@
 						<label for="new-password">* Mật khẩu mới</label>
 						<div class="input-wrapper">
 							<input type="password" id="new-password"
-								placeholder="Nhập mật khẩu mới" class="password-input"/> <span
+								placeholder="Nhập mật khẩu mới" class="password-input" autocomplete="new-password"/> <span
 								class="toggle-password">&#128065;</span>
 						</div>
 					</div>
@@ -162,7 +164,7 @@
 						<label for="confirm-password">* Xác nhận mật khẩu</label>
 						<div class="input-wrapper">
 							<input type="password" id="confirm-password"
-								placeholder="Nhập lại mật khẩu" class="password-input"/> <span
+								placeholder="Nhập lại mật khẩu" class="password-input" autocomplete="new-password"/> <span
 								class="toggle-password">&#128065;</span>
 						</div>
 					</div>
@@ -300,10 +302,119 @@
 		    const oldPassword = document.getElementById("old-password").value;
 		    const newPassword = document.getElementById("new-password").value;
 		    const confirmPassword = document.getElementById("confirm-password").value;
-
+		    const nguoiDung = JSON.parse(nguoiDungStr);
+		    let specialCharPattern = /[^A-Za-z0-9]/;
+		    let whitespacePattern = /\s/;
+			
+		    console.log("Mật khẩu trong db: " + nguoiDung.matKhau);
 		    console.log("Mật khẩu cũ: " + oldPassword);
 		    console.log("Mật khẩu mới: " + newPassword);
 		    console.log("Xác nhận mật khẩu: " + confirmPassword);
+		    
+		    let isValid = true;
+
+			if (oldPassword === "" || newPassword === "" || confirmPassword === "") {
+				toast({
+				    title: "Chú ý!",
+				    message: "Vui lòng điền đầy đủ thông tin!",
+				    type: "error",
+				    duration: 1000
+				});
+				isValid = false;
+			}
+			else if (whitespacePattern.test(newPassword)) {
+		        toast({
+		            title: "Chú ý!",
+		            message: "Mật khẩu không được chứa khoảng trắng!",
+		            type: "error",
+		            duration: 1000
+		        });
+		        isValid = false;
+		    } 
+		    
+		    else if (specialCharPattern.test(newPassword)) {
+		        toast({
+		            title: "Chú ý!",
+		            message: "Mật khẩu không được chứa ký tự đặc biệt!",
+		            type: "error",
+		            duration: 1000
+		        });
+		        isValid = false;
+		    }
+			else if (newPassword !== confirmPassword) {
+				toast({
+				    title: "Chú ý!",
+				    message: "Mật khẩu nhập lại chưa đúng!",
+				    type: "error",
+				    duration: 1000
+				});
+				isValid = false;
+			}
+			else if (nguoiDung.matKhau !== oldPassword) {
+				toast({
+				    title: "Chú ý!",
+				    message: "Mật khẩu cũ chưa đúng!",
+				    type: "error",
+				    duration: 1000
+				});
+				isValid = false;
+			}
+			if(isValid) {
+				const nguoiDungData = {
+						  idNguoiDung: nguoiDung.idNguoiDung,
+						  hoTen: "",
+						  gioiTinh: "",
+						  namSinh: "",  
+						  CCCD: "",
+						  diaChi: "",
+						  soDienThoai: "",
+						  email: "",
+						  matKhau: newPassword,
+						  ngayDangKy: "",
+						  trangThai: 1,
+						  idPhanQuyen: 1
+						};
+				console.log("Dữ liệu người dùng gửi lên dũng:", nguoiDungData);
+				
+				const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/update-password');
+				
+				fetch(url, {
+					  method: 'POST',
+					  headers: {
+						    "Content-Type": "application/json"
+						  },
+					  body: JSON.stringify(nguoiDungData)
+					})
+					.then(response => {
+					  if (!response.ok) {
+						  return response.text().then(text => {
+						      throw new Error("Lỗi từ server: " + text); 
+						    });
+					  }
+					  return response.json();
+					})
+					.then(data => {
+					  console.log("Cập nhật thành công:", data);
+					  toast({
+					    title: "Thành công!",
+					    message: "Thông tin đã được cập nhật.",
+					    type: "success",
+					    duration: 1000
+					  });
+					  
+					  window.location.href = "http://localhost:8086/FutaBus_Frontend/reset-password";
+					})
+					.catch(error => {
+					  console.error("Lỗi cập nhật:", error.message);
+					  toast({
+					    title: "Lỗi!",
+					    message: "Không thể cập nhật thông tin.",
+					    type: "error",
+					    duration: 1000
+					  });
+				});
+			}
+			
 		});
 		
 		function toast({ title = "", message = "", type = "info", duration = 3000 }) {
