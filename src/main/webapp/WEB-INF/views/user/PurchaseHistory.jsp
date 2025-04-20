@@ -146,14 +146,6 @@
 
 			<div class="filter-section">
 				<div class="filter-group">
-					<label for="ticket-id">Mã vé</label>
-					<div class="input-icon">
-						<i class="fa fa-barcode"></i> <input type="text" id="ticket-id"
-							placeholder="Nhập Mã vé">
-					</div>
-				</div>
-
-				<div class="filter-group">
 					<label for="date">Thời gian</label> <input type="date" id="date"
 						value="2025-04-03">
 				</div>
@@ -168,7 +160,11 @@
 
 				<div class="filter-group">
 					<label for="status">Trạng thái</label> <select id="status">
-						<option value="">Trạng thái</option>
+						<option value="0">Đã hủy</option>
+						<option value="1">Đã đặt</option>
+						<option value="2">Chờ thanh toán</option>
+						<option value="3">Đã thanh toán</option>
+						<option value="4">Hoàn tất</option>
 					</select>
 				</div>
 
@@ -187,22 +183,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>Hà Nội - Hồ Chí Minh</td>
-						<td>10:00 25/04/2025</td>
-						<td>2</td>
-						<td>1.200.000đ</td>
-						<td>Đã thanh toán</td>
-						<td>
-							<button>Hủy</button>
-						</td>
-					</tr>
-					<tr class="no-data">
-						<td colspan="6">
-							<div class="no-data-icon">📭</div>
-							<div class="no-data-text">No Data</div>
-						</td>
-					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -267,6 +247,13 @@
 	</footer>
 
 	<script>
+		
+		const nutDatVe = document.querySelector(".btn-book");
+
+		nutDatVe.addEventListener("click", () => {
+	    	window.location.href = "http://localhost:8086/FutaBus_Frontend";
+		});
+	
 		function redirectToLogin() {
 			const nguoiDungStr = localStorage.getItem("nguoiDung");
 			if (nguoiDungStr) {
@@ -295,6 +282,90 @@
 			if (greetingLink) {
 				greetingLink.innerText = "Chào " + nguoiDung.hoTen;
 			}
+			
+			const url = 'http://localhost:8085/FutaBus_Backend/api/user/purchase-history/' + nguoiDung.idNguoiDung;
+			
+			fetch(url, {
+		        method: 'GET',
+		        headers: {
+		            'Content-Type': 'application/json'
+		        }
+		    })
+		    .then(response => response.json())
+		    .then(data => {
+		        console.log("✅ Dữ liệu lịch sử mua vé:", data);
+
+		        if (data.success && Array.isArray(data.data)) {
+		            const dsVe = data.data;
+		            const tbody = document.querySelector(".ticket-table tbody");
+
+		            tbody.innerHTML = "";
+
+		            if (dsVe.length === 0) {
+		                tbody.innerHTML = `
+		                    <tr class="no-data">
+		                        <td colspan="6">
+		                            <div class="no-data-icon">📭</div>
+		                            <div class="no-data-text">No Data</div>
+		                        </td>
+		                    </tr>`;
+		                return;
+		            }
+
+		            dsVe.forEach(ve => {
+		                const row = document.createElement("tr");
+		                const TRANG_THAI_VE = {
+		                	    0: "Đã hủy",
+		                	    1: "Đã đặt",
+		                	    2: "Chờ thanh toán",
+		                	    3: "Đã thanh toán",
+		                	    4: "Hoàn tất"
+		                	};
+
+		                const tdTuyen = document.createElement("td");
+		                tdTuyen.textContent = ve.tenTuyen;
+
+		                const tdNgayDi = document.createElement("td");
+		                tdNgayDi.textContent = new Date(ve.thoiDiemDi).toLocaleString("vi-VN");
+
+		                const tdSoVe = document.createElement("td");
+		                tdSoVe.textContent = ve.soLuongVe;
+
+		                const tdSoTien = document.createElement("td");
+		                tdSoTien.textContent = ve.tongTien.toLocaleString("vi-VN") + " đ";
+
+		                const tdTrangThai = document.createElement("td");
+		                tdTrangThai.textContent = TRANG_THAI_VE[ve.trangThai] || "Không rõ";
+
+		                const tdHuy = document.createElement("td");
+		                const buttonHuy = document.createElement("button");
+		                buttonHuy.textContent = "Hủy";
+		                buttonHuy.id = "btnHuyVe";
+		                
+		                if (ve.trangThai !== 1) {
+		                    buttonHuy.disabled = true;
+		                    buttonHuy.classList.add("btn-disabled");
+		                    buttonHuy.title = "Không thể hủy vé này";
+		                }
+		                
+		                tdHuy.appendChild(buttonHuy);
+
+		                row.appendChild(tdTuyen);
+		                row.appendChild(tdNgayDi);
+		                row.appendChild(tdSoVe);
+		                row.appendChild(tdSoTien);
+		                row.appendChild(tdTrangThai);
+		                row.appendChild(tdHuy);
+
+		                tbody.prepend(row);
+		            });
+		        } else {
+		            console.error("❌ Không có dữ liệu hoặc lỗi:", data.message);
+		        }
+		    })
+		    .catch(error => {
+		        console.error("❌ Lỗi khi lấy dữ liệu lịch sử:", error.message);
+		    });
 		} else {
 			console.log("Không tìm thấy người dùng trong localStorage");
 		}

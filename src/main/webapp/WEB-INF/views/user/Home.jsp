@@ -401,16 +401,11 @@
             const greetingLink = document.getElementById("userGreeting");
             if (greetingLink) {
                 greetingLink.innerText = "Chào " + nguoiDung.hoTen;
-
-                //greetingLink.onclick = function () {
-                    // Ví dụ mở menu người dùng hoặc chuyển trang tài khoản
-                    //window.location.href = "/FutaBus_Frontend/thong-tin-ca-nhan";
-                //};
             }
         } else {
             console.log("Không tìm thấy người dùng trong localStorage");
         }
-        
+
         function toast({ title = "", message = "", type = "info", duration = 3000 }) {
     		const main = document.getElementById("toast");
     		if (main) {

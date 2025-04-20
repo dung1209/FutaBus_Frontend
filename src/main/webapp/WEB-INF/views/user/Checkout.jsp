@@ -528,56 +528,68 @@
 		    confirmModal.classList.add("show");
 
 		    document.getElementById('confirmYes').onclick = function () {
-		        confirmModal.classList.remove("show");
-		        
-		        console.log("Booking Data: ", bookingData);
-		        
-		        let bodyData = {
-    				bookingData: bookingData
-				};
+		    	const nguoiDungStr = localStorage.getItem("nguoiDung");
+		    	
+		    	if (nguoiDungStr) {
+		            confirmModal.classList.remove("show");
 
-				if (returnDate && returnDate !== "null" && returnDate.trim() !== "") {
-    				bodyData.bookingDataReturn = bookingDataReturn;
-				}
-		        
-		        fetch("http://localhost:8085/FutaBus_Backend/api/user/confirmBooking", {
-		            method: "POST",
-		            headers: {
-		                "Content-Type": "application/json"
-		            },
-		            credentials: "include",
-		            body: JSON.stringify({
-		                bookingData: bookingData,
-		                bookingDataReturn: bookingDataReturn
-		            })
-		        })
-		        .then(response => {
-		            if (!response.ok) {
-		                throw new Error("HTTP error " + response.status);
+		            console.log("Booking Data: ", bookingData);
+
+		            let bodyData = {
+		                bookingData: bookingData
+		            };
+
+		            if (returnDate && returnDate !== "null" && returnDate.trim() !== "") {
+		                bodyData.bookingDataReturn = bookingDataReturn;
 		            }
-		            return response.json();
-		        })
-		        .then(data => {
-		            console.log("Dữ liệu lưu thành công!", data);
-		            let redirectURL = '/FutaBus_Frontend/thank-you?' +
-                    'start=' + encodeURIComponent('${start}') +
-                    '&end=' + encodeURIComponent('${end}') +
-                    '&departure=' + encodeURIComponent('${departure}') +
-                    '&destination=' + encodeURIComponent('${destination}') +
-                    '&departureDate=' + encodeURIComponent('${formattedStartTime}') +
-                    '&selectedSeatsCount=' + encodeURIComponent(${selectedSeatsCount}) +
-                    '&totalPrice=' + encodeURIComponent(${totalPrice}) +
-                    '&returnDate=' + encodeURIComponent('${returnDate}') +
-                    '&departureDateReturn=' + encodeURIComponent('${formattedStartTimeReturn}') +
-                    '&selectedSeatsCountReturn=' + encodeURIComponent(${selectedSeatsCountReturn}) +
-                    '&totalPriceReturn=' + encodeURIComponent(${totalPriceReturn});
-		            
-		            window.location.href = redirectURL;
-		        })
-		        .catch(error => {
-		            console.error("Lỗi khi lưu dữ liệu:", error.message);
-		            console.error("Chi tiết lỗi:", error);
-		        });
+
+		            fetch("http://localhost:8085/FutaBus_Backend/api/user/confirmBooking", {
+		                method: "POST",
+		                headers: {
+		                    "Content-Type": "application/json"
+		                },
+		                credentials: "include",
+		                body: JSON.stringify({
+		                    bookingData: bookingData,
+		                    bookingDataReturn: bookingDataReturn
+		                })
+		            })
+		            .then(response => {
+		                if (!response.ok) {
+		                    throw new Error("HTTP error " + response.status);
+		                }
+		                return response.json();
+		            })
+		            .then(data => {
+		                console.log("Dữ liệu lưu thành công!", data);
+		                let redirectURL = '/FutaBus_Frontend/thank-you?' +
+		                    'start=' + encodeURIComponent('${start}') +
+		                    '&end=' + encodeURIComponent('${end}') +
+		                    '&departure=' + encodeURIComponent('${departure}') +
+		                    '&destination=' + encodeURIComponent('${destination}') +
+		                    '&departureDate=' + encodeURIComponent('${formattedStartTime}') +
+		                    '&selectedSeatsCount=' + encodeURIComponent(${selectedSeatsCount}) +
+		                    '&totalPrice=' + encodeURIComponent(${totalPrice}) +
+		                    '&returnDate=' + encodeURIComponent('${returnDate}') +
+		                    '&departureDateReturn=' + encodeURIComponent('${formattedStartTimeReturn}') +
+		                    '&selectedSeatsCountReturn=' + encodeURIComponent(${selectedSeatsCountReturn}) +
+		                    '&totalPriceReturn=' + encodeURIComponent(${totalPriceReturn});
+		                
+		                window.location.href = redirectURL;
+		            })
+		            .catch(error => {
+		                console.error("Lỗi khi lưu dữ liệu:", error.message);
+		                console.error("Chi tiết lỗi:", error);
+		            });
+		        } else {
+		        	confirmModal.classList.remove("show");
+		        	toast({
+	    	        	title: "Chú ý!",
+	    	        	message: "Đăng nhập để đặt vé!",
+	    	          	type: "error",
+	    	        	duration: 1000
+	    	      	});
+		        }
 		    };
 
 		    document.getElementById('confirmNo').onclick = function () {
