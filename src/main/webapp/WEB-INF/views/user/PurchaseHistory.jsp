@@ -95,7 +95,7 @@
 
 	<nav>
 		<ul>
-			<li><a href="#">TRANG CHỦ</a></li>
+			<li><a href="http://localhost:8086/FutaBus_Frontend">TRANG CHỦ</a></li>
 			<li><a href="#">LỊCH TRÌNH</a></li>
 			<li><a href="#">TRA CỨU VÉ</a></li>
 			<li><a href="#">TIN TỨC</a></li>
@@ -126,7 +126,7 @@
 						src="<%=request.getContextPath()%>/assets/user/image/change_password.svg"
 						alt="chang-pass" /> Đặt lại mật khẩu
 				</a></li>
-				<li><a href="http://localhost:8086/FutaBus_Frontend/logout">
+				<li><a href="http://localhost:8086/FutaBus_Frontend/login">
 						<img
 						src="<%=request.getContextPath()%>/assets/user/image/logout.svg"
 						alt="logout" /> Đăng xuất
@@ -146,20 +146,20 @@
 
 			<div class="filter-section">
 				<div class="filter-group">
-					<label for="date">Thời gian</label> <input type="date" id="date"
-						value="2025-04-03">
+					<label for="date">Thời gian</label> <input type="date" id="date">
 				</div>
 
 				<div class="filter-group">
 					<label for="route">Tuyến đường</label>
 					<div class="input-clearable">
-						<input type="text" id="route" value="hà nội"> <span
+						<input type="text" id="route"> <span
 							class="clear-btn">×</span>
 					</div>
 				</div>
 
 				<div class="filter-group">
-					<label for="status">Trạng thái</label> <select id="status">
+					<label for="status">Trạng thái</label> <select class="status-filter" id="status">
+						<option value="all">Tất cả</option>
 						<option value="0">Đã hủy</option>
 						<option value="1">Đã đặt</option>
 						<option value="2">Chờ thanh toán</option>
@@ -171,7 +171,7 @@
 				<button class="btn-search">Tìm</button>
 			</div>
 
-			<table class="ticket-table">
+			<table class="ticket-table" id="data-table">
 				<thead>
 					<tr>
 						<th>Tuyến đường</th>
@@ -314,6 +314,7 @@
 
 		            dsVe.forEach(ve => {
 		                const row = document.createElement("tr");
+		                row.setAttribute("data-status", ve.trangThai);
 		                const TRANG_THAI_VE = {
 		                	    0: "Đã hủy",
 		                	    1: "Đã đặt",
@@ -374,6 +375,67 @@
 			var modal = document.getElementById("userModal");
 			modal.classList.toggle("show");
 		}
+
+		function filterTable() {
+			  const statusValue = document.getElementById("status").value;
+			  const routeKeyword = document.getElementById("route").value.toLowerCase();
+			  const selectedDate = document.getElementById("date").value;
+			  const rows = document.querySelectorAll("#data-table tbody tr");
+
+			  rows.forEach(row => {
+			    const rowStatus = row.getAttribute("data-status");
+			    const tenTuyen = row.cells[0].textContent.toLowerCase();
+			    const rowDateText = row.cells[1].textContent; 
+
+			    let matchDate = true;
+
+			    if (selectedDate) {
+			      const rowDate = parseVNDate(rowDateText);
+			      const selectedDateObj = new Date(selectedDate);
+
+			      if (!isNaN(rowDate.getTime())) {
+			    	  matchDate =
+			    		  rowDate.getDate() === selectedDateObj.getDate() &&
+			    		  rowDate.getMonth() === selectedDateObj.getMonth() &&
+			    		  rowDate.getFullYear() === selectedDateObj.getFullYear();
+			      } else {
+			        matchDate = false;
+			      }
+			    }
+
+			    const matchStatus = (statusValue === "all") || (rowStatus === statusValue);
+			    const matchRoute = tenTuyen.includes(routeKeyword);
+
+			    row.style.display = (matchStatus && matchRoute && matchDate) ? "" : "none";
+			  });
+			}
+
+		
+		document.getElementById("status").addEventListener("change", filterTable);
+
+		document.getElementById("route").addEventListener("input", filterTable);
+
+		document.querySelector(".clear-btn").addEventListener("click", function () {
+		  const input = document.getElementById("route");
+		  input.value = "";
+		  filterTable();
+		});
+		
+		document.querySelector(".btn-search").addEventListener("click", function () {
+			  filterTable();
+		});
+		
+		function parseVNDate(dateStr) {
+			  const parts = dateStr.trim().split(" ");
+			  if (parts.length !== 2) return new Date(NaN);
+
+			  const [timePart, datePart] = parts;
+			  const [day, month, year] = datePart.split("/").map(Number);
+			  const [hour, minute, second] = timePart.split(":").map(Number);
+
+			  return new Date(year, month - 1, day, hour, minute, second);
+			}
+
 	</script>
 
 </body>

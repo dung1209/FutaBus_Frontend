@@ -989,6 +989,7 @@ img.log-out {
 }
 
 .ticket-table {
+  table-layout: fixed;
   width: 100%;
   border-collapse: collapse;
   text-align: left;
@@ -1099,4 +1100,19 @@ button#btnHuyVe.btn-disabled {
     color: #666;
     cursor: not-allowed;
 }
+
+.filter-group input,
+.filter-group select {
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: border-color 0.2s ease;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+  border: 1px solid #f2754e;
+  outline: none;
+}
+
 

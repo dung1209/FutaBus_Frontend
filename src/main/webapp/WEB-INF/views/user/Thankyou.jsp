@@ -86,7 +86,7 @@
 
 	<nav>
 		<ul>
-			<li><a href="#" class="border-choice">TRANG CHỦ</a></li>
+			<li><a href="http://localhost:8086/FutaBus_Frontend" class="border-choice">TRANG CHỦ</a></li>
 			<li><a href="#">LỊCH TRÌNH</a></li>
 			<li><a href="#">TRA CỨU VÉ</a></li>
 			<li><a href="#">TIN TỨC</a></li>

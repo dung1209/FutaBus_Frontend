@@ -102,7 +102,7 @@
 
 	<nav>
 		<ul>
-			<li><a href="#">TRANG CHỦ</a></li>
+			<li><a href="http://localhost:8086/FutaBus_Frontend">TRANG CHỦ</a></li>
 			<li><a href="#">LỊCH TRÌNH</a></li>
 			<li><a href="#">TRA CỨU VÉ</a></li>
 			<li><a href="#">TIN TỨC</a></li>
@@ -133,7 +133,7 @@
 						src="<%=request.getContextPath()%>/assets/user/image/change_password.svg"
 						alt="chang-pass" /> Đặt lại mật khẩu
 				</a></li>
-				<li><a href="http://localhost:8086/FutaBus_Frontend/logout">
+				<li><a href="http://localhost:8086/FutaBus_Frontend/login">
 						<img
 						src="<%=request.getContextPath()%>/assets/user/image/logout.svg"
 						alt="logout" /> Đăng xuất
