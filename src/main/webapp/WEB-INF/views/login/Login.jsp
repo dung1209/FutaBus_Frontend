@@ -316,7 +316,7 @@
 	    	    		duration: 1000
 	    	        });
 	            	
-	            	if (data.nguoiDung.idPhanQuyen === 3) {
+	            	if (data.nguoiDung.idPhanQuyen === 2) {
 	            		localStorage.setItem("nguoiDung", JSON.stringify(data.nguoiDung));
 	                	window.location.href = "http://localhost:8086/FutaBus_Frontend/admin";
 	            	} else {
