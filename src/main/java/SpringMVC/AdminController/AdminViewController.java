@@ -46,8 +46,14 @@ public class AdminViewController {
         Map<String, Object> responseData = response.getBody();
         model.addAttribute("tuyenXeList", responseData.get("tuyenXeList"));
         model.addAttribute("benXeList", responseData.get("benXeList"));
+        model.addAttribute("quanHuyenList", responseData.get("quanHuyenList"));
         model.addAttribute("currentPage", responseData.get("currentPage"));
         model.addAttribute("totalPages", responseData.get("totalPages"));
+        model.addAttribute("totalCustomer", responseData.get("totalCustomer"));
+        model.addAttribute("totalXe", responseData.get("totalXe"));
+        model.addAttribute("totalChuyenXe", responseData.get("totalChuyenXe"));
+        model.addAttribute("tongDoanhThuThangHienTai", responseData.get("tongDoanhThuThangHienTai"));
+        
         return "admin/BusRoute";
     }
 	
