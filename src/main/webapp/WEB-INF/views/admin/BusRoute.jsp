@@ -121,7 +121,10 @@
 					href="<%=request.getContextPath()%>/admin?loaiNguoiDung=2">Quản
 					trị viên</a>
 			</div>
-			<a href="#" class="active"><img
+			<a href="<%=request.getContextPath()%>/admin/ticket"><img
+				src="<%=request.getContextPath()%>/assets/admin/image/order.png"
+				alt="ticket" /><span>Quản Lý Vé</span></a> <a 
+				href="#" class="active"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
 				alt="route" class="active" /><span>Quản Lý Tuyến Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/bus-trip"><img
@@ -291,9 +294,9 @@
         								'${tuyenxe.thoiGianDiChuyenTB}', 
         								'${tuyenxe.soChuyenTrongNgay}', 
         								'${tuyenxe.soNgayChayTrongTuan}')" />
-									<img
-									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
-									alt="delete" /></td>
+									<img src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
+  										alt="delete"
+  										onclick="showDeleteModal('${tuyenxe.idTuyenXe}')"/>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -638,6 +641,69 @@
 			});
 		}
 	}
+	
+	function showDeleteModal(id) {
+        window.idCanXoa = id;
+
+        const overlay = document.getElementById("overlayDeleteModal");
+        overlay.style.display = "flex"; 
+
+        overlay.onclick = function (event) {
+            if (event.target === overlay) {
+                overlay.style.display = "none";
+            }
+        };
+
+        document.getElementById("confirmNo").onclick = function () {
+            overlay.style.display = "none";
+        };
+
+        document.getElementById("modalClose").onclick = function () {
+            overlay.style.display = "none";
+        };
+        
+        document.getElementById("confirmYes").onclick = function () {
+            const url = 'http://localhost:8085/FutaBus_Backend/api/admin/tuyenxe/xoa/' + id;
+
+            fetch(url, {
+            	method: 'PUT',
+            	headers: {
+            		"Content-Type": "application/json"
+            	}
+           	})
+            	  .then(response => {
+            	    if (!response.ok) {
+            	      return response.text().then(text => {
+            	        throw new Error("Lỗi từ server: " + text); 
+            	      });
+            	    }
+            	    return response.text(); 
+            	  })
+            	  .then(message => {
+            	    console.log("Xoá thành công:", message);
+            	    toast({
+            	      title: "Thành công!",
+            	      message: "Tuyến xe đã được xoá.",
+            	      type: "success",
+            	      duration: 1000
+            	    });
+
+            	    setTimeout(() => {
+            	    	  window.location.reload();
+            	    }, 1000); 
+            	  })
+            	  .catch(error => {
+            	    console.error("Lỗi xoá:", error.message);
+            	    toast({
+            	      title: "Lỗi!",
+            	      message: "Không thể xoá tuyến xe.",
+            	      type: "error",
+            	      duration: 1000
+            	    });
+            });
+            overlay.style.display = "none"; 
+        };
+    }
 	
 	document.getElementById("searchInput").addEventListener("input", function () {
         const keyword = this.value.toLowerCase();

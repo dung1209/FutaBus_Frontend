@@ -8,7 +8,7 @@
 <title>Chuyến xe</title>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/assets/admin/css/busroute.css">
+	href="<%=request.getContextPath()%>/assets/admin/css/bustrip.css">
 <link
 	href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
 	rel="stylesheet">
@@ -16,10 +16,74 @@
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" type="text/css"
 	href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+	integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+	crossorigin="anonymous" />
 
 </head>
 <body>
+	<div id="toast"></div>
+	<div id="overlayModal" class="overlay" style="display: none;">
+		<div id="detailModal" class="modal">
+			<h3>Chi tiết chuyến xe</h3>
+			<div class="form-detail">
+				<label>Tên tuyến:</label><input type="text" id="modalTenTuyen"
+					readonly> <label>Thời điểm đi:</label><input type="text"
+					id="modalThoiDiemDi" readonly> <label>Thời điểm
+					đến:</label><input type="text" id="modalThoiDiemDen" readonly> <label>Biển
+					số xe:</label><input type="text" id="modalBienSo" readonly> <label>Giá
+					vé:</label><input type="text" id="modalGiaVe" readonly> <label>Tài
+					xế:</label><input type="text" id="modalTaiXe" readonly>
+			</div>
+			<div class="modal-footer">
+				<button
+					onclick="document.getElementById('overlayModal').style.display='none'">Đóng</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="overlayEditModal" class="overlay" style="display: none;">
+		<div id="editModal" class="modal">
+			<h3>Chỉnh sửa người dùng</h3>
+			<div class="form-detail form-edit">
+				<label>Họ và tên:</label><input type="text" id="editHoTen">
+				<label>Giới tính:</label> <select id="editGioiTinh">
+					<option value="false">Nam</option>
+					<option value="true">Nữ</option>
+				</select> <label>Năm sinh:</label><input type="text" id="editNamSinh">
+				<label>Số điện thoại:</label><input type="text" id="editSoDienThoai">
+				<label>Email:</label><input type="text" id="editEmail" readonly>
+				<label>Địa chỉ:</label><input type="text" id="editDiaChi"> <input
+					type="hidden" id="editUserId">
+			</div>
+			<div class="modal-footer">
+				<button onclick="submitEdit()">Lưu</button>
+				<button class="cancel-btn"
+					onclick="document.getElementById('overlayEditModal').style.display='none'">Hủy</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="overlayDeleteModal" class="overlay" style="display: none;">
+		<div id="confirmModal" class="modal delete-modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title">Xác nhận</h2>
+					<span class="close" id="modalClose">&times;</span>
+				</div>
+				<div class="modal-body">
+					<p class="title-question">Bạn có muốn xoá người dùng không?</p>
+				</div>
+				<div class="modal-footer">
+					<button id="confirmYes" class="btn btn-yes">Có</button>
+					<button id="confirmNo" class="btn btn-no">Không</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<aside class="sidebar" id="sidebar">
 		<div class="sidebar__logo" id="sidebarLogo">
 			<img src="<%=request.getContextPath()%>/assets/admin/image/logo.png"
@@ -27,31 +91,35 @@
 		</div>
 
 		<nav class="sidebar__nav">
-			<a href="http://localhost:8085/FutaBusBooking/admin" class="menu-parent" id="dashboardParent"><img
+			<a href="http://localhost:8085/FutaBusBooking/admin"
+				class="menu-parent" id="dashboardParent"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/user.png"
-				alt="user"/><span>Người Dùng</span><img
+				alt="user" /><span>Người Dùng</span><img
 				src="<%=request.getContextPath()%>/assets/admin/image/down-arrow.png"
 				alt="down" class="arrow" /></a>
 			<div class="submenu" id="dashboardSubmenu">
-				<a id="customer-link" href="<%=request.getContextPath()%>/admin?loaiNguoiDung=1">Khách hàng</a> 
-				<a id="staff-link" href="<%=request.getContextPath()%>/admin?loaiNguoiDung=2">Quản trị viên</a>
+				<a id="customer-link"
+					href="<%=request.getContextPath()%>/admin?loaiNguoiDung=1">Khách
+					hàng</a> <a id="staff-link"
+					href="<%=request.getContextPath()%>/admin?loaiNguoiDung=2">Quản
+					trị viên</a>
 			</div>
-			<a href="<%=request.getContextPath()%>/admin/bus-route"><img
+			<a href="<%=request.getContextPath()%>/admin/ticket"><img
+				src="<%=request.getContextPath()%>/assets/admin/image/order.png"
+				alt="ticket" /><span>Quản Lý Vé</span></a> <a href="<%=request.getContextPath()%>/admin/bus-route"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
-				alt="route" /><span>Quản Lý Tuyến Xe</span></a> 
-			<a href="<%=request.getContextPath()%>/admin/bus-trip" class="active"><img
+				alt="route" /><span>Quản Lý Tuyến Xe</span></a> <a
+				href="<%=request.getContextPath()%>/admin/bus-trip" class="active"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/map.png"
-				alt="map" class="active" /><span>Quản Lý Chuyến Xe</span></a> 
-			<a href="<%=request.getContextPath()%>/admin/bus"><img
+				alt="map" class="active" /><span>Quản Lý Chuyến Xe</span></a> <a
+				href="<%=request.getContextPath()%>/admin/bus"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bus-bus.png"
-				alt="bus" /><span>Quản Lý Xe</span></a> 
-			<a href="<%=request.getContextPath()%>/admin/location"><img
+				alt="bus" /><span>Quản Lý Xe</span></a> <a
+				href="<%=request.getContextPath()%>/admin/location"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/buildings.png"
-				alt="location" /><span>Quản Lý địa điểm</span></a> 
-			<a href="#"><img
+				alt="location" /><span>Quản Lý địa điểm</span></a> <a href="#"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
-				alt="bill" /><span>Quản Lý Hoá Đơn</span></a> 
-			<a href="#"><img
+				alt="bill" /><span>Quản Lý Hoá Đơn</span></a> <a href="#"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/chart.png"
 				alt="chart" /><span>Thống Kê</span></a>
 		</nav>
@@ -168,21 +236,24 @@
 					<tbody>
 						<c:forEach var="chuyenxe" items="${chuyenXeList}">
 							<tr>
-								<td>
-									${chuyenxe.tuyenXe.tenTuyen}
-								</td>
+								<td>${chuyenxe.tuyenXe.tenTuyen}</td>
 								<td>${chuyenxe.thoiDiemDi}</td>
 								<td>${chuyenxe.thoiDiemDen}</td>
+								<td>${chuyenxe.xe.bienSo}</td>
+								<td><fmt:formatNumber value="${chuyenxe.giaVe}"
+										pattern="#,###" groupingUsed="true" /> đ</td>
+								<td>${chuyenxe.taiXe.hoTen}</td>
 								<td>
-									${chuyenxe.xe.bienSo}
-								</td>
-								<td><fmt:formatNumber value="${chuyenxe.giaVe}" pattern="#,###" groupingUsed="true" /> VNĐ</td>
-								<td>
-									${chuyenxe.taiXe.hoTen}
-								</td>
-								<td><img
+									<img
 									src="<%=request.getContextPath()%>/assets/admin/image/see.png"
-									alt="detail" /> <img
+									alt="detail"
+									onclick="showDetailModal('${chuyenxe.tuyenXe.tenTuyen}', 
+     									'${chuyenxe.thoiDiemDi}', 
+     									'${chuyenxe.thoiDiemDen}', 
+     									'${chuyenxe.xe.bienSo}', 
+     									'${chuyenxe.giaVe}', 
+     									'${chuyenxe.taiXe.hoTen}')" />
+									<img
 									src="<%=request.getContextPath()%>/assets/admin/image/update.png"
 									alt="update" /> <img
 									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
@@ -227,6 +298,60 @@
 	</div>
 
 	<script>
+	function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+		const main = document.getElementById("toast");
+		if (main) {
+			const toast = document.createElement("div");
+			
+    	    const autoRemoveId = setTimeout(function () {
+    	      main.removeChild(toast);
+    	    }, duration + 1000);
+
+    	    toast.onclick = function (e) {
+    	      if (e.target.closest(".toast__close")) {
+    	        main.removeChild(toast);
+    	        clearTimeout(autoRemoveId);
+    	      }
+    	    };
+
+    	    const icons = {
+    	      success: "fas fa-check-circle",
+    	      info: "fas fa-info-circle",
+    	      warning: "fas fa-exclamation-circle",
+    	      error: "fas fa-exclamation-circle"
+    	    };
+    	    const icon = icons[type];
+    	    const delay = (duration / 1000).toFixed(2);
+
+    	    toast.classList.add("toast", `toast--${type}`);
+    	    toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+    	    toast.innerHTML = `
+    	                    <div class="toast__icon">
+    	                        <i class="${icon}"></i>
+    	                    </div>
+    	                    <div class="toast__body">
+    	                        <h3 class="toast__title">${title}</h3>
+    	                        <p class="toast__msg">${message}</p>
+    	                    </div>
+    	                    <div class="toast__close">
+    	                        <i class="fas fa-times"></i>
+    	                    </div>
+    	                `;
+    	    const toastIcon = toast.querySelector('.toast__icon');
+			if (toastIcon) {
+    			const iconElement = document.createElement('i');
+    			iconElement.className = icon;
+    			toastIcon.appendChild(iconElement);
+			}
+    	    const toastMessage = toast.querySelector('.toast__msg');
+    	    toastMessage.textContent = message; 
+    	    const toastTitle = toast.querySelector('.toast__title');
+    	    toastTitle.textContent = title; 
+    	    main.appendChild(toast);
+		}
+    }
+	
 	document.addEventListener('DOMContentLoaded', function() {
 		const toggleBtn = document.getElementById('toggleBtn');
 		const sidebar = document.getElementById('sidebar');
@@ -296,6 +421,29 @@
 			modal.classList.remove("show");
 		}
 	});
+	
+	function formatCurrency(number) {
+	    return Number(number).toLocaleString('vi-VN') + ' đ';
+	}
+	
+	function showDetailModal(tenTuyen, thoiDiemDi, thoiDiemDen, bienSo, giaVe, taiXe) {
+	    document.getElementById('modalTenTuyen').value = tenTuyen;
+	    document.getElementById('modalThoiDiemDi').value = thoiDiemDi;
+	    document.getElementById('modalThoiDiemDen').value = thoiDiemDen;
+	    document.getElementById('modalBienSo').value = bienSo;
+	    document.getElementById('modalGiaVe').value = formatCurrency(giaVe);
+	    document.getElementById('modalTaiXe').value = taiXe;
+
+	    const overlay = document.getElementById('overlayModal');
+	    overlay.style.display = 'flex';
+
+	    overlay.onclick = function (event) {
+	        if (event.target === overlay) {
+	            overlay.style.display = 'none';
+	        }
+	    };
+	}
+
 	</script>
 
 </body>

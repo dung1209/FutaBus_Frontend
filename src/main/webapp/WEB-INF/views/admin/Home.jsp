@@ -104,7 +104,10 @@
 					href="<%=request.getContextPath()%>/admin?loaiNguoiDung=2">Quản
 					trị viên</a>
 			</div>
-			<a href="<%=request.getContextPath()%>/admin/bus-route"><img
+			<a href="<%=request.getContextPath()%>/admin/ticket"><img
+				src="<%=request.getContextPath()%>/assets/admin/image/order.png"
+				alt="ticket" /><span>Quản Lý Vé</span></a> <a 
+				href="<%=request.getContextPath()%>/admin/bus-route"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
 				alt="route" /><span>Quản Lý Tuyến Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/bus-trip"><img

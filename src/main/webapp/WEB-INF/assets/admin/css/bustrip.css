@@ -500,18 +500,6 @@ th:last-child, td:last-child {
     cursor: default;
 }
 
-.orders-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px; 
-}
-
-@media (max-width: 768px) {
-    .orders-container {
-        grid-template-columns: 1fr; 
-    }
-}
-
 #toast {
   position: fixed;
   top: 32px;
@@ -639,9 +627,9 @@ a.gap-3.cursor-pointer {
 /*****************************XEM**********************************/
 .modal {
   position: fixed;
-  top: 18%;
-  left: 35%;
-  width: 30%;
+  top: 15%;
+  left: 30%;
+  width: 40%;
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 30px;

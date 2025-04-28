@@ -8,7 +8,7 @@
 <title>Xe</title>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/assets/admin/css/busroute.css">
+	href="<%=request.getContextPath()%>/assets/admin/css/bus.css">
 <link
 	href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
 	rel="stylesheet">
@@ -16,10 +16,70 @@
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" type="text/css"
 	href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+	integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+	crossorigin="anonymous" />
 
 </head>
 <body>
+	<div id="toast"></div>
+	<div id="overlayModal" class="overlay" style="display: none;">
+    	<div id="detailModal" class="modal">
+        	<h3>Chi tiết xe</h3>
+        	<div class="form-detail">
+            	<label>Biển số xe:</label><input type="text" id="modalBienSo" readonly> 
+            	<label>Tên xe:</label><input type="text" id="modalTenXe" readonly> 
+            	<label>Loại xe:</label><input type="text" id="modalTenLoaiXe" readonly> 
+            	<label>Số ghế:</label><input type="text" id="modalSoGhe" readonly>
+        	</div>
+        	<div class="modal-footer">
+            	<button onclick="document.getElementById('overlayModal').style.display='none'">Đóng</button>
+        	</div>
+    	</div>
+	</div>
+
+	<div id="overlayEditModal" class="overlay" style="display: none;">
+		<div id="editModal" class="modal">
+			<h3>Chỉnh sửa người dùng</h3>
+			<div class="form-detail form-edit">
+				<label>Họ và tên:</label><input type="text" id="editHoTen">
+				<label>Giới tính:</label> <select id="editGioiTinh">
+					<option value="false">Nam</option>
+					<option value="true">Nữ</option>
+				</select> <label>Năm sinh:</label><input type="text" id="editNamSinh">
+				<label>Số điện thoại:</label><input type="text" id="editSoDienThoai">
+				<label>Email:</label><input type="text" id="editEmail" readonly>
+				<label>Địa chỉ:</label><input type="text" id="editDiaChi"> <input
+					type="hidden" id="editUserId">
+			</div>
+			<div class="modal-footer">
+				<button onclick="submitEdit()">Lưu</button>
+				<button class="cancel-btn"
+					onclick="document.getElementById('overlayEditModal').style.display='none'">Hủy</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="overlayDeleteModal" class="overlay" style="display: none;">
+		<div id="confirmModal" class="modal delete-modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title">Xác nhận</h2>
+					<span class="close" id="modalClose">&times;</span>
+				</div>
+				<div class="modal-body">
+					<p class="title-question">Bạn có muốn xoá người dùng không?</p>
+				</div>
+				<div class="modal-footer">
+					<button id="confirmYes" class="btn btn-yes">Có</button>
+					<button id="confirmNo" class="btn btn-no">Không</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<aside class="sidebar" id="sidebar">
 		<div class="sidebar__logo" id="sidebarLogo">
 			<img src="<%=request.getContextPath()%>/assets/admin/image/logo.png"
@@ -27,31 +87,36 @@
 		</div>
 
 		<nav class="sidebar__nav">
-			<a href="http://localhost:8085/FutaBusBooking/admin" class="menu-parent" id="dashboardParent"><img
+			<a href="http://localhost:8085/FutaBusBooking/admin"
+				class="menu-parent" id="dashboardParent"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/user.png"
-				alt="user"/><span>Người Dùng</span><img
+				alt="user" /><span>Người Dùng</span><img
 				src="<%=request.getContextPath()%>/assets/admin/image/down-arrow.png"
 				alt="down" class="arrow" /></a>
 			<div class="submenu" id="dashboardSubmenu">
-				<a id="customer-link" href="<%=request.getContextPath()%>/admin?loaiNguoiDung=1">Khách hàng</a> 
-				<a id="staff-link" href="<%=request.getContextPath()%>/admin?loaiNguoiDung=2">Quản trị viên</a>
+				<a id="customer-link"
+					href="<%=request.getContextPath()%>/admin?loaiNguoiDung=1">Khách
+					hàng</a> <a id="staff-link"
+					href="<%=request.getContextPath()%>/admin?loaiNguoiDung=2">Quản
+					trị viên</a>
 			</div>
-			<a href="<%=request.getContextPath()%>/admin/bus-route"><img
+			<a href="<%=request.getContextPath()%>/admin/ticket"><img
+				src="<%=request.getContextPath()%>/assets/admin/image/order.png"
+				alt="ticket" /><span>Quản Lý Vé</span></a> <a 
+				href="<%=request.getContextPath()%>/admin/bus-route"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
-				alt="route" /><span>Quản Lý Tuyến Xe</span></a> 
-			<a href="<%=request.getContextPath()%>/admin/bus-trip"><img
+				alt="route" /><span>Quản Lý Tuyến Xe</span></a> <a
+				href="<%=request.getContextPath()%>/admin/bus-trip"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/map.png"
-				alt="map" /><span>Quản Lý Chuyến Xe</span></a> 
-			<a href="<%=request.getContextPath()%>/admin/bus" class="active"><img
+				alt="map" /><span>Quản Lý Chuyến Xe</span></a> <a
+				href="<%=request.getContextPath()%>/admin/bus" class="active"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bus-bus.png"
-				alt="bus" class="active" /><span>Quản Lý Xe</span></a> 
-			<a href="<%=request.getContextPath()%>/admin/location"><img
+				alt="bus" class="active" /><span>Quản Lý Xe</span></a> <a
+				href="<%=request.getContextPath()%>/admin/location"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/buildings.png"
-				alt="location" /><span>Quản Lý địa điểm</span></a> 
-			<a href="#"><img
+				alt="location" /><span>Quản Lý địa điểm</span></a> <a href="#"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
-				alt="bill" /><span>Quản Lý Hoá Đơn</span></a> 
-			<a href="#"><img
+				alt="bill" /><span>Quản Lý Hoá Đơn</span></a> <a href="#"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/chart.png"
 				alt="chart" /><span>Thống Kê</span></a>
 		</nav>
@@ -168,23 +233,26 @@
 							<tr>
 								<td>${xe.bienSo}</td>
 								<td>${xe.tenXe}</td>
-								<td>
-									<c:forEach var="loaixe" items="${loaiXeList}">
-        								<c:if test="${xe.loaiXe.idLoaiXe == loaixe.idLoaiXe}">
-            								${loaixe.tenLoai}
-        								</c:if>
-    								</c:forEach>
-								</td>
-								<td>
-									<c:forEach var="loaixe" items="${loaiXeList}">
-        								<c:if test="${xe.loaiXe.idLoaiXe == loaixe.idLoaiXe}">
-            								${loaixe.soGhe}
-        								</c:if>
-    								</c:forEach>
-								</td>
+								<c:set var="tenLoaiXe" value="" />
+								<c:set var="soGheXe" value="" />
+
+								<c:forEach var="loaixe" items="${loaiXeList}">
+									<c:if test="${xe.loaiXe.idLoaiXe == loaixe.idLoaiXe}">
+										<c:set var="tenLoaiXe" value="${loaixe.tenLoai}" />
+										<c:set var="soGheXe" value="${loaixe.soGhe}" />
+									</c:if>
+								</c:forEach>
+
+								<td>${tenLoaiXe}</td>
+								<td>${soGheXe}</td>
 								<td><img
 									src="<%=request.getContextPath()%>/assets/admin/image/see.png"
-									alt="detail" /> <img
+									alt="detail"
+									onclick="showDetailModal('${xe.bienSo}', 
+     									'${xe.tenXe}', 
+     									'${tenLoaiXe}', 
+     									'${soGheXe}')" />
+									<img
 									src="<%=request.getContextPath()%>/assets/admin/image/update.png"
 									alt="update" /> <img
 									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
@@ -255,49 +323,60 @@
 	          logoImg.setAttribute('src', '<%=request.getContextPath()%>/assets/admin/image/image-logo.png');
 	          localStorage.setItem('sidebarCollapsed', 'true');
 	        } else {
-	          logoImg.setAttribute('src', '<%=request.getContextPath()%>/assets/admin/image/logo.png');
-	          localStorage.setItem('sidebarCollapsed', 'false');
-											}
-
-											if (dashboardSubmenu.classList
-													.contains('open')) {
-												dashboardSubmenu.classList
-														.remove('open');
-												dashboardParent.classList
-														.remove('open');
-											}
-										});
-
-						dashboardParent.addEventListener('click', function(
-								e) {
-							e.preventDefault();
-
-							if (!sidebar.classList.contains('collapsed')) {
-								dashboardSubmenu.classList.toggle('open');
-								dashboardParent.classList.toggle('open');
-							}
-						});
-					});
+	          	logoImg.setAttribute('src', '<%=request.getContextPath()%>/assets/admin/image/logo.png');
+				localStorage.setItem(
+					'sidebarCollapsed',
+					'false');
+			}
+			if (dashboardSubmenu.classList.contains('open')) {
+				dashboardSubmenu.classList.remove('open');
+				dashboardParent.classList.remove('open');
+			}
+		});
+		dashboardParent.addEventListener('click', function(e) {
+			e.preventDefault();
+			if (!sidebar.classList.contains('collapsed')) {
+				dashboardSubmenu.classList.toggle('open');
+				dashboardParent.classList.toggle('open');
+			}
+		});
+	});
 
 	function toggleModal() {
 		var modal = document.getElementById("userModal");
 		modal.classList.toggle("show");
 	}
-	
+
 	function getParameterByName(name) {
-	      let urlParams = new URLSearchParams(window.location.search);
-	      return urlParams.get(name);
+		let urlParams = new URLSearchParams(window.location.search);
+		return urlParams.get(name);
 	}
 
 	document.addEventListener("click", function(event) {
 		var modal = document.getElementById("userModal");
 		var userHeader = document.querySelector(".header__user");
 
-		if (!userHeader.contains(event.target)
-				&& !modal.contains(event.target)) {
+		if (!userHeader.contains(event.target) && !modal.contains(event.target)) {
 			modal.classList.remove("show");
 		}
 	});
+	
+	function showDetailModal(bienSo, tenXe, tenLoaiXe, soGhe) {
+	    document.getElementById('modalBienSo').value = bienSo;
+	    document.getElementById('modalTenXe').value = tenXe;
+	    document.getElementById('modalTenLoaiXe').value = tenLoaiXe;
+	    document.getElementById('modalSoGhe').value = soGhe;
+
+	    const overlay = document.getElementById('overlayModal');
+	    overlay.style.display = 'flex';
+
+	    overlay.onclick = function (event) {
+	        if (event.target === overlay) {
+	            overlay.style.display = 'none';
+	        }
+	    };
+	}
+
 	</script>
 
 </body>

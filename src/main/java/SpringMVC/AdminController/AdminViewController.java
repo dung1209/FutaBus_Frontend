@@ -104,6 +104,12 @@ public class AdminViewController {
 
         return "admin/Location";
     }
+    
+    @GetMapping("/ticket")
+	public String ticketPage() {
+
+		return "admin/Ticket";
+	}
 }
 
 

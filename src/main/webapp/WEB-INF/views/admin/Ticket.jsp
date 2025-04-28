@@ -5,10 +5,10 @@
 <head>
 
 <meta charset="utf-8">
-<title>Địa điểm</title>
+<title>Quản lý vé</title>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/assets/admin/css/location.css">
+	href="<%=request.getContextPath()%>/assets/admin/css/ticket.css">
 <link
 	href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
 	rel="stylesheet">
@@ -16,7 +16,7 @@
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" type="text/css"
 	href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
 	integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
@@ -27,30 +27,19 @@
 	<div id="toast"></div>
 	<div id="overlayModal" class="overlay" style="display: none;">
     	<div id="detailModal" class="modal">
-       		<h3>Chi tiết Quận/Huyện</h3>
+        	<h3>Chi tiết xe</h3>
         	<div class="form-detail">
-            	<label>Tên quận huyện:</label><input type="text" id="modalTenQuanHuyen" readonly> 
-            	<label>Tên tỉnh thành:</label><input type="text" id="modalTenTinhThanh" readonly> 
+            	<label>Biển số xe:</label><input type="text" id="modalBienSo" readonly> 
+            	<label>Tên xe:</label><input type="text" id="modalTenXe" readonly> 
+            	<label>Loại xe:</label><input type="text" id="modalTenLoaiXe" readonly> 
+            	<label>Số ghế:</label><input type="text" id="modalSoGhe" readonly>
         	</div>
         	<div class="modal-footer">
             	<button onclick="document.getElementById('overlayModal').style.display='none'">Đóng</button>
         	</div>
     	</div>
 	</div>
-	
-	<div id="overlayModal1" class="overlay" style="display: none;">
-    	<div id="detailModal" class="modal">
-        	<h3>Chi tiết Tỉnh Thành</h3>
-        	<div class="form-detail">
-            	<label>Tên tỉnh thành:</label>
-            	<input type="text" id="modalTenTinh" readonly> 
-        	</div>
-        	<div class="modal-footer">
-            	<button onclick="document.getElementById('overlayModal1').style.display='none'">Đóng</button>
-        	</div>
-    	</div>
-	</div>
-	
+
 	<div id="overlayEditModal" class="overlay" style="display: none;">
 		<div id="editModal" class="modal">
 			<h3>Chỉnh sửa người dùng</h3>
@@ -90,7 +79,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<aside class="sidebar" id="sidebar">
 		<div class="sidebar__logo" id="sidebarLogo">
 			<img src="<%=request.getContextPath()%>/assets/admin/image/logo.png"
@@ -98,33 +87,36 @@
 		</div>
 
 		<nav class="sidebar__nav">
-			<a href="http://localhost:8085/FutaBusBooking/admin" class="menu-parent" id="dashboardParent"><img
+			<a href="http://localhost:8085/FutaBusBooking/admin"
+				class="menu-parent" id="dashboardParent"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/user.png"
-				alt="user"/><span>Người Dùng</span><img
+				alt="user" /><span>Người Dùng</span><img
 				src="<%=request.getContextPath()%>/assets/admin/image/down-arrow.png"
 				alt="down" class="arrow" /></a>
 			<div class="submenu" id="dashboardSubmenu">
-				<a id="customer-link" href="<%=request.getContextPath()%>/admin?loaiNguoiDung=1">Khách hàng</a> 
-				<a id="staff-link" href="<%=request.getContextPath()%>/admin?loaiNguoiDung=2">Quản trị viên</a>
+				<a id="customer-link"
+					href="<%=request.getContextPath()%>/admin?loaiNguoiDung=1">Khách
+					hàng</a> <a id="staff-link"
+					href="<%=request.getContextPath()%>/admin?loaiNguoiDung=2">Quản
+					trị viên</a>
 			</div>
-			<a href="<%=request.getContextPath()%>/admin/ticket"><img
+			<a href="<%=request.getContextPath()%>/admin/ticket" class="active"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/order.png"
-				alt="ticket" /><span>Quản Lý Vé</span></a> <a href="<%=request.getContextPath()%>/admin/bus-route"><img
+				alt="ticket" class="active" /><span>Quản Lý Vé</span></a> <a 
+				href="<%=request.getContextPath()%>/admin/bus-route"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
-				alt="route" /><span>Quản Lý Tuyến Xe</span></a> 
-			<a href="<%=request.getContextPath()%>/admin/bus-trip"><img
+				alt="route" /><span>Quản Lý Tuyến Xe</span></a> <a
+				href="<%=request.getContextPath()%>/admin/bus-trip"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/map.png"
-				alt="map" /><span>Quản Lý Chuyến Xe</span></a> 
-			<a href="<%=request.getContextPath()%>/admin/bus"><img
+				alt="map" /><span>Quản Lý Chuyến Xe</span></a> <a
+				href="<%=request.getContextPath()%>/admin/bus"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bus-bus.png"
-				alt="bus" /><span>Quản Lý Xe</span></a> 
-			<a href="<%=request.getContextPath()%>/admin/location" class="active"><img
+				alt="bus" /><span>Quản Lý Xe</span></a> <a
+				href="<%=request.getContextPath()%>/admin/location"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/buildings.png"
-				alt="location" class="active" /><span>Quản Lý địa điểm</span></a> 
-			<a href="#"><img
+				alt="location" /><span>Quản Lý địa điểm</span></a> <a href="#"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
-				alt="bill" /><span>Quản Lý Hoá Đơn</span></a> 
-			<a href="#"><img
+				alt="bill" /><span>Quản Lý Hoá Đơn</span></a> <a href="#"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/chart.png"
 				alt="chart" /><span>Thống Kê</span></a>
 		</nav>
@@ -210,11 +202,10 @@
 						alt="money" />
 				</div>
 			</div>
-			
-			<div class="orders-container">
+
 			<div class="orders">
 				<div class="orders__header">
-					<h2 id="title">Danh sách quận/huyện</h2>
+					<h2 id="title">Danh sách vé</h2>
 					<div class="orders__actions">
 						<div class="search-box">
 							<input type="text" placeholder="Nhập từ khoá để tìm kiếm..." />
@@ -230,22 +221,39 @@
 				<table>
 					<thead>
 						<tr>
-							<th>Tên quận</th>
-							<th>Tỉnh thành</th>
+							<th>Tên khách hàng</th>
+							<th>Số điện thoại</th>
+							<th>Email</th>
+							<th>Số lượng vé</th>
+							<th>Tổng tiền</th>
+							<th>Trạng thái</th>
 							<th>Hành động</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="quanhuyen" items="${quanHuyenList}">
+						<c:forEach var="xe" items="${xeList}">
 							<tr>
-								<td>${quanhuyen.tenQuanHuyen}</td>
-								<td>${quanhuyen.tinhThanh.tenTinh}</td>
-								<td>
-									<img
+								<td>${xe.bienSo}</td>
+								<td>${xe.tenXe}</td>
+								<c:set var="tenLoaiXe" value="" />
+								<c:set var="soGheXe" value="" />
+
+								<c:forEach var="loaixe" items="${loaiXeList}">
+									<c:if test="${xe.loaiXe.idLoaiXe == loaixe.idLoaiXe}">
+										<c:set var="tenLoaiXe" value="${loaixe.tenLoai}" />
+										<c:set var="soGheXe" value="${loaixe.soGhe}" />
+									</c:if>
+								</c:forEach>
+
+								<td>${tenLoaiXe}</td>
+								<td>${soGheXe}</td>
+								<td><img
 									src="<%=request.getContextPath()%>/assets/admin/image/see.png"
 									alt="detail"
-									onclick="showDetailModal('${quanhuyen.tenQuanHuyen}', 
-     									'${quanhuyen.tinhThanh.tenTinh}')" />
+									onclick="showDetailModal('${xe.bienSo}', 
+     									'${xe.tenXe}', 
+     									'${tenLoaiXe}', 
+     									'${soGheXe}')" />
 									<img
 									src="<%=request.getContextPath()%>/assets/admin/image/update.png"
 									alt="update" /> <img
@@ -259,105 +267,33 @@
 				<div class="custom-hr"></div>
 
 				<div class="pagination-container">
-					<p class="pagination-info">Hiển thị trang ${currentQuanPage} trong
-						${totalQuanPages} trang</p>
+					<p class="pagination-info">Hiển thị trang ${currentPage} trong
+						${totalPages} trang</p>
 					<div class="pagination">
 						<c:choose>
-							<c:when test="${currentQuanPage <= 1}">
+							<c:when test="${currentPage <= 1}">
 								<span class="prev disabled">Trước</span>
 							</c:when>
 							<c:otherwise>
-								<a href="?pageQuan=${currentQuanPage - 1}&pageTinh=${currentTinhPage}" class="prev">Trước</a>
+								<a href="?page=${currentPage - 1}" class="prev">Trước</a>
 							</c:otherwise>
 						</c:choose>
 
-						<c:forEach var="i" begin="1" end="${totalQuanPages}">
-							<a href="?pageQuan=${i}&pageTinh=${currentTinhPage}" class="page ${i == currentQuanPage ? 'active' : ''}">${i}</a>
+						<c:forEach var="i" begin="1" end="${totalPages}">
+							<a href="?page=${i}"
+								class="page ${i == currentPage ? 'active' : ''}">${i}</a>
 						</c:forEach>
 
 						<c:choose>
-							<c:when test="${currentQuanPage >= totalQuanPages}">
+							<c:when test="${currentPage >= totalPages}">
 								<span class="next disabled">Sau</span>
 							</c:when>
 							<c:otherwise>
-								<a href="?pageQuan=${currentQuanPage + 1}&pageTinh=${currentTinhPage}" class="next">Sau</a>
+								<a href="?page=${currentPage + 1}" class="next">Sau</a>
 							</c:otherwise>
 						</c:choose>
 					</div>
 				</div>
-			</div>
-			
-			<div class="orders">
-				<div class="orders__header">
-					<h2 id="title">Danh sách tỉnh</h2>
-					<div class="orders__actions">
-						<div class="search-box">
-							<input type="text" placeholder="Nhập từ khoá để tìm kiếm..." />
-							<div class="search-box__icon">
-								<img
-									src="<%=request.getContextPath()%>/assets/admin/image/magnifying-glass.png"
-									alt="search" />
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<table>
-					<thead>
-						<tr>
-							<th>Tên tỉnh</th>
-							<th>Hành động</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="tinhthanh" items="${tinhThanhList}">
-							<tr>
-								<td>${tinhthanh.tenTinh}</td>
-								<td>
-									<img
-									src="<%=request.getContextPath()%>/assets/admin/image/see.png"
-									alt="detail"
-									onclick="showDetailModal1('${tinhthanh.tenTinh}')" />
-									<img
-									src="<%=request.getContextPath()%>/assets/admin/image/update.png"
-									alt="update" /> <img
-									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
-									alt="delete" /></td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-
-				<div class="custom-hr"></div>
-
-				<div class="pagination-container">
-					<p class="pagination-info">Hiển thị trang ${currentTinhPage} trong
-						${totalTinhPages} trang</p>
-					<div class="pagination">
-						<c:choose>
-							<c:when test="${currentTinhPage <= 1}">
-								<span class="prev disabled">Trước</span>
-							</c:when>
-							<c:otherwise>
-								<a href="?pageQuan=${currentQuanPage}&pageTinh=${currentTinhPage - 1}" class="prev">Trước</a>
-							</c:otherwise>
-						</c:choose>
-
-						<c:forEach var="i" begin="1" end="${totalTinhPages}">
-							<a href="?pageQuan=${currentQuanPage}&pageTinh=${i}" class="page ${i == currentTinhPage ? 'active' : ''}">${i}</a>
-						</c:forEach>
-
-						<c:choose>
-							<c:when test="${currentTinhPage >= totalTinhPages}">
-								<span class="next disabled">Sau</span>
-							</c:when>
-							<c:otherwise>
-								<a href="?pageQuan=${currentQuanPage}&pageTinh=${currentTinhPage + 1}" class="next">Sau</a>
-							</c:otherwise>
-						</c:choose>
-					</div>
-				</div>
-			</div>
 			</div>
 		</main>
 	</div>
@@ -389,53 +325,49 @@
 	          logoImg.setAttribute('src', '<%=request.getContextPath()%>/assets/admin/image/image-logo.png');
 	          localStorage.setItem('sidebarCollapsed', 'true');
 	        } else {
-	          logoImg.setAttribute('src', '<%=request.getContextPath()%>/assets/admin/image/logo.png');
-	          localStorage.setItem('sidebarCollapsed', 'false');
-											}
-
-											if (dashboardSubmenu.classList
-													.contains('open')) {
-												dashboardSubmenu.classList
-														.remove('open');
-												dashboardParent.classList
-														.remove('open');
-											}
-										});
-
-						dashboardParent.addEventListener('click', function(
-								e) {
-							e.preventDefault();
-
-							if (!sidebar.classList.contains('collapsed')) {
-								dashboardSubmenu.classList.toggle('open');
-								dashboardParent.classList.toggle('open');
-							}
-						});
-					});
+	          	logoImg.setAttribute('src', '<%=request.getContextPath()%>/assets/admin/image/logo.png');
+				localStorage.setItem(
+					'sidebarCollapsed',
+					'false');
+			}
+			if (dashboardSubmenu.classList.contains('open')) {
+				dashboardSubmenu.classList.remove('open');
+				dashboardParent.classList.remove('open');
+			}
+		});
+		dashboardParent.addEventListener('click', function(e) {
+			e.preventDefault();
+			if (!sidebar.classList.contains('collapsed')) {
+				dashboardSubmenu.classList.toggle('open');
+				dashboardParent.classList.toggle('open');
+			}
+		});
+	});
 
 	function toggleModal() {
 		var modal = document.getElementById("userModal");
 		modal.classList.toggle("show");
 	}
-	
+
 	function getParameterByName(name) {
-	      let urlParams = new URLSearchParams(window.location.search);
-	      return urlParams.get(name);
+		let urlParams = new URLSearchParams(window.location.search);
+		return urlParams.get(name);
 	}
 
 	document.addEventListener("click", function(event) {
 		var modal = document.getElementById("userModal");
 		var userHeader = document.querySelector(".header__user");
 
-		if (!userHeader.contains(event.target)
-				&& !modal.contains(event.target)) {
+		if (!userHeader.contains(event.target) && !modal.contains(event.target)) {
 			modal.classList.remove("show");
 		}
 	});
 	
-	function showDetailModal(tenQuanHuyen, tenTinhThanh) {
-	    document.getElementById('modalTenQuanHuyen').value = tenQuanHuyen;
-	    document.getElementById('modalTenTinhThanh').value = tenTinhThanh;
+	function showDetailModal(bienSo, tenXe, tenLoaiXe, soGhe) {
+	    document.getElementById('modalBienSo').value = bienSo;
+	    document.getElementById('modalTenXe').value = tenXe;
+	    document.getElementById('modalTenLoaiXe').value = tenLoaiXe;
+	    document.getElementById('modalSoGhe').value = soGhe;
 
 	    const overlay = document.getElementById('overlayModal');
 	    overlay.style.display = 'flex';
@@ -446,20 +378,6 @@
 	        }
 	    };
 	}
-	
-	function showDetailModal1(tenTinh) {
-	    document.getElementById('modalTenTinh').value = tenTinh;
-
-	    const overlay = document.getElementById('overlayModal1');
-	    overlay.style.display = 'flex';
-
-	    overlay.onclick = function (event) {
-	        if (event.target === overlay) {
-	            overlay.style.display = 'none';
-	        }
-	    };
-	}
-
 
 	</script>
 
