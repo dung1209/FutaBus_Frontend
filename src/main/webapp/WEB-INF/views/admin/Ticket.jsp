@@ -26,18 +26,90 @@
 <body>
 	<div id="toast"></div>
 	<div id="overlayModal" class="overlay" style="display: none;">
-    	<div id="detailModal" class="modal">
-        	<h3>Chi tiết xe</h3>
-        	<div class="form-detail">
-            	<label>Biển số xe:</label><input type="text" id="modalBienSo" readonly> 
-            	<label>Tên xe:</label><input type="text" id="modalTenXe" readonly> 
-            	<label>Loại xe:</label><input type="text" id="modalTenLoaiXe" readonly> 
-            	<label>Số ghế:</label><input type="text" id="modalSoGhe" readonly>
-        	</div>
-        	<div class="modal-footer">
-            	<button onclick="document.getElementById('overlayModal').style.display='none'">Đóng</button>
-        	</div>
-    	</div>
+		<div id="detailModal" class="modal">
+			<h3>Chi tiết vé</h3>
+			<div class="form-detail">
+				<div class="column">
+					<div class="form-group">
+						<label>Họ tên:</label><input type="text" id="modalHoTen" readonly>
+					</div>
+					<div class="form-group">
+						<label>Bến đi:</label><input type="text" id="modalBenDi" readonly>
+					</div>
+					<div class="form-group">
+						<label>Tuyến:</label><input type="text" id="modalTenTuyen"
+							readonly>
+					</div>
+					<div class="form-group">
+						<label>Số lượng vé:</label><input type="text" id="modalSoLuongVe"
+							readonly>
+					</div>
+				</div>
+				
+				<div class="column">
+					<div class="form-group">
+						<label>Số điện thoại:</label><input type="text"
+							id="modalSoDienThoai" readonly>
+					</div>
+					<div class="form-group">
+						<label>Bến đến:</label><input type="text" id="modalBenDen"
+							readonly>
+					</div>
+					<div class="form-group">
+						<label>Loại xe:</label><input type="text" id="modalLoaiXe"
+							readonly>
+					</div>
+					<div class="form-group">
+						<label>Giá vé:</label><input type="text" id="modalGiaVe" readonly>
+					</div>
+				</div>
+
+				<div class="column">
+					<div class="form-group">
+						<label>Email:</label><input type="text" id="modalEmail" readonly>
+					</div>
+					<div class="form-group">
+						<label>Thời điểm đi:</label><input type="text"
+							id="modalThoiDiemDi" readonly>
+					</div>
+					<div class="form-group">
+						<label>Biển số xe:</label><input type="text" id="modalBienSoXe"
+							readonly>
+					</div>
+					<div class="form-group">
+						<label>Tổng tiền:</label><input type="text" id="modalTongTien"
+							readonly>
+					</div>
+				</div>
+				
+				<div class="column">
+					<div class="form-group">
+						<label>Thời gian đặt vé:</label><input type="text"
+							id="modalThoiGianDatVe" readonly>
+					</div>
+					<div class="form-group">
+						<label>Thời điểm đến:</label><input type="text"
+							id="modalThoiDiemDen" readonly>
+					</div>
+					<div class="form-group">
+						<label>Danh sách ghế:</label><input type="text"
+							id="modalDanhSachGhe" readonly>
+					</div>
+					<div class="form-group">
+						<label>Trạng thái:</label><input type="text" id="modalTrangThai"
+							readonly>
+					</div>
+				</div>
+
+				<input type="hidden" id="modalIdPhieuDatVe" value="36"> <input
+					type="hidden" id="modalDanhSachIDGhe" value="1037">
+			</div>
+
+			<div class="modal-footer">
+				<button
+					onclick="document.getElementById('overlayModal').style.display='none'">Đóng</button>
+			</div>
+		</div>
 	</div>
 
 	<div id="overlayEditModal" class="overlay" style="display: none;">
@@ -102,7 +174,7 @@
 			</div>
 			<a href="<%=request.getContextPath()%>/admin/ticket" class="active"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/order.png"
-				alt="ticket" class="active" /><span>Quản Lý Vé</span></a> <a 
+				alt="ticket" class="active" /><span>Quản Lý Vé</span></a> <a
 				href="<%=request.getContextPath()%>/admin/bus-route"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
 				alt="route" /><span>Quản Lý Tuyến Xe</span></a> <a
@@ -231,29 +303,43 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="xe" items="${xeList}">
+						<c:forEach var="booking" items="${bookingInfoList}">
 							<tr>
-								<td>${xe.bienSo}</td>
-								<td>${xe.tenXe}</td>
-								<c:set var="tenLoaiXe" value="" />
-								<c:set var="soGheXe" value="" />
-
-								<c:forEach var="loaixe" items="${loaiXeList}">
-									<c:if test="${xe.loaiXe.idLoaiXe == loaixe.idLoaiXe}">
-										<c:set var="tenLoaiXe" value="${loaixe.tenLoai}" />
-										<c:set var="soGheXe" value="${loaixe.soGhe}" />
-									</c:if>
-								</c:forEach>
-
-								<td>${tenLoaiXe}</td>
-								<td>${soGheXe}</td>
+								<td>${booking.hoTen}</td>
+								<td>${booking.soDienThoai}</td>
+								<td>${booking.email}</td>
+								<td>${booking.soLuongVe}</td>
+								<td><fmt:formatNumber value="${booking.tongTien}"
+										pattern="#,###" groupingUsed="true" /> đ</td>
+								<td><c:choose>
+										<c:when test="${booking.trangThai == 0}">Đã hủy</c:when>
+										<c:when test="${booking.trangThai == 1}">Đã đặt</c:when>
+										<c:when test="${booking.trangThai == 2}">Chờ thanh toán</c:when>
+										<c:when test="${booking.trangThai == 3}">Đã thanh toán</c:when>
+										<c:when test="${booking.trangThai == 4}">Hoàn tất</c:when>
+										<c:otherwise>Không xác định</c:otherwise>
+									</c:choose></td>
 								<td><img
 									src="<%=request.getContextPath()%>/assets/admin/image/see.png"
 									alt="detail"
-									onclick="showDetailModal('${xe.bienSo}', 
-     									'${xe.tenXe}', 
-     									'${tenLoaiXe}', 
-     									'${soGheXe}')" />
+									onclick="showDetailModal('${booking.idPhieuDatVe}', 
+     									'${booking.hoTen}', 
+                               			'${booking.soDienThoai}', 
+                               			'${booking.email}', 
+                               			'${booking.thoiDiemDi}', 
+                               			'${booking.thoiDiemDen}', 
+                               			'${booking.trangThai}', 
+                               			'${booking.tenTuyen}', 
+                               			'${booking.benDi}', 
+                               			'${booking.benDen}', 
+                               			'${booking.bienSoXe}', 
+                               			'${booking.loaiXe}', 
+                               			'${booking.giaVe}', 
+                               			'${booking.soLuongVe}', 
+                               			'${booking.tongTien}', 
+                               			'${booking.thoiGianDatVe}', 
+                               			'${booking.danhSachGhe}', 
+                               			'${booking.danhSachIDGhe}')" />
 									<img
 									src="<%=request.getContextPath()%>/assets/admin/image/update.png"
 									alt="update" /> <img
@@ -326,59 +412,108 @@
 	          localStorage.setItem('sidebarCollapsed', 'true');
 	        } else {
 	          	logoImg.setAttribute('src', '<%=request.getContextPath()%>/assets/admin/image/logo.png');
-				localStorage.setItem(
-					'sidebarCollapsed',
-					'false');
-			}
-			if (dashboardSubmenu.classList.contains('open')) {
-				dashboardSubmenu.classList.remove('open');
-				dashboardParent.classList.remove('open');
-			}
-		});
-		dashboardParent.addEventListener('click', function(e) {
-			e.preventDefault();
-			if (!sidebar.classList.contains('collapsed')) {
-				dashboardSubmenu.classList.toggle('open');
-				dashboardParent.classList.toggle('open');
-			}
-		});
-	});
+													localStorage.setItem(
+															'sidebarCollapsed',
+															'false');
+												}
+												if (dashboardSubmenu.classList
+														.contains('open')) {
+													dashboardSubmenu.classList
+															.remove('open');
+													dashboardParent.classList
+															.remove('open');
+												}
+											});
+							dashboardParent.addEventListener('click', function(
+									e) {
+								e.preventDefault();
+								if (!sidebar.classList.contains('collapsed')) {
+									dashboardSubmenu.classList.toggle('open');
+									dashboardParent.classList.toggle('open');
+								}
+							});
+						});
 
-	function toggleModal() {
-		var modal = document.getElementById("userModal");
-		modal.classList.toggle("show");
-	}
-
-	function getParameterByName(name) {
-		let urlParams = new URLSearchParams(window.location.search);
-		return urlParams.get(name);
-	}
-
-	document.addEventListener("click", function(event) {
-		var modal = document.getElementById("userModal");
-		var userHeader = document.querySelector(".header__user");
-
-		if (!userHeader.contains(event.target) && !modal.contains(event.target)) {
-			modal.classList.remove("show");
+		function toggleModal() {
+			var modal = document.getElementById("userModal");
+			modal.classList.toggle("show");
 		}
-	});
-	
-	function showDetailModal(bienSo, tenXe, tenLoaiXe, soGhe) {
-	    document.getElementById('modalBienSo').value = bienSo;
-	    document.getElementById('modalTenXe').value = tenXe;
-	    document.getElementById('modalTenLoaiXe').value = tenLoaiXe;
-	    document.getElementById('modalSoGhe').value = soGhe;
 
-	    const overlay = document.getElementById('overlayModal');
-	    overlay.style.display = 'flex';
+		function getParameterByName(name) {
+			let urlParams = new URLSearchParams(window.location.search);
+			return urlParams.get(name);
+		}
 
-	    overlay.onclick = function (event) {
-	        if (event.target === overlay) {
-	            overlay.style.display = 'none';
-	        }
-	    };
-	}
+		document.addEventListener("click", function(event) {
+			var modal = document.getElementById("userModal");
+			var userHeader = document.querySelector(".header__user");
 
+			if (!userHeader.contains(event.target)
+					&& !modal.contains(event.target)) {
+				modal.classList.remove("show");
+			}
+		});
+		
+		function formatDateTime(input) {
+		    if (!input || typeof input !== "string") return "";
+
+		    const parts = input.trim().split(" ");
+		    if (parts.length !== 2) return "";
+
+		    const datePart = parts[0]; 
+		    const timePart = parts[1]; 
+
+		    const [year, month, day] = datePart.split("-");
+		    const [hour, minute] = timePart.split(":");
+
+		    if (!year || !month || !day || !hour || !minute) return "";
+		    
+		    let dateTimeString = hour + ":" + minute + " " + day + "/" + month + "/" + year;
+		    console.log(dateTimeString);
+
+		    return dateTimeString;
+		}
+
+		function showDetailModal(idPhieuDatVe, hoTen, soDienThoai, email,
+				thoiDiemDi, thoiDiemDen, trangThai, tenTuyen, benDi, benDen,
+				bienSoXe, loaiXe, giaVe, soLuongVe, tongTien, thoiGianDatVe,
+				danhSachGhe, danhSachIDGhe) {
+			const trangThaiMap = {
+					  0: "Đã hủy",
+					  1: "Đã đặt",
+					  2: "Chờ thanh toán",
+					  3: "Đã thanh toán",
+					  4: "Hoàn tất"
+			};
+
+			document.getElementById('modalTrangThai').value = trangThaiMap[trangThai] || "Không xác định";
+			document.getElementById('modalIdPhieuDatVe').value = idPhieuDatVe;
+			document.getElementById('modalHoTen').value = hoTen;
+			document.getElementById('modalSoDienThoai').value = soDienThoai;
+			document.getElementById('modalEmail').value = email;
+			document.getElementById('modalThoiDiemDi').value = formatDateTime(thoiDiemDi);
+			document.getElementById('modalThoiDiemDen').value = formatDateTime(thoiDiemDen);
+			document.getElementById('modalTenTuyen').value = tenTuyen;
+			document.getElementById('modalBenDi').value = benDi;
+			document.getElementById('modalBenDen').value = benDen;
+			document.getElementById('modalBienSoXe').value = bienSoXe;
+			document.getElementById('modalLoaiXe').value = loaiXe;
+			document.getElementById('modalGiaVe').value = Number(giaVe).toLocaleString('vi-VN') + ' đ';
+			document.getElementById('modalSoLuongVe').value = soLuongVe;
+			document.getElementById('modalTongTien').value = Number(tongTien).toLocaleString('vi-VN') + ' đ';
+			document.getElementById('modalThoiGianDatVe').value = formatDateTime(thoiGianDatVe);
+			document.getElementById('modalDanhSachGhe').value = danhSachGhe;
+			document.getElementById('modalDanhSachIDGhe').value = danhSachIDGhe;
+
+			const overlay = document.getElementById('overlayModal');
+			overlay.style.display = 'flex';
+
+			overlay.onclick = function(event) {
+				if (event.target === overlay) {
+					overlay.style.display = 'none';
+				}
+			};
+		}
 	</script>
 
 </body>

@@ -628,8 +628,8 @@ a.gap-3.cursor-pointer {
 .modal {
   position: fixed;
   top: 15%;
-  left: 30%;
-  width: 40%;
+  left: 19%;
+  width: 61%;
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 30px;
@@ -649,6 +649,7 @@ a.gap-3.cursor-pointer {
 .form-detail label {
   font-weight: bold;
   color: #555;
+  margin-bottom: 7px;
 }
 
 .form-detail input {
@@ -812,3 +813,26 @@ a.gap-3.cursor-pointer {
 }
 
 /*****************************XOÁ**********************************/
+td, th {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.form-detail {
+  display: flex;
+  gap: 30px;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+

@@ -104,12 +104,22 @@ public class AdminViewController {
 
         return "admin/Location";
     }
-    
-    @GetMapping("/ticket")
-	public String ticketPage() {
 
-		return "admin/Ticket";
-	}
+    @GetMapping("/ticket")
+    public String ticketPage(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        RestTemplate restTemplate = new RestTemplate();
+        String apiUrlWithParams = API_URL + "ticket?page=" + page;
+
+        ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
+        Map<String, Object> responseData = response.getBody();
+
+        model.addAttribute("bookingInfoList", responseData.get("bookingInfoList"));
+        model.addAttribute("currentPage", responseData.get("currentPage"));
+        model.addAttribute("totalPages", responseData.get("totalPages"));
+
+        return "admin/Ticket";
+    }
+
 }
 
 
