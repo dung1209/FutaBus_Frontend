@@ -122,7 +122,10 @@
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
 				alt="bill" /><span>Quản Lý Hoá Đơn</span></a> <a href="#"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/chart.png"
-				alt="chart" /><span>Thống Kê</span></a>
+				alt="chart" /><span>Thống Kê</span></a> <a 
+				href="<%=request.getContextPath()%>/admin/account"><img
+				src="<%=request.getContextPath()%>/assets/admin/image/profile.png"
+				alt="chart" /><span>Thông tin tài khoản</span></a>
 		</nav>
 	</aside>
 
@@ -140,8 +143,7 @@
 				<div class="header__user" onclick="toggleModal()">
 					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/users.png"
-						alt="User" /> <span>Xin chào <strong id="userName">Người
-							dùng</strong></span> <img
+						alt="User" /> <span>Xin chào <strong id="userName"></strong></span> <img
 						src="<%=request.getContextPath()%>/assets/admin/image/down-arrow.png"
 						alt="down" />
 				</div>
@@ -149,9 +151,9 @@
 				<div class="user-modal" id="userModal">
 					<div class="user-modal__content">
 						<p>
-							<strong id="userNameAdmin">Người dùng</strong>
+							<strong id="userNameAdmin"></strong>
 						</p>
-						<p>emirhanboruch51@gmail.com</p>
+						<p id="userEmailAdmin"></p>
 						<div class="user-modal__item">
 							<img
 								src="<%=request.getContextPath()%>/assets/admin/image/profile.png"
@@ -459,6 +461,11 @@
 	        const userNameSpanAdmin = document.getElementById("userNameAdmin");
 	        if (userNameSpanAdmin) {
 	        	userNameSpanAdmin.innerText = nguoiDung.hoTen;
+	        }
+	        
+	        const userEmailSpanAdmin = document.getElementById("userEmailAdmin");
+	        if (userEmailSpanAdmin) {
+	            userEmailSpanAdmin.innerText = nguoiDung.email;
 	        }
 	    } else {
 	        console.log("Không tìm thấy người dùng trong localStorage");

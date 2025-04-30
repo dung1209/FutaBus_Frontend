@@ -70,6 +70,11 @@ public class AdminViewController {
         model.addAttribute("nguoiDungList", responseData.get("nguoiDungList"));
         model.addAttribute("currentPage", responseData.get("currentPage"));
         model.addAttribute("totalPages", responseData.get("totalPages"));
+        model.addAttribute("totalCustomer", responseData.get("totalCustomer"));
+        model.addAttribute("totalXe", responseData.get("totalXe"));
+        model.addAttribute("totalChuyenXe", responseData.get("totalChuyenXe"));
+        model.addAttribute("tongDoanhThuThangHienTai", responseData.get("tongDoanhThuThangHienTai"));
+        
         return "admin/BusTrip";
     }
 	
@@ -84,6 +89,11 @@ public class AdminViewController {
         model.addAttribute("loaiXeList", responseData.get("loaiXeList"));
         model.addAttribute("currentPage", responseData.get("currentPage"));
         model.addAttribute("totalPages", responseData.get("totalPages"));
+        model.addAttribute("totalCustomer", responseData.get("totalCustomer"));
+        model.addAttribute("totalXe", responseData.get("totalXe"));
+        model.addAttribute("totalChuyenXe", responseData.get("totalChuyenXe"));
+        model.addAttribute("tongDoanhThuThangHienTai", responseData.get("tongDoanhThuThangHienTai"));
+        
         return "admin/Bus";
     }
     
@@ -101,6 +111,10 @@ public class AdminViewController {
         model.addAttribute("totalQuanPages", responseData.get("totalQuanPages"));
         model.addAttribute("currentTinhPage", responseData.get("currentTinhPage"));
         model.addAttribute("totalTinhPages", responseData.get("totalTinhPages"));
+        model.addAttribute("totalCustomer", responseData.get("totalCustomer"));
+        model.addAttribute("totalXe", responseData.get("totalXe"));
+        model.addAttribute("totalChuyenXe", responseData.get("totalChuyenXe"));
+        model.addAttribute("tongDoanhThuThangHienTai", responseData.get("tongDoanhThuThangHienTai"));
 
         return "admin/Location";
     }
@@ -116,8 +130,28 @@ public class AdminViewController {
         model.addAttribute("bookingInfoList", responseData.get("bookingInfoList"));
         model.addAttribute("currentPage", responseData.get("currentPage"));
         model.addAttribute("totalPages", responseData.get("totalPages"));
+        model.addAttribute("totalCustomer", responseData.get("totalCustomer"));
+        model.addAttribute("totalXe", responseData.get("totalXe"));
+        model.addAttribute("totalChuyenXe", responseData.get("totalChuyenXe"));
+        model.addAttribute("tongDoanhThuThangHienTai", responseData.get("tongDoanhThuThangHienTai"));
 
         return "admin/Ticket";
+    }
+    
+    @GetMapping("/account")
+    public String accountPage(Model model) {
+    	RestTemplate restTemplate = new RestTemplate();
+    	String apiUrlWithParams = API_URL + "taikhoan";
+    	
+    	ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
+        Map<String, Object> responseData = response.getBody();
+    	
+    	model.addAttribute("totalCustomer", responseData.get("totalCustomer"));
+        model.addAttribute("totalXe", responseData.get("totalXe"));
+        model.addAttribute("totalChuyenXe", responseData.get("totalChuyenXe"));
+        model.addAttribute("tongDoanhThuThangHienTai", responseData.get("tongDoanhThuThangHienTai"));
+        
+        return "admin/Account";
     }
 
 }
