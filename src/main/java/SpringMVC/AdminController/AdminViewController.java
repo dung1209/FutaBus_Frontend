@@ -115,6 +115,7 @@ public class AdminViewController {
         model.addAttribute("totalXe", responseData.get("totalXe"));
         model.addAttribute("totalChuyenXe", responseData.get("totalChuyenXe"));
         model.addAttribute("tongDoanhThuThangHienTai", responseData.get("tongDoanhThuThangHienTai"));
+        model.addAttribute("tinhThanhAllList", responseData.get("tinhThanhAllList"));
 
         return "admin/Location";
     }

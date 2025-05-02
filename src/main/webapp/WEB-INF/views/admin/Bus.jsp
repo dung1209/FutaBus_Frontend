@@ -26,34 +26,37 @@
 <body>
 	<div id="toast"></div>
 	<div id="overlayModal" class="overlay" style="display: none;">
-    	<div id="detailModal" class="modal">
-        	<h3>Chi tiết xe</h3>
-        	<div class="form-detail">
-            	<label>Biển số xe:</label><input type="text" id="modalBienSo" readonly> 
-            	<label>Tên xe:</label><input type="text" id="modalTenXe" readonly> 
-            	<label>Loại xe:</label><input type="text" id="modalTenLoaiXe" readonly> 
-            	<label>Số ghế:</label><input type="text" id="modalSoGhe" readonly>
-        	</div>
-        	<div class="modal-footer">
-            	<button onclick="document.getElementById('overlayModal').style.display='none'">Đóng</button>
-        	</div>
-    	</div>
+		<div id="detailModal" class="modal">
+			<h3>Chi tiết xe</h3>
+			<div class="form-detail">
+				<label>Biển số xe:</label><input type="text" id="modalBienSo"
+					readonly> <label>Tên xe:</label><input type="text"
+					id="modalTenXe" readonly> <label>Loại xe:</label><input
+					type="text" id="modalTenLoaiXe" readonly> <label>Số
+					ghế:</label><input type="text" id="modalSoGhe" readonly>
+			</div>
+			<div class="modal-footer">
+				<button
+					onclick="document.getElementById('overlayModal').style.display='none'">Đóng</button>
+			</div>
+		</div>
 	</div>
 
 	<div id="overlayEditModal" class="overlay" style="display: none;">
 		<div id="editModal" class="modal">
-			<h3>Chỉnh sửa người dùng</h3>
+			<h3>Chỉnh sửa xe</h3>
 			<div class="form-detail form-edit">
-				<label>Họ và tên:</label><input type="text" id="editHoTen">
-				<label>Giới tính:</label> <select id="editGioiTinh">
-					<option value="false">Nam</option>
-					<option value="true">Nữ</option>
-				</select> <label>Năm sinh:</label><input type="text" id="editNamSinh">
-				<label>Số điện thoại:</label><input type="text" id="editSoDienThoai">
-				<label>Email:</label><input type="text" id="editEmail" readonly>
-				<label>Địa chỉ:</label><input type="text" id="editDiaChi"> <input
-					type="hidden" id="editUserId">
+				<label>Tên xe:</label> <input type="text" id="editTenXe"> 
+				<label>Biển số xe:</label> <input type="text" id="editBienSoXe"> 
+				<label>Loại xe:</label> 
+				<select id="editLoaiXe" name="editLoaiXe">
+					<c:forEach var="loaiXe" items="${loaiXeList}">
+						<option value="${loaiXe.idLoaiXe}" ${loaiXe.idLoaiXe == idLoaiXe ? 'selected' : ''}>${loaiXe.tenLoai}</option>
+					</c:forEach>
+				</select> 
+				<input type="hidden" id="editXeId">
 			</div>
+
 			<div class="modal-footer">
 				<button onclick="submitEdit()">Lưu</button>
 				<button class="cancel-btn"
@@ -61,7 +64,7 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<div id="overlayDeleteModal" class="overlay" style="display: none;">
 		<div id="confirmModal" class="modal delete-modal">
 			<div class="modal-content">
@@ -70,7 +73,7 @@
 					<span class="close" id="modalClose">&times;</span>
 				</div>
 				<div class="modal-body">
-					<p class="title-question">Bạn có muốn xoá người dùng không?</p>
+					<p class="title-question">Bạn có muốn xoá xe không?</p>
 				</div>
 				<div class="modal-footer">
 					<button id="confirmYes" class="btn btn-yes">Có</button>
@@ -102,7 +105,7 @@
 			</div>
 			<a href="<%=request.getContextPath()%>/admin/ticket"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/order.png"
-				alt="ticket" /><span>Quản Lý Vé</span></a> <a 
+				alt="ticket" /><span>Quản Lý Vé</span></a> <a
 				href="<%=request.getContextPath()%>/admin/bus-route"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
 				alt="route" /><span>Quản Lý Tuyến Xe</span></a> <a
@@ -118,7 +121,7 @@
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
 				alt="bill" /><span>Quản Lý Hoá Đơn</span></a> <a href="#"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/chart.png"
-				alt="chart" /><span>Thống Kê</span></a> <a 
+				alt="chart" /><span>Thống Kê</span></a> <a
 				href="<%=request.getContextPath()%>/admin/account"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/profile.png"
 				alt="chart" /><span>Thông tin tài khoản</span></a>
@@ -139,7 +142,8 @@
 				<div class="header__user" onclick="toggleModal()">
 					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/users.png"
-						alt="User" /> <span>Xin chào <strong id="userName"></strong></span> <img
+						alt="User" /> <span>Xin chào <strong id="userName"></strong></span>
+					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/down-arrow.png"
 						alt="down" />
 				</div>
@@ -211,10 +215,10 @@
 
 			<div class="orders">
 				<div class="orders__header">
-					<h2 id="title">Danh sách xe</h2>
+					<h2 id="title">Danh sách tuyến xe</h2>
 					<div class="orders__actions">
 						<div class="search-box">
-							<input type="text" placeholder="Nhập từ khoá để tìm kiếm..." />
+							<input type="text" id="searchInput" placeholder="Nhập từ khoá để tìm kiếm..." />
 							<div class="search-box__icon">
 								<img
 									src="<%=request.getContextPath()%>/assets/admin/image/magnifying-glass.png"
@@ -260,9 +264,16 @@
      									'${soGheXe}')" />
 									<img
 									src="<%=request.getContextPath()%>/assets/admin/image/update.png"
-									alt="update" /> <img
-									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
-									alt="delete" /></td>
+									alt="update"
+									onclick="showEditModal(
+    									'${xe.idXe}',
+    									'${xe.tenXe}',
+        								'${xe.bienSo}', 
+        								'${xe.loaiXe.idLoaiXe}')" />
+									<img src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
+  										alt="delete"
+  										onclick="showDeleteModal('${xe.idXe}')"/>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -303,6 +314,60 @@
 	</div>
 
 	<script>
+	
+	function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+		const main = document.getElementById("toast");
+		if (main) {
+			const toast = document.createElement("div");
+			
+    	    const autoRemoveId = setTimeout(function () {
+    	      main.removeChild(toast);
+    	    }, duration + 1000);
+
+    	    toast.onclick = function (e) {
+    	      if (e.target.closest(".toast__close")) {
+    	        main.removeChild(toast);
+    	        clearTimeout(autoRemoveId);
+    	      }
+    	    };
+
+    	    const icons = {
+    	      success: "fas fa-check-circle",
+    	      info: "fas fa-info-circle",
+    	      warning: "fas fa-exclamation-circle",
+    	      error: "fas fa-exclamation-circle"
+    	    };
+    	    const icon = icons[type];
+    	    const delay = (duration / 1000).toFixed(2);
+
+    	    toast.classList.add("toast", `toast--${type}`);
+    	    toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+    	    toast.innerHTML = `
+    	                    <div class="toast__icon">
+    	                        <i class="${icon}"></i>
+    	                    </div>
+    	                    <div class="toast__body">
+    	                        <h3 class="toast__title">${title}</h3>
+    	                        <p class="toast__msg">${message}</p>
+    	                    </div>
+    	                    <div class="toast__close">
+    	                        <i class="fas fa-times"></i>
+    	                    </div>
+    	                `;
+    	    const toastIcon = toast.querySelector('.toast__icon');
+			if (toastIcon) {
+    			const iconElement = document.createElement('i');
+    			iconElement.className = icon;
+    			toastIcon.appendChild(iconElement);
+			}
+    	    const toastMessage = toast.querySelector('.toast__msg');
+    	    toastMessage.textContent = message; 
+    	    const toastTitle = toast.querySelector('.toast__title');
+    	    toastTitle.textContent = title; 
+    	    main.appendChild(toast);
+		}
+    }
 	
 	const nguoiDungStr = localStorage.getItem("nguoiDung");
     if (nguoiDungStr) {
@@ -354,59 +419,228 @@
 	          localStorage.setItem('sidebarCollapsed', 'true');
 	        } else {
 	          	logoImg.setAttribute('src', '<%=request.getContextPath()%>/assets/admin/image/logo.png');
-				localStorage.setItem(
-					'sidebarCollapsed',
-					'false');
-			}
-			if (dashboardSubmenu.classList.contains('open')) {
-				dashboardSubmenu.classList.remove('open');
-				dashboardParent.classList.remove('open');
-			}
-		});
-		dashboardParent.addEventListener('click', function(e) {
-			e.preventDefault();
-			if (!sidebar.classList.contains('collapsed')) {
-				dashboardSubmenu.classList.toggle('open');
-				dashboardParent.classList.toggle('open');
-			}
-		});
-	});
+													localStorage.setItem(
+															'sidebarCollapsed',
+															'false');
+												}
+												if (dashboardSubmenu.classList
+														.contains('open')) {
+													dashboardSubmenu.classList
+															.remove('open');
+													dashboardParent.classList
+															.remove('open');
+												}
+											});
+							dashboardParent.addEventListener('click', function(
+									e) {
+								e.preventDefault();
+								if (!sidebar.classList.contains('collapsed')) {
+									dashboardSubmenu.classList.toggle('open');
+									dashboardParent.classList.toggle('open');
+								}
+							});
+						});
 
-	function toggleModal() {
-		var modal = document.getElementById("userModal");
-		modal.classList.toggle("show");
-	}
-
-	function getParameterByName(name) {
-		let urlParams = new URLSearchParams(window.location.search);
-		return urlParams.get(name);
-	}
-
-	document.addEventListener("click", function(event) {
-		var modal = document.getElementById("userModal");
-		var userHeader = document.querySelector(".header__user");
-
-		if (!userHeader.contains(event.target) && !modal.contains(event.target)) {
-			modal.classList.remove("show");
+		function toggleModal() {
+			var modal = document.getElementById("userModal");
+			modal.classList.toggle("show");
 		}
-	});
-	
-	function showDetailModal(bienSo, tenXe, tenLoaiXe, soGhe) {
-	    document.getElementById('modalBienSo').value = bienSo;
-	    document.getElementById('modalTenXe').value = tenXe;
-	    document.getElementById('modalTenLoaiXe').value = tenLoaiXe;
-	    document.getElementById('modalSoGhe').value = soGhe;
 
-	    const overlay = document.getElementById('overlayModal');
-	    overlay.style.display = 'flex';
+		function getParameterByName(name) {
+			let urlParams = new URLSearchParams(window.location.search);
+			return urlParams.get(name);
+		}
 
-	    overlay.onclick = function (event) {
-	        if (event.target === overlay) {
-	            overlay.style.display = 'none';
-	        }
-	    };
-	}
+		document.addEventListener("click", function(event) {
+			var modal = document.getElementById("userModal");
+			var userHeader = document.querySelector(".header__user");
 
+			if (!userHeader.contains(event.target)
+					&& !modal.contains(event.target)) {
+				modal.classList.remove("show");
+			}
+		});
+
+		function showDetailModal(bienSo, tenXe, tenLoaiXe, soGhe) {
+			document.getElementById('modalBienSo').value = bienSo;
+			document.getElementById('modalTenXe').value = tenXe;
+			document.getElementById('modalTenLoaiXe').value = tenLoaiXe;
+			document.getElementById('modalSoGhe').value = soGhe;
+
+			const overlay = document.getElementById('overlayModal');
+			overlay.style.display = 'flex';
+
+			overlay.onclick = function(event) {
+				if (event.target === overlay) {
+					overlay.style.display = 'none';
+				}
+			};
+		}
+
+		function showEditModal(idXe, tenXe, bienSo, idLoaiXe) {
+			document.getElementById('editXeId').value = idXe;
+			document.getElementById('editTenXe').value = tenXe;
+			document.getElementById('editBienSoXe').value = bienSo;
+			document.getElementById('editLoaiXe').value = idLoaiXe;
+
+			const overlay = document.getElementById('overlayEditModal');
+			overlay.style.display = 'flex';
+
+			overlay.onclick = function(event) {
+				if (event.target === overlay) {
+					overlay.style.display = 'none';
+				}
+			};
+		}
+		
+		function submitEdit() {
+			const idXe = document.getElementById('editXeId').value;
+			const tenXe = document.getElementById('editTenXe').value;
+		    const bienSo = document.getElementById('editBienSoXe').value;
+		    const idLoaiXe = document.getElementById('editLoaiXe').value;
+		    
+			let isValid = true;
+
+			if (
+				tenXe === "" ||
+				bienSo === "" ||
+				idLoaiXe === ""
+			) {
+				toast({
+					title: "Chú ý!",
+					message: "Vui lòng điền đầy đủ thông tin!",
+					type: "error",
+					duration: 1000
+				});
+				isValid = false;
+			}
+
+			if (isValid) {
+				const xeData = {
+					idXe: parseInt(idXe),
+					tenXe: tenXe,
+					bienSo: bienSo,
+					idLoaiXe: parseInt(idLoaiXe)
+				};
+				console.log("Dữ liệu chuyến xe:", xeData);
+
+				const url = new URL('http://localhost:8085/FutaBus_Backend/api/admin/update-xe');
+
+				fetch(url, {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(xeData)
+				})
+				.then(response => {
+					if (!response.ok) {
+						return response.text().then(text => {
+							throw new Error("Lỗi từ server: " + text);
+						});
+					}
+					return response.json();
+				})
+				.then(data => {
+					console.log("Cập nhật thành công:", data);
+					toast({
+						title: "Thành công!",
+						message: "Chuyến xe đã được cập nhật.",
+						type: "success",
+						duration: 1000
+					});
+					setTimeout(() => {
+						window.location.reload();
+					}, 1000);
+				})
+				.catch(error => {
+					console.error("Lỗi cập nhật:", error.message);
+					toast({
+						title: "Lỗi!",
+						message: "Không thể cập nhật chuyến xe.",
+						type: "error",
+						duration: 1000
+					});
+				});
+			}
+		}
+		
+		function showDeleteModal(id) {
+	        window.idCanXoa = id;
+
+	        const overlay = document.getElementById("overlayDeleteModal");
+	        overlay.style.display = "flex"; 
+
+	        overlay.onclick = function (event) {
+	            if (event.target === overlay) {
+	                overlay.style.display = "none";
+	            }
+	        };
+
+	        document.getElementById("confirmNo").onclick = function () {
+	            overlay.style.display = "none";
+	        };
+
+	        document.getElementById("modalClose").onclick = function () {
+	            overlay.style.display = "none";
+	        };
+	        
+	        document.getElementById("confirmYes").onclick = function () {
+	            const url = 'http://localhost:8085/FutaBus_Backend/api/admin/xe/xoa/' + id;
+
+	            fetch(url, {
+	            	method: 'PUT',
+	            	headers: {
+	            		"Content-Type": "application/json"
+	            	}
+	           	})
+	            	  .then(response => {
+	            	    if (!response.ok) {
+	            	      return response.text().then(text => {
+	            	        throw new Error("Lỗi từ server: " + text); 
+	            	      });
+	            	    }
+	            	    return response.text(); 
+	            	  })
+	            	  .then(message => {
+	            	    console.log("Xoá thành công:", message);
+	            	    toast({
+	            	      title: "Thành công!",
+	            	      message: "Xe đã được xoá.",
+	            	      type: "success",
+	            	      duration: 1000
+	            	    });
+
+	            	    setTimeout(() => {
+	            	    	  window.location.reload();
+	            	    }, 1000); 
+	            	  })
+	            	  .catch(error => {
+	            	    console.error("Lỗi xoá:", error.message);
+	            	    toast({
+	            	      title: "Lỗi!",
+	            	      message: "Không thể xoá xe.",
+	            	      type: "error",
+	            	      duration: 1000
+	            	    });
+	            });
+	            overlay.style.display = "none"; 
+	        };
+	    }
+		
+		document.getElementById("searchInput").addEventListener("input", function () {
+	        const keyword = this.value.toLowerCase();
+	        const rows = document.querySelectorAll("table tbody tr");
+
+	        rows.forEach(row => {
+	          const rowText = row.textContent.toLowerCase();
+	          if (rowText.includes(keyword)) {
+	            row.style.display = ""; 
+	          } else {
+	            row.style.display = "none"; 
+	          }
+	        });
+	      });
 	</script>
 
 </body>
