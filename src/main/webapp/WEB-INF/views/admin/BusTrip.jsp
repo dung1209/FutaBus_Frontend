@@ -21,6 +21,10 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
 	integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
 	crossorigin="anonymous" />
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
 </head>
 <body>
@@ -29,8 +33,9 @@
 		<div id="detailModal" class="modal">
 			<h3>Chi tiết chuyến xe</h3>
 			<div class="form-detail">
-				<label>Tên tuyến:</label><input type="text" id="modalTenTuyen"
-					readonly> <label>Thời điểm đi:</label><input type="text"
+				<label>Tên tuyến:</label>
+				<input type="text" id="modalTenTuyen" readonly>
+				<label>Thời điểm đi:</label><input type="text"
 					id="modalThoiDiemDi" readonly> <label>Thời điểm
 					đến:</label><input type="text" id="modalThoiDiemDen" readonly> <label>Biển
 					số xe:</label><input type="text" id="modalBienSo" readonly> <label>Giá
@@ -46,18 +51,45 @@
 
 	<div id="overlayEditModal" class="overlay" style="display: none;">
 		<div id="editModal" class="modal">
-			<h3>Chỉnh sửa người dùng</h3>
+			<h3>Chỉnh sửa chuyến xe</h3>
 			<div class="form-detail form-edit">
-				<label>Họ và tên:</label><input type="text" id="editHoTen">
-				<label>Giới tính:</label> <select id="editGioiTinh">
-					<option value="false">Nam</option>
-					<option value="true">Nữ</option>
-				</select> <label>Năm sinh:</label><input type="text" id="editNamSinh">
-				<label>Số điện thoại:</label><input type="text" id="editSoDienThoai">
-				<label>Email:</label><input type="text" id="editEmail" readonly>
-				<label>Địa chỉ:</label><input type="text" id="editDiaChi"> <input
-					type="hidden" id="editUserId">
+				<label>Tên tuyến xe:</label>
+				<select id="editTenTuyen"
+					name="editTenTuyen">
+					<c:forEach var="tuyenXe" items="${tuyenXeList}">
+						<option value="${tuyenXe.idTuyenXe}"
+							${tuyenXe.idTuyenXe == idTuyenXe ? 'selected' : ''}>
+							${tuyenXe.tenTuyen}</option>
+					</c:forEach>
+				</select>
+				<label>Thời điểm đi:</label> <input type="text" id="editThoiDiemDi">
+				<label>Thời điểm đến:</label> <input type="text"
+					id="editThoiDiemDen"> 
+				<label>Biển số xe:</label> 
+				<select id="editBienSoXe"
+					name="editBienSoXe">
+					<c:forEach var="xe" items="${xeList}">
+						<option value="${xe.idXe}"
+							${xe.idXe == idXe ? 'selected' : ''}>
+							${xe.bienSo}</option>
+					</c:forEach>
+				</select>
+				<label>Giá vé:</label> <input
+					type="number" id="editGiaVe"> 
+				<label>Tên tài xế:</label> 
+				<select id="editTenTaiXe"
+					name="editTenTaiXe">
+					<c:forEach var="taiXe" items="${nguoiDungList}">
+						<option value="${taiXe.idNguoiDung}"
+							${taiXe.idNguoiDung == idTaiXe ? 'selected' : ''}>
+							${taiXe.hoTen}</option>
+					</c:forEach>
+				</select>
+				<input type="hidden"
+					id="editChuyenXeId"> <input type="hidden" id="idTuyenXe">
+					<input type="hidden" id="idXe"> <input type="hidden" id="idTaiXe">
 			</div>
+
 			<div class="modal-footer">
 				<button onclick="submitEdit()">Lưu</button>
 				<button class="cancel-btn"
@@ -74,7 +106,7 @@
 					<span class="close" id="modalClose">&times;</span>
 				</div>
 				<div class="modal-body">
-					<p class="title-question">Bạn có muốn xoá người dùng không?</p>
+					<p class="title-question">Bạn có muốn xoá chuyến xe không?</p>
 				</div>
 				<div class="modal-footer">
 					<button id="confirmYes" class="btn btn-yes">Có</button>
@@ -106,7 +138,8 @@
 			</div>
 			<a href="<%=request.getContextPath()%>/admin/ticket"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/order.png"
-				alt="ticket" /><span>Quản Lý Vé</span></a> <a href="<%=request.getContextPath()%>/admin/bus-route"><img
+				alt="ticket" /><span>Quản Lý Vé</span></a> <a
+				href="<%=request.getContextPath()%>/admin/bus-route"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
 				alt="route" /><span>Quản Lý Tuyến Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/bus-trip" class="active"><img
@@ -121,7 +154,7 @@
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
 				alt="bill" /><span>Quản Lý Hoá Đơn</span></a> <a href="#"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/chart.png"
-				alt="chart" /><span>Thống Kê</span></a> <a 
+				alt="chart" /><span>Thống Kê</span></a> <a
 				href="<%=request.getContextPath()%>/admin/account"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/profile.png"
 				alt="chart" /><span>Thông tin tài khoản</span></a>
@@ -142,7 +175,8 @@
 				<div class="header__user" onclick="toggleModal()">
 					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/users.png"
-						alt="User" /> <span>Xin chào <strong id="userName"></strong></span> <img
+						alt="User" /> <span>Xin chào <strong id="userName"></strong></span>
+					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/down-arrow.png"
 						alt="down" />
 				</div>
@@ -214,10 +248,10 @@
 
 			<div class="orders">
 				<div class="orders__header">
-					<h2 id="title">Danh sách chuyến xe</h2>
+					<h2 id="title">Danh sách tuyến xe</h2>
 					<div class="orders__actions">
 						<div class="search-box">
-							<input type="text" placeholder="Nhập từ khoá để tìm kiếm..." />
+							<input type="text" id="searchInput" placeholder="Nhập từ khoá để tìm kiếm..." />
 							<div class="search-box__icon">
 								<img
 									src="<%=request.getContextPath()%>/assets/admin/image/magnifying-glass.png"
@@ -249,8 +283,7 @@
 								<td><fmt:formatNumber value="${chuyenxe.giaVe}"
 										pattern="#,###" groupingUsed="true" /> đ</td>
 								<td>${chuyenxe.taiXe.hoTen}</td>
-								<td>
-									<img
+								<td><img
 									src="<%=request.getContextPath()%>/assets/admin/image/see.png"
 									alt="detail"
 									onclick="showDetailModal('${chuyenxe.tuyenXe.tenTuyen}', 
@@ -261,9 +294,22 @@
      									'${chuyenxe.taiXe.hoTen}')" />
 									<img
 									src="<%=request.getContextPath()%>/assets/admin/image/update.png"
-									alt="update" /> <img
-									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
-									alt="delete" /></td>
+									alt="update"
+									onclick="showEditModal(
+    									'${chuyenxe.idChuyenXe}',
+    									'${chuyenxe.tuyenXe.idTuyenXe}',
+        								'${chuyenxe.tuyenXe.tenTuyen}', 
+        								'${chuyenxe.thoiDiemDi}',
+        								'${chuyenxe.thoiDiemDen}',
+        								'${chuyenxe.xe.idXe}',
+        								'${chuyenxe.xe.bienSo}', 
+        								'${chuyenxe.giaVe}',
+        								'${chuyenxe.taiXe.idNguoiDung}',
+        								'${chuyenxe.taiXe.hoTen}')" />
+									<img src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
+  										alt="delete"
+  										onclick="showDeleteModal('${chuyenxe.idChuyenXe}')"/>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -304,6 +350,18 @@
 	</div>
 
 	<script>
+	
+	flatpickr("#editThoiDiemDi", {
+        enableTime: true,
+        dateFormat: "d/m/Y H:i",
+        time_24hr: true
+    });
+
+    flatpickr("#editThoiDiemDen", {
+        enableTime: true,
+        dateFormat: "d/m/Y H:i",
+        time_24hr: true
+    });
 	
 	const nguoiDungStr = localStorage.getItem("nguoiDung");
     if (nguoiDungStr) {
@@ -473,6 +531,220 @@
 	        }
 	    };
 	}
+	
+	function showEditModal(id, idTuyenXe, tenTuyen, thoiDiemDi, thoiDiemDen, idXe, bienSoXe, giaVe, idTaiXe, tenTaiXe) {
+	    document.getElementById('editChuyenXeId').value = id;
+	    document.getElementById('idTuyenXe').value = idTuyenXe;
+	    document.getElementById('editTenTuyen').value = idTuyenXe;
+
+	    document.getElementById('editThoiDiemDi').value = thoiDiemDi;
+	    document.getElementById('editThoiDiemDen').value = thoiDiemDen;
+	    document.getElementById('idXe').value = idXe;
+	    document.getElementById('editBienSoXe').value = idXe;
+	    document.getElementById('editGiaVe').value = giaVe;
+	    document.getElementById('idTaiXe').value = idTaiXe;
+	    document.getElementById('editTenTaiXe').value = idTaiXe;
+
+	    const overlay = document.getElementById('overlayEditModal');
+	    overlay.style.display = 'flex';
+
+	    overlay.onclick = function (event) {
+	        if (event.target === overlay) {
+	            overlay.style.display = 'none';
+	        }
+	    };
+	}
+	
+	document.getElementById('editTenTuyen').addEventListener('change', function() {
+        const idBenXeDen = document.getElementById('editTenTuyen').value;
+        document.getElementById('idTuyenXe').value = idBenXeDen;
+    });
+	
+	document.getElementById('editBienSoXe').addEventListener('change', function() {
+        const idBenXeDen = document.getElementById('editBienSoXe').value;
+        document.getElementById('idXe').value = idBenXeDen;
+    });
+	
+	document.getElementById('editTenTaiXe').addEventListener('change', function() {
+        const idBenXeDen = document.getElementById('editTenTaiXe').value;
+        document.getElementById('idTaiXe').value = idBenXeDen;
+    });
+	
+	function addSecondsIfNeeded(thoiDiem) {
+	    if (!thoiDiem.includes(":")) {
+	        return thoiDiem + ":00"; 
+	    }
+	    const parts = thoiDiem.split(" ");
+	    const timeParts = parts[1].split(":");
+	    if (timeParts.length === 2) {
+	        return thoiDiem + ":00";  
+	    }
+	    return thoiDiem; 
+	}
+	
+	function submitEdit() {
+		const idChuyenXe = document.getElementById('editChuyenXeId').value;
+		const idTuyenXe = document.getElementById('idTuyenXe').value;
+	    const tenTuyen = document.getElementById('editTenTuyen').value;
+	    const thoiDiemDi = document.getElementById('editThoiDiemDi').value;
+	    const thoiDiemDen = document.getElementById('editThoiDiemDen').value;
+	    const idXe = document.getElementById('idXe').value;
+	    const bienSoXe = document.getElementById('editBienSoXe').value;
+	    const giaVe = document.getElementById('editGiaVe').value;
+	    const idTaiXe = document.getElementById('idTaiXe').value;
+	    const tenTaiXe = document.getElementById('editTenTaiXe').value;
+	    const thoiDiemDiUpdated = addSecondsIfNeeded(thoiDiemDi);
+	    const thoiDiemDenUpdated = addSecondsIfNeeded(thoiDiemDen);
+	    
+		let isValid = true;
+
+		if (
+			thoiDiemDi === "" ||
+			thoiDiemDen === "" ||
+			giaVe === "" ||
+			idTuyenXe === "" ||
+			idXe === "" ||
+			idTaiXe === ""
+		) {
+			toast({
+				title: "Chú ý!",
+				message: "Vui lòng điền đầy đủ thông tin!",
+				type: "error",
+				duration: 1000
+			});
+			isValid = false;
+		}
+
+		if (isValid) {
+			const chuyenXeData = {
+				idChuyenXe: parseInt(idChuyenXe),
+				idTuyenXe: parseInt(idTuyenXe),
+				thoiDiemDi: thoiDiemDiUpdated,
+				thoiDiemDen: thoiDiemDenUpdated,
+				idXe: parseInt(idXe),
+				giaVe: parseFloat(giaVe),
+				idTaiXe: parseInt(idTaiXe),
+				trangThai: 1
+			};
+			console.log("Dữ liệu chuyến xe:", chuyenXeData);
+
+			const url = new URL('http://localhost:8085/FutaBus_Backend/api/admin/update-chuyenxe');
+
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(chuyenXeData)
+			})
+			.then(response => {
+				if (!response.ok) {
+					return response.text().then(text => {
+						throw new Error("Lỗi từ server: " + text);
+					});
+				}
+				return response.json();
+			})
+			.then(data => {
+				console.log("Cập nhật thành công:", data);
+				toast({
+					title: "Thành công!",
+					message: "Chuyến xe đã được cập nhật.",
+					type: "success",
+					duration: 1000
+				});
+				setTimeout(() => {
+					window.location.reload();
+				}, 1000);
+			})
+			.catch(error => {
+				console.error("Lỗi cập nhật:", error.message);
+				toast({
+					title: "Lỗi!",
+					message: "Không thể cập nhật chuyến xe.",
+					type: "error",
+					duration: 1000
+				});
+			});
+		}
+	}
+	
+	function showDeleteModal(id) {
+        window.idCanXoa = id;
+
+        const overlay = document.getElementById("overlayDeleteModal");
+        overlay.style.display = "flex"; 
+
+        overlay.onclick = function (event) {
+            if (event.target === overlay) {
+                overlay.style.display = "none";
+            }
+        };
+
+        document.getElementById("confirmNo").onclick = function () {
+            overlay.style.display = "none";
+        };
+
+        document.getElementById("modalClose").onclick = function () {
+            overlay.style.display = "none";
+        };
+        
+        document.getElementById("confirmYes").onclick = function () {
+            const url = 'http://localhost:8085/FutaBus_Backend/api/admin/chuyenxe/xoa/' + id;
+
+            fetch(url, {
+            	method: 'PUT',
+            	headers: {
+            		"Content-Type": "application/json"
+            	}
+           	})
+            	  .then(response => {
+            	    if (!response.ok) {
+            	      return response.text().then(text => {
+            	        throw new Error("Lỗi từ server: " + text); 
+            	      });
+            	    }
+            	    return response.text(); 
+            	  })
+            	  .then(message => {
+            	    console.log("Xoá thành công:", message);
+            	    toast({
+            	      title: "Thành công!",
+            	      message: "Chuyến xe đã được xoá.",
+            	      type: "success",
+            	      duration: 1000
+            	    });
+
+            	    setTimeout(() => {
+            	    	  window.location.reload();
+            	    }, 1000); 
+            	  })
+            	  .catch(error => {
+            	    console.error("Lỗi xoá:", error.message);
+            	    toast({
+            	      title: "Lỗi!",
+            	      message: "Không thể xoá chuyến xe.",
+            	      type: "error",
+            	      duration: 1000
+            	    });
+            });
+            overlay.style.display = "none"; 
+        };
+    }
+	
+	document.getElementById("searchInput").addEventListener("input", function () {
+        const keyword = this.value.toLowerCase();
+        const rows = document.querySelectorAll("table tbody tr");
+
+        rows.forEach(row => {
+          const rowText = row.textContent.toLowerCase();
+          if (rowText.includes(keyword)) {
+            row.style.display = ""; 
+          } else {
+            row.style.display = "none"; 
+          }
+        });
+      });
 
 	</script>
 

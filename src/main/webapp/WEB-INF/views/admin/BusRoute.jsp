@@ -653,7 +653,9 @@
 					type: "success",
 					duration: 1000
 				});
-				window.location.reload();
+				setTimeout(() => {
+					window.location.reload();
+				}, 1000);
 			})
 			.catch(error => {
 				console.error("Lỗi cập nhật:", error.message);
