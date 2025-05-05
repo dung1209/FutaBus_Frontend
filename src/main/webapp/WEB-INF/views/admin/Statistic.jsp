@@ -5,10 +5,10 @@
 <head>
 
 <meta charset="utf-8">
-<title>Xe</title>
+<title>Thống kê</title>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/assets/admin/css/bus.css">
+	href="<%=request.getContextPath()%>/assets/admin/css/statistic.css">
 <link
 	href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
 	rel="stylesheet">
@@ -25,64 +25,6 @@
 </head>
 <body>
 	<div id="toast"></div>
-	<div id="overlayModal" class="overlay" style="display: none;">
-		<div id="detailModal" class="modal">
-			<h3>Chi tiết xe</h3>
-			<div class="form-detail">
-				<label>Biển số xe:</label><input type="text" id="modalBienSo"
-					readonly> <label>Tên xe:</label><input type="text"
-					id="modalTenXe" readonly> <label>Loại xe:</label><input
-					type="text" id="modalTenLoaiXe" readonly> <label>Số
-					ghế:</label><input type="text" id="modalSoGhe" readonly>
-			</div>
-			<div class="modal-footer">
-				<button
-					onclick="document.getElementById('overlayModal').style.display='none'">Đóng</button>
-			</div>
-		</div>
-	</div>
-
-	<div id="overlayEditModal" class="overlay" style="display: none;">
-		<div id="editModal" class="modal">
-			<h3>Chỉnh sửa xe</h3>
-			<div class="form-detail form-edit">
-				<label>Tên xe:</label> <input type="text" id="editTenXe"> 
-				<label>Biển số xe:</label> <input type="text" id="editBienSoXe"> 
-				<label>Loại xe:</label> 
-				<select id="editLoaiXe" name="editLoaiXe">
-					<c:forEach var="loaiXe" items="${loaiXeList}">
-						<option value="${loaiXe.idLoaiXe}" ${loaiXe.idLoaiXe == idLoaiXe ? 'selected' : ''}>${loaiXe.tenLoai}</option>
-					</c:forEach>
-				</select> 
-				<input type="hidden" id="editXeId">
-			</div>
-
-			<div class="modal-footer">
-				<button onclick="submitEdit()">Lưu</button>
-				<button class="cancel-btn"
-					onclick="document.getElementById('overlayEditModal').style.display='none'">Hủy</button>
-			</div>
-		</div>
-	</div>
-	
-	<div id="overlayDeleteModal" class="overlay" style="display: none;">
-		<div id="confirmModal" class="modal delete-modal">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h2 class="modal-title">Xác nhận</h2>
-					<span class="close" id="modalClose">&times;</span>
-				</div>
-				<div class="modal-body">
-					<p class="title-question">Bạn có muốn xoá xe không?</p>
-				</div>
-				<div class="modal-footer">
-					<button id="confirmYes" class="btn btn-yes">Có</button>
-					<button id="confirmNo" class="btn btn-no">Không</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<aside class="sidebar" id="sidebar">
 		<div class="sidebar__logo" id="sidebarLogo">
 			<img src="<%=request.getContextPath()%>/assets/admin/image/logo.png"
@@ -112,14 +54,15 @@
 				href="<%=request.getContextPath()%>/admin/bus-trip"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/map.png"
 				alt="map" /><span>Quản Lý Chuyến Xe</span></a> <a
-				href="<%=request.getContextPath()%>/admin/bus" class="active"><img
+				href="<%=request.getContextPath()%>/admin/bus"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bus-bus.png"
-				alt="bus" class="active" /><span>Quản Lý Xe</span></a> <a
+				alt="bus" /><span>Quản Lý Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/location"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/buildings.png"
-				alt="location" /><span>Quản Lý địa điểm</span></a> <a href="<%=request.getContextPath()%>/admin/statistic"><img
+				alt="location" /><span>Quản Lý địa điểm</span></a> <a
+				href="<%=request.getContextPath()%>/admin/statistic" class="active"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
-				alt="bill" /><span>Thống Kê</span></a> <a
+				alt="bill" class="active" /><span>Thống Kê</span></a> <a
 				href="<%=request.getContextPath()%>/admin/account"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/profile.png"
 				alt="chart" /><span>Thông tin tài khoản</span></a>
@@ -212,107 +155,40 @@
 			</div>
 
 			<div class="orders">
-				<div class="orders__header">
-					<h2 id="title">Danh sách tuyến xe</h2>
-					<div class="orders__actions">
-						<div class="search-box">
-							<input type="text" id="searchInput" placeholder="Nhập từ khoá để tìm kiếm..." />
-							<div class="search-box__icon">
-								<img
-									src="<%=request.getContextPath()%>/assets/admin/image/magnifying-glass.png"
-									alt="search" />
-							</div>
-						</div>
+				<div class="container">
+					<h2>Biểu đồ doanh thu</h2>
+					<div class="filter-bar">
+						<label for="startDate">Từ ngày:</label> 
+							<input id="startDate" type="date" name="startDate" class="form-control">
+						<label for="endDate">Đến ngày:</label> 
+							<input id="endDate" type="date" name="endDate" class="form-control">
+						<button id="searchButton">Tìm kiếm</button>
 					</div>
-				</div>
-
-				<table>
-					<thead>
-						<tr>
-							<th>Biển số</th>
-							<th>Tên xe</th>
-							<th>Loại xe</th>
-							<th>Số ghế</th>
-							<th>Hành động</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="xe" items="${xeList}">
-							<tr>
-								<td>${xe.bienSo}</td>
-								<td>${xe.tenXe}</td>
-								<c:set var="tenLoaiXe" value="" />
-								<c:set var="soGheXe" value="" />
-
-								<c:forEach var="loaixe" items="${loaiXeList}">
-									<c:if test="${xe.loaiXe.idLoaiXe == loaixe.idLoaiXe}">
-										<c:set var="tenLoaiXe" value="${loaixe.tenLoai}" />
-										<c:set var="soGheXe" value="${loaixe.soGhe}" />
-									</c:if>
-								</c:forEach>
-
-								<td>${tenLoaiXe}</td>
-								<td>${soGheXe}</td>
-								<td><img
-									src="<%=request.getContextPath()%>/assets/admin/image/see.png"
-									alt="detail"
-									onclick="showDetailModal('${xe.bienSo}', 
-     									'${xe.tenXe}', 
-     									'${tenLoaiXe}', 
-     									'${soGheXe}')" />
-									<img
-									src="<%=request.getContextPath()%>/assets/admin/image/update.png"
-									alt="update"
-									onclick="showEditModal(
-    									'${xe.idXe}',
-    									'${xe.tenXe}',
-        								'${xe.bienSo}', 
-        								'${xe.loaiXe.idLoaiXe}')" />
-									<img src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
-  										alt="delete"
-  										onclick="showDeleteModal('${xe.idXe}')"/>
-								</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-
-				<div class="custom-hr"></div>
-
-				<div class="pagination-container">
-					<p class="pagination-info">Hiển thị trang ${currentPage} trong
-						${totalPages} trang</p>
-					<div class="pagination">
-						<c:choose>
-							<c:when test="${currentPage <= 1}">
-								<span class="prev disabled">Trước</span>
-							</c:when>
-							<c:otherwise>
-								<a href="?page=${currentPage - 1}" class="prev">Trước</a>
-							</c:otherwise>
-						</c:choose>
-
-						<c:forEach var="i" begin="1" end="${totalPages}">
-							<a href="?page=${i}"
-								class="page ${i == currentPage ? 'active' : ''}">${i}</a>
-						</c:forEach>
-
-						<c:choose>
-							<c:when test="${currentPage >= totalPages}">
-								<span class="next disabled">Sau</span>
-							</c:when>
-							<c:otherwise>
-								<a href="?page=${currentPage + 1}" class="next">Sau</a>
-							</c:otherwise>
-						</c:choose>
+					<div class="chart-wrapper">
+						<canvas id="revenueChart"></canvas>
 					</div>
 				</div>
 			</div>
 		</main>
 	</div>
-
-	<script>
 	
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script>
+    	flatpickr("#startDate", {
+    		dateFormat: "d/m/Y",
+    		maxDate: "today",
+    		onChange: function(selectedDates, dateStr, instance) {
+    	        let returnDatePicker = document.getElementById("endDate")._flatpickr;
+    	        returnDatePicker.set("minDate", dateStr); 
+    	    }
+    	});
+    	flatpickr("#endDate", {
+    		dateFormat: "d/m/Y",
+    		maxDate: "today"
+    	});
+    </script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
 	function toast({ title = "", message = "", type = "info", duration = 3000 }) {
 		const main = document.getElementById("toast");
 		if (main) {
@@ -458,187 +334,154 @@
 				modal.classList.remove("show");
 			}
 		});
-
-		function showDetailModal(bienSo, tenXe, tenLoaiXe, soGhe) {
-			document.getElementById('modalBienSo').value = bienSo;
-			document.getElementById('modalTenXe').value = tenXe;
-			document.getElementById('modalTenLoaiXe').value = tenLoaiXe;
-			document.getElementById('modalSoGhe').value = soGhe;
-
-			const overlay = document.getElementById('overlayModal');
-			overlay.style.display = 'flex';
-
-			overlay.onclick = function(event) {
-				if (event.target === overlay) {
-					overlay.style.display = 'none';
-				}
-			};
-		}
-
-		function showEditModal(idXe, tenXe, bienSo, idLoaiXe) {
-			document.getElementById('editXeId').value = idXe;
-			document.getElementById('editTenXe').value = tenXe;
-			document.getElementById('editBienSoXe').value = bienSo;
-			document.getElementById('editLoaiXe').value = idLoaiXe;
-
-			const overlay = document.getElementById('overlayEditModal');
-			overlay.style.display = 'flex';
-
-			overlay.onclick = function(event) {
-				if (event.target === overlay) {
-					overlay.style.display = 'none';
-				}
-			};
-		}
 		
-		function submitEdit() {
-			const idXe = document.getElementById('editXeId').value;
-			const tenXe = document.getElementById('editTenXe').value;
-		    const bienSo = document.getElementById('editBienSoXe').value;
-		    const idLoaiXe = document.getElementById('editLoaiXe').value;
+		/*const labels = ${ngayList};
+		const data = ${tongTienList};
+		const ctx = document.getElementById('revenueChart').getContext('2d');
+
+		new Chart(ctx, {
+		  type: 'line',
+		  data: {
+		    labels: labels,
+		    datasets: [{
+		      label: 'Doanh thu (VNĐ)',
+		      data: data,
+		      borderColor: '#007bff',
+		      backgroundColor: 'rgba(0,123,255,0.1)',
+		      fill: true,
+		      tension: 0.3,
+		      pointBackgroundColor: '#007bff',
+		      pointRadius: 5
+		    }]
+		  },
+		  options: {
+		    responsive: true,
+		    plugins: {
+		      tooltip: {
+		        callbacks: {
+		          label: function(context) {
+		            return context.dataset.label + ': ' + context.formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' VNĐ';
+		          }
+		        }
+		      }
+		    },
+		    scales: {
+		      y: {
+		        beginAtZero: true,
+		        ticks: {
+		          callback: function(value) {
+		            return value.toLocaleString('vi-VN') + ' VNĐ';
+		          }
+		        }
+		      }
+		    }
+		  }
+		});*/
+		
+		let revenueChart;
+		const ctx = document.getElementById('revenueChart').getContext('2d');
+		const initialLabels = ${ngayList};
+		const initialData = ${tongTienList};
+
+		revenueChart = new Chart(ctx, {
+		  type: 'line',
+		  data: {
+		    labels: initialLabels,
+		    datasets: [{
+		      label: 'Doanh thu (VNĐ)',
+		      data: initialData,
+		      borderColor: '#007bff',
+		      backgroundColor: 'rgba(0,123,255,0.1)',
+		      fill: true,
+		      tension: 0.3,
+		      pointBackgroundColor: '#007bff',
+		      pointRadius: 5
+		    }]
+		  },
+		  options: {
+		    responsive: true,
+		    plugins: {
+		      tooltip: {
+		        callbacks: {
+		          label: function(context) {
+		            return context.dataset.label + ': ' + context.formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' VNĐ';
+		          }
+		        }
+		      }
+		    },
+		    scales: {
+		      y: {
+		        beginAtZero: true,
+		        ticks: {
+		          callback: function(value) {
+		            return value.toLocaleString('vi-VN') + ' VNĐ';
+		          }
+		        }
+		      }
+		    }
+		  }
+		});
+		
+		document.getElementById("searchButton").addEventListener("click", function () {
+		    const startDate = document.getElementById("startDate").value;
+		    const endDate = document.getElementById("endDate").value;
+		    let isValid = true;
+
+		    console.log("Từ ngày:", startDate);
+		    console.log("Đến ngày:", endDate);
 		    
-			let isValid = true;
+		    if (!startDate || !endDate) {
+		    	toast({
+          	      title: "Chú ý!",
+          	      message: "Vui lòng điền đầy đủ thông tin để tìm kiếm.",
+          	      type: "error",
+          	      duration: 1000
+          	    });
+		    	isValid = false;
+		    }
+		    
+		    if (isValid) {
+		    	const url = new URL("http://localhost:8085/FutaBus_Backend/api/admin/thongke");
+		    	url.searchParams.append("startDate", startDate);
+		    	url.searchParams.append("endDate", endDate);
 
-			if (
-				tenXe === "" ||
-				bienSo === "" ||
-				idLoaiXe === ""
-			) {
-				toast({
-					title: "Chú ý!",
-					message: "Vui lòng điền đầy đủ thông tin!",
-					type: "error",
-					duration: 1000
-				});
-				isValid = false;
-			}
+		        fetch(url, {
+		        	method: "GET",
+		            headers: {
+		                "Content-Type": "application/json"
+		            }
+		        })
+		        .then(response => {
+		            if (!response.ok) {
+		                return response.text().then(text => {
+		                    throw new Error("Lỗi từ server: " + text);
+		                });
+		            }
+		            return response.json();
+		        })
+		        .then(data => {
+		            console.log("Dữ liệu doanh thu nhận được:", data);
+		            
+		            const newLabels = data.ngayList;
+		            const newData = data.tongTienList;
 
-			if (isValid) {
-				const xeData = {
-					idXe: parseInt(idXe),
-					tenXe: tenXe,
-					bienSo: bienSo,
-					idLoaiXe: parseInt(idLoaiXe)
-				};
-				console.log("Dữ liệu chuyến xe:", xeData);
+		            revenueChart.data.labels = newLabels;
+		            revenueChart.data.datasets[0].data = newData;
 
-				const url = new URL('http://localhost:8085/FutaBus_Backend/api/admin/update-xe');
+		            revenueChart.update();
+		        })
+		        .catch(error => {
+		            console.error("Lỗi khi lấy dữ liệu doanh thu:", error.message);
+		            toast({
+		          	      title: "Lỗi!",
+		          	      message: "Không thể lấy dữ liệu doanh thu.",
+		          	      type: "error",
+		          	      duration: 1000
+		          	});
+		        });
+		    }
+		});
 
-				fetch(url, {
-					method: 'POST',
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify(xeData)
-				})
-				.then(response => {
-					if (!response.ok) {
-						return response.text().then(text => {
-							throw new Error("Lỗi từ server: " + text);
-						});
-					}
-					return response.json();
-				})
-				.then(data => {
-					console.log("Cập nhật thành công:", data);
-					toast({
-						title: "Thành công!",
-						message: "Chuyến xe đã được cập nhật.",
-						type: "success",
-						duration: 1000
-					});
-					setTimeout(() => {
-						window.location.reload();
-					}, 1000);
-				})
-				.catch(error => {
-					console.error("Lỗi cập nhật:", error.message);
-					toast({
-						title: "Lỗi!",
-						message: "Không thể cập nhật chuyến xe.",
-						type: "error",
-						duration: 1000
-					});
-				});
-			}
-		}
-		
-		function showDeleteModal(id) {
-	        window.idCanXoa = id;
-
-	        const overlay = document.getElementById("overlayDeleteModal");
-	        overlay.style.display = "flex"; 
-
-	        overlay.onclick = function (event) {
-	            if (event.target === overlay) {
-	                overlay.style.display = "none";
-	            }
-	        };
-
-	        document.getElementById("confirmNo").onclick = function () {
-	            overlay.style.display = "none";
-	        };
-
-	        document.getElementById("modalClose").onclick = function () {
-	            overlay.style.display = "none";
-	        };
-	        
-	        document.getElementById("confirmYes").onclick = function () {
-	            const url = 'http://localhost:8085/FutaBus_Backend/api/admin/xe/xoa/' + id;
-
-	            fetch(url, {
-	            	method: 'PUT',
-	            	headers: {
-	            		"Content-Type": "application/json"
-	            	}
-	           	})
-	            	  .then(response => {
-	            	    if (!response.ok) {
-	            	      return response.text().then(text => {
-	            	        throw new Error("Lỗi từ server: " + text); 
-	            	      });
-	            	    }
-	            	    return response.text(); 
-	            	  })
-	            	  .then(message => {
-	            	    console.log("Xoá thành công:", message);
-	            	    toast({
-	            	      title: "Thành công!",
-	            	      message: "Xe đã được xoá.",
-	            	      type: "success",
-	            	      duration: 1000
-	            	    });
-
-	            	    setTimeout(() => {
-	            	    	  window.location.reload();
-	            	    }, 1000); 
-	            	  })
-	            	  .catch(error => {
-	            	    console.error("Lỗi xoá:", error.message);
-	            	    toast({
-	            	      title: "Lỗi!",
-	            	      message: "Không thể xoá xe.",
-	            	      type: "error",
-	            	      duration: 1000
-	            	    });
-	            });
-	            overlay.style.display = "none"; 
-	        };
-	    }
-		
-		document.getElementById("searchInput").addEventListener("input", function () {
-	        const keyword = this.value.toLowerCase();
-	        const rows = document.querySelectorAll("table tbody tr");
-
-	        rows.forEach(row => {
-	          const rowText = row.textContent.toLowerCase();
-	          if (rowText.includes(keyword)) {
-	            row.style.display = ""; 
-	          } else {
-	            row.style.display = "none"; 
-	          }
-	        });
-	      });
 	</script>
 
 </body>

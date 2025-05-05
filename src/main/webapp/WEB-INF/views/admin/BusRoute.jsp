@@ -124,7 +124,7 @@
 			<a href="<%=request.getContextPath()%>/admin/ticket"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/order.png"
 				alt="ticket" /><span>Quản Lý Vé</span></a> <a 
-				href="#" class="active"><img
+				href="<%=request.getContextPath()%>/admin/bus-route" class="active"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
 				alt="route" class="active" /><span>Quản Lý Tuyến Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/bus-trip"><img
@@ -135,11 +135,9 @@
 				alt="bus" /><span>Quản Lý Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/location"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/buildings.png"
-				alt="location" /><span>Quản Lý địa điểm</span></a> <a href="#"><img
+				alt="location" /><span>Quản Lý địa điểm</span></a> <a href="<%=request.getContextPath()%>/admin/statistic"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
-				alt="bill" /><span>Quản Lý Hoá Đơn</span></a> <a href="#"><img
-				src="<%=request.getContextPath()%>/assets/admin/image/chart.png"
-				alt="chart" /><span>Thống Kê</span></a> <a 
+				alt="bill" /><span>Thống Kê</span></a> <a 
 				href="<%=request.getContextPath()%>/admin/account"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/profile.png"
 				alt="chart" /><span>Thông tin tài khoản</span></a>

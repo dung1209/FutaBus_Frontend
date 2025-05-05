@@ -154,6 +154,24 @@ public class AdminViewController {
         
         return "admin/Account";
     }
+    
+    @GetMapping("/statistic")
+    public String statisticPage(Model model) {
+    	RestTemplate restTemplate = new RestTemplate();
+    	String apiUrlWithParams = API_URL + "thongke";
+    	
+    	ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
+        Map<String, Object> responseData = response.getBody();
+    	
+    	model.addAttribute("totalCustomer", responseData.get("totalCustomer"));
+        model.addAttribute("totalXe", responseData.get("totalXe"));
+        model.addAttribute("totalChuyenXe", responseData.get("totalChuyenXe"));
+        model.addAttribute("tongDoanhThuThangHienTai", responseData.get("tongDoanhThuThangHienTai"));
+        model.addAttribute("ngayList", responseData.get("ngayList"));
+        model.addAttribute("tongTienList", responseData.get("tongTienList"));
+        
+        return "admin/Statistic";
+    }
 
 }
 
