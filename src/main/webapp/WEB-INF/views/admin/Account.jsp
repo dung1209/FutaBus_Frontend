@@ -25,7 +25,6 @@
 </head>
 <body>
 	<div id="toast"></div>
-
 	<aside class="sidebar" id="sidebar">
 		<div class="sidebar__logo" id="sidebarLogo">
 			<img src="<%=request.getContextPath()%>/assets/admin/image/logo.png"

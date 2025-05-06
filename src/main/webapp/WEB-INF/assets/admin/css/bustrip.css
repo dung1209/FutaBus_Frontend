@@ -812,3 +812,77 @@ a.gap-3.cursor-pointer {
 }
 
 /*****************************XOÁ**********************************/
+
+/*****************************THÊM**********************************/
+#addModal h3 {
+	margin-bottom: 20px;
+	color: #465fffdb;
+}
+
+#addModal button {
+	background-color: #eb9328;
+	color: white;
+	border: none;
+	border-radius: 999px;
+	font-size: 14px;
+	cursor: pointer;
+	white-space: nowrap;
+	padding: 7px 27px;
+}
+
+#addModal .cancel-btn {
+	background-color: #888 !important;
+}
+
+.form-add input {
+	pointer-events: auto;
+	background-color: #fff;
+	font-size: 14px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	width: 100%;
+	box-sizing: border-box;
+	height: 38.4px;
+}
+
+.form-add input:focus {
+	outline: none;
+	border: 1px solid #eb9328;
+	box-shadow: 0 0 4px rgba(235, 147, 40, 0.5);
+}
+
+.form-add select {
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	pointer-events: auto;
+	font-family: inherit;
+	font-size: 14px;
+	width: 100%;
+	box-sizing: border-box;
+	height: 38.4px;
+}
+
+.form-add select:focus {
+	outline: none;
+	border: 1px solid #eb9328;
+	box-shadow: 0 0 4px rgba(235, 147, 40, 0.5);
+}
+/*****************************THÊM**********************************/
+.orders__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+button.btn-add-trip {
+    background-color: #47d864;
+    color: #fff;
+    font-size: 14px;
+    padding: 9px 40px;
+    border-radius: 7px;
+    display: block;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}

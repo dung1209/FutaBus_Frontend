@@ -45,7 +45,7 @@
 							readonly>
 					</div>
 				</div>
-				
+
 				<div class="column">
 					<div class="form-group">
 						<label>Số điện thoại:</label><input type="text"
@@ -81,7 +81,7 @@
 							readonly>
 					</div>
 				</div>
-				
+
 				<div class="column">
 					<div class="form-group">
 						<label>Thời gian đặt vé:</label><input type="text"
@@ -114,22 +114,86 @@
 
 	<div id="overlayEditModal" class="overlay" style="display: none;">
 		<div id="editModal" class="modal">
-			<h3>Chỉnh sửa người dùng</h3>
-			<div class="form-detail form-edit">
-				<label>Họ và tên:</label><input type="text" id="editHoTen">
-				<label>Giới tính:</label> <select id="editGioiTinh">
-					<option value="false">Nam</option>
-					<option value="true">Nữ</option>
-				</select> <label>Năm sinh:</label><input type="text" id="editNamSinh">
-				<label>Số điện thoại:</label><input type="text" id="editSoDienThoai">
-				<label>Email:</label><input type="text" id="editEmail" readonly>
-				<label>Địa chỉ:</label><input type="text" id="editDiaChi"> <input
-					type="hidden" id="editUserId">
+			<h3>Chỉnh sửa Vé</h3>
+			<div class="form-detail">
+				<div class="column">
+					<div class="form-group">
+						<label>Họ tên:</label><input type="text" id="editHoTen">
+					</div>
+					<div class="form-group">
+						<label>Bến đi:</label><input type="text" id="editBenDi">
+					</div>
+					<div class="form-group">
+						<label>Tuyến:</label><input type="text" id="editTenTuyen">
+					</div>
+					<div class="form-group">
+						<label>Số lượng vé:</label><input type="number" id="editSoLuongVe">
+					</div>
+				</div>
+
+				<div class="column">
+					<div class="form-group">
+						<label>Số điện thoại:</label><input type="text"
+							id="editSoDienThoai">
+					</div>
+					<div class="form-group">
+						<label>Bến đến:</label><input type="text" id="editBenDen">
+					</div>
+					<div class="form-group">
+						<label>Loại xe:</label><input type="text" id="editLoaiXe">
+					</div>
+					<div class="form-group">
+						<label>Giá vé:</label><input type="text" id="editGiaVe">
+					</div>
+				</div>
+
+				<div class="column">
+					<div class="form-group">
+						<label>Email:</label><input type="text" id="editEmail">
+					</div>
+					<div class="form-group">
+						<label>Thời điểm đi:</label><input type="text" id="editThoiDiemDi">
+					</div>
+					<div class="form-group">
+						<label>Biển số xe:</label><input type="text" id="editBienSoXe">
+					</div>
+					<div class="form-group">
+						<label>Tổng tiền:</label><input type="text" id="editTongTien">
+					</div>
+				</div>
+
+				<div class="column">
+					<div class="form-group">
+						<label>Thời gian đặt vé:</label><input type="text"
+							id="editThoiGianDatVe">
+					</div>
+					<div class="form-group">
+						<label>Thời điểm đến:</label><input type="text"
+							id="editThoiDiemDen">
+					</div>
+					<div class="form-group">
+						<label>Danh sách ghế:</label><input type="text"
+							id="editDanhSachGhe">
+					</div>
+					<div class="form-group">
+						<label>Trạng thái:</label> <select id="editTrangThai">
+							<option value="0">Đã hủy</option>
+							<option value="1">Đã đặt</option>
+							<option value="2">Chờ thanh toán</option>
+							<option value="3">Đã thanh toán</option>
+							<option value="4">Hoàn tất</option>
+						</select>
+					</div>
+				</div>
+
+				<input type="hidden" id="editIdPhieuDatVe"> <input
+					type="hidden" id="editDanhSachIDGhe">
 			</div>
+
 			<div class="modal-footer">
-				<button onclick="submitEdit()">Lưu</button>
-				<button class="cancel-btn"
-					onclick="document.getElementById('overlayEditModal').style.display='none'">Hủy</button>
+				<button
+					onclick="document.getElementById('overlayEditModal').style.display='none'">Đóng</button>
+				<button onclick="saveEdit()">Lưu</button>
 			</div>
 		</div>
 	</div>
@@ -186,9 +250,10 @@
 				alt="bus" /><span>Quản Lý Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/location"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/buildings.png"
-				alt="location" /><span>Quản Lý địa điểm</span></a> <a href="<%=request.getContextPath()%>/admin/statistic"><img
+				alt="location" /><span>Quản Lý địa điểm</span></a> <a
+				href="<%=request.getContextPath()%>/admin/statistic"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
-				alt="bill" /><span>Thống Kê</span></a> <a 
+				alt="bill" /><span>Thống Kê</span></a> <a
 				href="<%=request.getContextPath()%>/admin/account"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/profile.png"
 				alt="chart" /><span>Thông tin tài khoản</span></a>
@@ -209,7 +274,8 @@
 				<div class="header__user" onclick="toggleModal()">
 					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/users.png"
-						alt="User" /> <span>Xin chào <strong id="userName"></strong></span> <img
+						alt="User" /> <span>Xin chào <strong id="userName"></strong></span>
+					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/down-arrow.png"
 						alt="down" />
 				</div>
@@ -346,7 +412,26 @@
                                			'${booking.danhSachIDGhe}')" />
 									<img
 									src="<%=request.getContextPath()%>/assets/admin/image/update.png"
-									alt="update" /> <img
+									alt="update"
+									onclick="showEditModal('${booking.idPhieuDatVe}', 
+    									'${booking.hoTen}', 
+                               			'${booking.soDienThoai}', 
+                               			'${booking.email}', 
+                               			'${booking.thoiDiemDi}', 
+                               			'${booking.thoiDiemDen}', 
+                               			'${booking.trangThai}', 
+                               			'${booking.tenTuyen}', 
+                               			'${booking.benDi}', 
+                               			'${booking.benDen}', 
+                               			'${booking.bienSoXe}', 
+                               			'${booking.loaiXe}', 
+                               			'${booking.giaVe}', 
+                               			'${booking.soLuongVe}', 
+                               			'${booking.tongTien}', 
+                               			'${booking.thoiGianDatVe}', 
+                               			'${booking.danhSachGhe}', 
+                               			'${booking.danhSachIDGhe}')" />
+									<img
 									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
 									alt="delete" /></td>
 							</tr>
@@ -389,6 +474,59 @@
 	</div>
 
 	<script>
+	function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+		const main = document.getElementById("toast");
+		if (main) {
+			const toast = document.createElement("div");
+			
+    	    const autoRemoveId = setTimeout(function () {
+    	      main.removeChild(toast);
+    	    }, duration + 1000);
+
+    	    toast.onclick = function (e) {
+    	      if (e.target.closest(".toast__close")) {
+    	        main.removeChild(toast);
+    	        clearTimeout(autoRemoveId);
+    	      }
+    	    };
+
+    	    const icons = {
+    	      success: "fas fa-check-circle",
+    	      info: "fas fa-info-circle",
+    	      warning: "fas fa-exclamation-circle",
+    	      error: "fas fa-exclamation-circle"
+    	    };
+    	    const icon = icons[type];
+    	    const delay = (duration / 1000).toFixed(2);
+
+    	    toast.classList.add("toast", `toast--${type}`);
+    	    toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+    	    toast.innerHTML = `
+    	                    <div class="toast__icon">
+    	                        <i class="${icon}"></i>
+    	                    </div>
+    	                    <div class="toast__body">
+    	                        <h3 class="toast__title">${title}</h3>
+    	                        <p class="toast__msg">${message}</p>
+    	                    </div>
+    	                    <div class="toast__close">
+    	                        <i class="fas fa-times"></i>
+    	                    </div>
+    	                `;
+    	    const toastIcon = toast.querySelector('.toast__icon');
+			if (toastIcon) {
+    			const iconElement = document.createElement('i');
+    			iconElement.className = icon;
+    			toastIcon.appendChild(iconElement);
+			}
+    	    const toastMessage = toast.querySelector('.toast__msg');
+    	    toastMessage.textContent = message; 
+    	    const toastTitle = toast.querySelector('.toast__title');
+    	    toastTitle.textContent = title; 
+    	    main.appendChild(toast);
+		}
+    }
 	
 	const nguoiDungStr = localStorage.getItem("nguoiDung");
     if (nguoiDungStr) {
@@ -506,6 +644,7 @@
 				thoiDiemDi, thoiDiemDen, trangThai, tenTuyen, benDi, benDen,
 				bienSoXe, loaiXe, giaVe, soLuongVe, tongTien, thoiGianDatVe,
 				danhSachGhe, danhSachIDGhe) {
+			
 			const trangThaiMap = {
 					  0: "Đã hủy",
 					  1: "Đã đặt",
@@ -542,6 +681,87 @@
 				}
 			};
 		}
+		
+		function showEditModal(idPhieuDatVe, hoTen, soDienThoai, email, thoiDiemDi, thoiDiemDen, trangThai,
+                tenTuyen, benDi, benDen, bienSoXe, loaiXe, giaVe, soLuongVe, tongTien,
+                thoiGianDatVe, danhSachGhe, danhSachIDGhe) {
+
+			document.getElementById('editIdPhieuDatVe').value = idPhieuDatVe;
+			document.getElementById('editHoTen').value = hoTen;
+			document.getElementById('editSoDienThoai').value = soDienThoai;
+			document.getElementById('editEmail').value = email;
+			document.getElementById('editThoiDiemDi').value = formatDateTime(thoiDiemDi);
+			document.getElementById('editThoiDiemDen').value = formatDateTime(thoiDiemDen);
+			document.getElementById('editTrangThai').value = trangThai;
+			document.getElementById('editTenTuyen').value = tenTuyen;
+			document.getElementById('editBenDi').value = benDi;
+			document.getElementById('editBenDen').value = benDen;
+			document.getElementById('editBienSoXe').value = bienSoXe;
+			document.getElementById('editLoaiXe').value = loaiXe;
+			document.getElementById('editGiaVe').value = Number(giaVe).toLocaleString('vi-VN') + ' đ';
+			document.getElementById('editSoLuongVe').value = soLuongVe;
+			document.getElementById('editTongTien').value = Number(tongTien).toLocaleString('vi-VN') + ' đ';
+			document.getElementById('editThoiGianDatVe').value = formatDateTime(thoiGianDatVe);
+			document.getElementById('editDanhSachGhe').value = danhSachGhe;
+			document.getElementById('editDanhSachIDGhe').value = danhSachIDGhe;
+
+			const overlay = document.getElementById('overlayEditModal');
+			 overlay.style.display = 'flex';
+
+			overlay.onclick = function(event) {
+ 				if (event.target === overlay) {
+     				overlay.style.display = 'none';
+ 				}
+			};
+		}
+		
+		function saveEdit() {
+			const id = document.getElementById('editIdPhieuDatVe').value;
+			const trangThai = document.getElementById('editTrangThai').value;
+			
+			console.log("id:", id);
+			console.log("trangThai:", trangThai);
+
+			const url = 'http://localhost:8085/FutaBus_Backend/api/admin/update-ve/' + id;
+
+			fetch(url, {
+				method: 'PUT',
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({ trangThai: parseInt(trangThai) })
+			})
+			.then(response => {
+				if (!response.ok) {
+					return response.text().then(text => {
+						throw new Error("Lỗi từ server: " + text);
+					});
+				}
+				return response.json();
+			})
+			.then(data => {
+				console.log("Cập nhật thành công:", data);
+				toast({
+					title: "Thành công!",
+					message: "Vé xe đã được cập nhật.",
+					type: "success",
+					duration: 1000
+				});
+				setTimeout(() => {
+					window.location.reload();
+				}, 1000);
+			})
+			.catch(error => {
+				console.error("Lỗi cập nhật:", error.message);
+				toast({
+					title: "Lỗi!",
+					message: "Không thể cập nhật vé xe.",
+					type: "error",
+					duration: 1000
+				});
+			});
+		}
+
 	</script>
 
 </body>

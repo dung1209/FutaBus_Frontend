@@ -59,8 +59,8 @@
 			<h3>Chỉnh sửa Quận/Huyện</h3>
 			<div class="form-detail form-edit">
 				<label>Tên Quận/Huyện:</label> <input type="text"
-					id="editTenQuanHuyen"> <label>Tên Tỉnh/Thành:</label>
-				<select id="editTenTinh" name="editTenTinh">
+					id="editTenQuanHuyen"> <label>Tên Tỉnh/Thành:</label> <select
+					id="editTenTinh" name="editTenTinh">
 					<c:forEach var="tinhThanhAll" items="${tinhThanhAllList}">
 						<option value="${tinhThanhAll.idTinhThanh}"
 							${tinhThanhAll.idTinhThanh == idTinhThanh ? 'selected' : ''}>${tinhThanhAll.tenTinh}</option>
@@ -81,9 +81,9 @@
 		<div id="editModal" class="modal">
 			<h3>Chỉnh sửa Tỉnh/Thành</h3>
 			<div class="form-detail form-edit">
-				<label>Tên Tỉnh thành:</label> 
-				<input type="text" id="editTenTinh2" name="editTenTinh2" value="${tinhThanh.tenTinh}" /> 
-				<input type="hidden" id="editTinhThanhId">
+				<label>Tên Tỉnh thành:</label> <input type="text" id="editTenTinh2"
+					name="editTenTinh2" value="${tinhThanh.tenTinh}" /> <input
+					type="hidden" id="editTinhThanhId">
 			</div>
 
 			<div class="modal-footer">
@@ -112,7 +112,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div id="overlayDeleteModal2" class="overlay" style="display: none;">
 		<div id="confirmModal" class="modal delete-modal">
 			<div class="modal-content">
@@ -127,6 +127,41 @@
 					<button id="confirmYes2" class="btn btn-yes">Có</button>
 					<button id="confirmNo" class="btn btn-no">Không</button>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="overlayAddHuyenModal" class="overlay" style="display: none;">
+		<div id="addModal" class="modal">
+			<h3>Thêm Quận/Huyện</h3>
+			<div class="form-detail form-add">
+				<label>Tên Quận/Huyện:</label> <input type="text"
+					id="addTenQuanHuyen"> <label>Thuộc Tỉnh/Thành:</label> <select
+					id="addTinhThanhId">
+					<c:forEach var="tinhThanh" items="${tinhThanhAllList}">
+						<option value="${tinhThanh.idTinhThanh}">${tinhThanh.tenTinh}</option>
+					</c:forEach>
+				</select>
+			</div>
+
+			<div class="modal-footer">
+				<button onclick="submitAddQuanHuyen()">Lưu</button>
+				<button class="cancel-btn" onclick="document.getElementById('overlayAddHuyenModal').style.display='none'">Hủy</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="overlayAddTinhModal" class="overlay" style="display: none;">
+		<div id="addModal" class="modal">
+			<h3>Thêm Tỉnh/Thành</h3>
+			<div class="form-detail form-add">
+				<label>Tên Tỉnh/Thành:</label> <input type="text"
+					id="addTenTinhThanh">
+			</div>
+
+			<div class="modal-footer">
+				<button onclick="submitAddTinhThanh()">Lưu</button>
+				<button class="cancel-btn" onclick="document.getElementById('overlayAddTinhModal').style.display='none'">Hủy</button>
 			</div>
 		</div>
 	</div>
@@ -274,6 +309,8 @@
 										alt="search" />
 								</div>
 							</div>
+							<button type="submit" class="btn-add-huyen"
+								onclick="showAddHuyenModal()">+ Thêm</button>
 						</div>
 					</div>
 
@@ -306,8 +343,7 @@
 										<img
 										src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
 										alt="delete"
-										onclick="showDeleteModal('${quanhuyen.idQuanHuyen}')" />
-									</td>
+										onclick="showDeleteModal('${quanhuyen.idQuanHuyen}')" /></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -362,6 +398,8 @@
 										alt="search" />
 								</div>
 							</div>
+							<button type="submit" class="btn-add-tinh"
+								onclick="showAddTinhModal()">+ Thêm</button>
 						</div>
 					</div>
 
@@ -388,8 +426,7 @@
 										<img
 										src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
 										alt="delete"
-										onclick="showDeleteModal2('${tinhthanh.idTinhThanh}')" />
-									</td>
+										onclick="showDeleteModal2('${tinhthanh.idTinhThanh}')" /></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -939,6 +976,170 @@
 	            overlay.style.display = "none"; 
 	        };
 	    }
+		
+		function showAddHuyenModal() {
+			document.getElementById('addTenQuanHuyen').value = '';
+			document.getElementById('addTinhThanhId').selectedIndex = 0;
+
+			const overlay = document.getElementById('overlayAddHuyenModal');
+			overlay.style.display = 'flex';
+
+			overlay.onclick = function(event) {
+				if (event.target === overlay) {
+					overlay.style.display = 'none';
+				}
+			};
+		}
+		
+		function showAddTinhModal() {
+			document.getElementById('addTenTinhThanh').value = '';
+
+			const overlay = document.getElementById('overlayAddTinhModal');
+			overlay.style.display = 'flex';
+
+			overlay.onclick = function(event) {
+				if (event.target === overlay) {
+					overlay.style.display = 'none';
+				}
+			};
+		}
+		
+		function submitAddQuanHuyen() {
+			const tenQuanHuyen = document.getElementById('addTenQuanHuyen').value.trim();
+			const idTinhThanh = document.getElementById('addTinhThanhId').value;
+			let isValid = true;
+			
+			console.log('tenQuanHuyen:', tenQuanHuyen);
+			console.log('idTinhThanh:', idTinhThanh);
+
+			if (tenQuanHuyen === "" || idTinhThanh === "") {
+				toast({
+					title: "Chú ý!",
+					message: "Vui lòng điền đầy đủ thông tin!",
+					type: "error",
+					duration: 1500
+				});
+				isValid = false;
+			}
+
+			if (isValid) {
+				const data = {
+					tenQuanHuyen: tenQuanHuyen,
+					tinhThanh: {
+						idTinhThanh: idTinhThanh
+					}
+				};
+
+				console.log('data:', data);
+
+				const url = 'http://localhost:8085/FutaBus_Backend/api/admin/quanhuyen/them';
+
+				fetch(url, {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(data)
+				})
+				.then(response => {
+					if (!response.ok) {
+						return response.text().then(text => {
+							throw new Error("Lỗi từ server: " + text);
+						});
+					}
+					return response.text();
+				})
+				.then(message => {
+					console.log("Thêm Quận/Huyện thành công:", message);
+					toast({
+						title: "Thành công!",
+						message: "Quận/Huyện đã được thêm.",
+						type: "success",
+						duration: 1000
+					});
+
+					setTimeout(() => {
+						window.location.reload();
+					}, 1000);
+				})
+				.catch(error => {
+					console.error("Lỗi thêm Quận/Huyện:", error.message);
+					toast({
+						title: "Lỗi!",
+						message: "Không thể thêm Quận/Huyện.",
+						type: "error",
+						duration: 1500
+					});
+				});
+			}
+		}
+		
+		function submitAddTinhThanh() {
+			const tenTinhThanh = document.getElementById('addTenTinhThanh').value.trim();
+			let isValid = true;
+			
+			console.log('tenTinhThanh:', tenTinhThanh);
+
+			if (tenTinhThanh === "") {
+				toast({
+					title: "Chú ý!",
+					message: "Vui lòng nhập tên Tỉnh/Thành!",
+					type: "error",
+					duration: 1000
+				});
+				isValid = false;
+			}
+
+			if (isValid) {
+				const data = {
+					tenTinh: tenTinhThanh
+				};
+
+				console.log('data:', data);
+
+				const url = 'http://localhost:8085/FutaBus_Backend/api/admin/tinhthanh/them';
+
+				fetch(url, {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(data)
+				})
+				.then(response => {
+					if (!response.ok) {
+						return response.text().then(text => {
+							throw new Error("Lỗi từ server: " + text);
+						});
+					}
+					return response.json();
+				})
+				.then(responseData => {
+					if (responseData.success) {
+						toast({
+							title: "Thành công!",
+							message: "Tỉnh/Thành đã được thêm.",
+							type: "success",
+							duration: 1000
+						});
+						setTimeout(() => {
+							window.location.reload();
+						}, 1000);
+					} else {
+						throw new Error(responseData.message || "Lỗi không xác định");
+					}
+				})
+				.catch(error => {
+					console.error("Lỗi thêm Tỉnh/Thành:", error.message);
+					toast({
+						title: "Lỗi!",
+						message: "Không thể thêm Tỉnh/Thành.",
+						type: "error",
+						duration: 1500
+					});
+				});
+			}
+		}
 
 	</script>
 

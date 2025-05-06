@@ -46,15 +46,14 @@
 		<div id="editModal" class="modal">
 			<h3>Chỉnh sửa xe</h3>
 			<div class="form-detail form-edit">
-				<label>Tên xe:</label> <input type="text" id="editTenXe"> 
-				<label>Biển số xe:</label> <input type="text" id="editBienSoXe"> 
-				<label>Loại xe:</label> 
-				<select id="editLoaiXe" name="editLoaiXe">
+				<label>Tên xe:</label> <input type="text" id="editTenXe"> <label>Biển
+					số xe:</label> <input type="text" id="editBienSoXe"> <label>Loại
+					xe:</label> <select id="editLoaiXe" name="editLoaiXe">
 					<c:forEach var="loaiXe" items="${loaiXeList}">
-						<option value="${loaiXe.idLoaiXe}" ${loaiXe.idLoaiXe == idLoaiXe ? 'selected' : ''}>${loaiXe.tenLoai}</option>
+						<option value="${loaiXe.idLoaiXe}"
+							${loaiXe.idLoaiXe == idLoaiXe ? 'selected' : ''}>${loaiXe.tenLoai}</option>
 					</c:forEach>
-				</select> 
-				<input type="hidden" id="editXeId">
+				</select> <input type="hidden" id="editXeId">
 			</div>
 
 			<div class="modal-footer">
@@ -64,7 +63,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div id="overlayDeleteModal" class="overlay" style="display: none;">
 		<div id="confirmModal" class="modal delete-modal">
 			<div class="modal-content">
@@ -79,6 +78,26 @@
 					<button id="confirmYes" class="btn btn-yes">Có</button>
 					<button id="confirmNo" class="btn btn-no">Không</button>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="overlayAddModal" class="overlay" style="display: none;">
+		<div id="addModal" class="modal">
+			<h3>Thêm xe</h3>
+			<div class="form-detail form-add">
+				<label>Tên xe:</label> <input type="text" id="addTenXe"> <label>Biển
+					số xe:</label> <input type="text" id="addBienSoXe"> <label>Loại
+					xe:</label> <select id="addLoaiXe" name="addLoaiXe">
+					<c:forEach var="loaiXe" items="${loaiXeList}">
+						<option value="${loaiXe.idLoaiXe}">${loaiXe.tenLoai}</option>
+					</c:forEach>
+				</select>
+			</div>
+
+			<div class="modal-footer">
+				<button onclick="submitAdd()">Lưu</button>
+				<button class="cancel-btn" onclick="closeAddModal()">Hủy</button>
 			</div>
 		</div>
 	</div>
@@ -117,7 +136,8 @@
 				alt="bus" class="active" /><span>Quản Lý Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/location"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/buildings.png"
-				alt="location" /><span>Quản Lý địa điểm</span></a> <a href="<%=request.getContextPath()%>/admin/statistic"><img
+				alt="location" /><span>Quản Lý địa điểm</span></a> <a
+				href="<%=request.getContextPath()%>/admin/statistic"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
 				alt="bill" /><span>Thống Kê</span></a> <a
 				href="<%=request.getContextPath()%>/admin/account"><img
@@ -213,16 +233,18 @@
 
 			<div class="orders">
 				<div class="orders__header">
-					<h2 id="title">Danh sách tuyến xe</h2>
+					<h2 id="title">Danh sách xe</h2>
 					<div class="orders__actions">
 						<div class="search-box">
-							<input type="text" id="searchInput" placeholder="Nhập từ khoá để tìm kiếm..." />
+							<input type="text" id="searchInput"
+								placeholder="Nhập từ khoá để tìm kiếm..." />
 							<div class="search-box__icon">
 								<img
 									src="<%=request.getContextPath()%>/assets/admin/image/magnifying-glass.png"
 									alt="search" />
 							</div>
 						</div>
+						<button type="submit" class="btn-add-car" onclick="showAddModal()">+ Thêm xe</button>
 					</div>
 				</div>
 
@@ -268,10 +290,9 @@
     									'${xe.tenXe}',
         								'${xe.bienSo}', 
         								'${xe.loaiXe.idLoaiXe}')" />
-									<img src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
-  										alt="delete"
-  										onclick="showDeleteModal('${xe.idXe}')"/>
-								</td>
+									<img
+									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
+									alt="delete" onclick="showDeleteModal('${xe.idXe}')" /></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -639,6 +660,94 @@
 	          }
 	        });
 	      });
+		
+		function showAddModal() {
+			document.getElementById('addTenXe').value = '';
+			document.getElementById('addBienSoXe').value = '';
+			document.getElementById('addLoaiXe').selectedIndex = 0;
+
+			const overlay = document.getElementById('overlayAddModal');
+			overlay.style.display = 'flex';
+
+			overlay.onclick = function(event) {
+				if (event.target === overlay) {
+					overlay.style.display = 'none';
+				}
+			};
+		}
+		
+		function submitAdd() {
+			const tenXe = document.getElementById('addTenXe').value;
+			const bienSo = document.getElementById('addBienSoXe').value;
+			const idLoaiXe = document.getElementById('addLoaiXe').value;
+			let isValid = true;
+			
+			if (
+				tenXe === "" ||
+				bienSo === "" ||
+				idLoaiXe === ""
+			) {
+				toast({
+					title: "Chú ý!",
+					message: "Vui lòng điền đầy đủ thông tin!",
+					type: "error",
+					duration: 1000
+				});
+				isValid = false;
+			}
+			
+			if (isValid) {
+				const data = {
+					tenXe: tenXe,
+					bienSo: bienSo,
+					loaiXe: {
+					    idLoaiXe: idLoaiXe
+					},
+				};
+				console.log('data:', data);
+				
+				const url = 'http://localhost:8085/FutaBus_Backend/api/admin/xe/them';
+				
+				fetch(url, {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(data)
+				})
+				.then(response => {
+					if (!response.ok) {
+						return response.text().then(text => {
+							throw new Error("Lỗi từ server: " + text);
+						});
+					}
+					return response.text();
+				})
+				.then(message => {
+					console.log("Thêm xe thành công:", message);
+					toast({
+						title: "Thành công!",
+						message: "Xe đã được thêm vào.",
+						type: "success",
+						duration: 1000
+					});
+
+					setTimeout(() => {
+						window.location.reload();
+					}, 1000);
+				})
+				.catch(error => {
+					console.error("Lỗi thêm xe:", error.message);
+					toast({
+						title: "Lỗi!",
+						message: "Không thể thêm xe.",
+						type: "error",
+						duration: 1500
+					});
+				});
+			}
+		}
+
 	</script>
 
 </body>

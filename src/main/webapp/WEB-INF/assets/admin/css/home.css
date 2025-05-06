@@ -817,3 +817,124 @@ td, th {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+/*****************************THÊM**********************************/
+.modal1 {
+  position: fixed;
+  top: 5%;
+  left: 30%;
+  width: 40%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 30px;
+  z-index: 1000;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+#addModal h3 {
+	margin-bottom: 20px;
+	color: #465fffdb;
+}
+
+#addModal button {
+	background-color: #eb9328;
+	color: white;
+	border: none;
+	border-radius: 999px;
+	font-size: 14px;
+	cursor: pointer;
+	white-space: nowrap;
+	padding: 7px 27px;
+}
+
+#addModal .cancel-btn {
+	background-color: #888 !important;
+}
+
+.form-add input {
+	pointer-events: auto;
+	background-color: #fff;
+	font-size: 14px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	width: 100%;
+	box-sizing: border-box;
+	height: 38.4px;
+}
+
+.form-add input:focus {
+	outline: none;
+	border: 1px solid #eb9328;
+	box-shadow: 0 0 4px rgba(235, 147, 40, 0.5);
+}
+
+.form-add select {
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	pointer-events: auto;
+	font-family: inherit;
+	font-size: 14px;
+	width: 100%;
+	box-sizing: border-box;
+	height: 38.4px;
+}
+
+.form-add select:focus {
+	outline: none;
+	border: 1px solid #eb9328;
+	box-shadow: 0 0 4px rgba(235, 147, 40, 0.5);
+}
+/*****************************THÊM**********************************/
+.orders__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+button.btn-add-user {
+    background-color: #47d864;
+    color: #fff;
+    font-size: 14px;
+    padding: 9px 40px;
+    border-radius: 7px;
+    display: block;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+div#addModal {
+    top: 8%;
+}
+
+.input-group {
+    position: relative;
+    width: 100%; 
+}
+
+.input-group input {
+    width: 100%;
+    padding-right: 40px;
+    box-sizing: border-box;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 14px;
+}
+
+.eye-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.eye-icon:hover {
+    opacity: 1;
+}

@@ -202,7 +202,6 @@
 	        icon.src = "<%=request.getContextPath()%>/assets/user/image/hide.png";
 	    }
 	}
-
 	
 	function showLoginForm() {
 	    document.getElementById('form-title').innerText = 'Đăng nhập tài khoản';

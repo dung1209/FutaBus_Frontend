@@ -25,7 +25,6 @@
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-
 </head>
 <body>
 	<div id="toast"></div>
@@ -33,9 +32,8 @@
 		<div id="detailModal" class="modal">
 			<h3>Chi tiết chuyến xe</h3>
 			<div class="form-detail">
-				<label>Tên tuyến:</label>
-				<input type="text" id="modalTenTuyen" readonly>
-				<label>Thời điểm đi:</label><input type="text"
+				<label>Tên tuyến:</label> <input type="text" id="modalTenTuyen"
+					readonly> <label>Thời điểm đi:</label><input type="text"
 					id="modalThoiDiemDi" readonly> <label>Thời điểm
 					đến:</label><input type="text" id="modalThoiDiemDen" readonly> <label>Biển
 					số xe:</label><input type="text" id="modalBienSo" readonly> <label>Giá
@@ -53,41 +51,32 @@
 		<div id="editModal" class="modal">
 			<h3>Chỉnh sửa chuyến xe</h3>
 			<div class="form-detail form-edit">
-				<label>Tên tuyến xe:</label>
-				<select id="editTenTuyen"
+				<label>Tên tuyến xe:</label> <select id="editTenTuyen"
 					name="editTenTuyen">
 					<c:forEach var="tuyenXe" items="${tuyenXeList}">
 						<option value="${tuyenXe.idTuyenXe}"
 							${tuyenXe.idTuyenXe == idTuyenXe ? 'selected' : ''}>
 							${tuyenXe.tenTuyen}</option>
 					</c:forEach>
-				</select>
-				<label>Thời điểm đi:</label> <input type="text" id="editThoiDiemDi">
+				</select> <label>Thời điểm đi:</label> <input type="text" id="editThoiDiemDi">
 				<label>Thời điểm đến:</label> <input type="text"
-					id="editThoiDiemDen"> 
-				<label>Biển số xe:</label> 
-				<select id="editBienSoXe"
-					name="editBienSoXe">
+					id="editThoiDiemDen"> <label>Biển số xe:</label> <select
+					id="editBienSoXe" name="editBienSoXe">
 					<c:forEach var="xe" items="${xeList}">
-						<option value="${xe.idXe}"
-							${xe.idXe == idXe ? 'selected' : ''}>
+						<option value="${xe.idXe}" ${xe.idXe == idXe ? 'selected' : ''}>
 							${xe.bienSo}</option>
 					</c:forEach>
-				</select>
-				<label>Giá vé:</label> <input
-					type="number" id="editGiaVe"> 
-				<label>Tên tài xế:</label> 
-				<select id="editTenTaiXe"
+				</select> <label>Giá vé:</label> <input type="number" id="editGiaVe">
+				<label>Tên tài xế:</label> <select id="editTenTaiXe"
 					name="editTenTaiXe">
 					<c:forEach var="taiXe" items="${nguoiDungList}">
 						<option value="${taiXe.idNguoiDung}"
 							${taiXe.idNguoiDung == idTaiXe ? 'selected' : ''}>
 							${taiXe.hoTen}</option>
 					</c:forEach>
-				</select>
-				<input type="hidden"
-					id="editChuyenXeId"> <input type="hidden" id="idTuyenXe">
-					<input type="hidden" id="idXe"> <input type="hidden" id="idTaiXe">
+				</select> <input type="hidden" id="editChuyenXeId"> <input
+					type="hidden" id="idTuyenXe"> <input type="hidden"
+					id="idXe"> <input type="hidden" id="idTaiXe">
 			</div>
 
 			<div class="modal-footer">
@@ -112,6 +101,40 @@
 					<button id="confirmYes" class="btn btn-yes">Có</button>
 					<button id="confirmNo" class="btn btn-no">Không</button>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="overlayAddModal" class="overlay" style="display: none;">
+		<div id="addModal" class="modal">
+			<h3>Thêm chuyến xe</h3>
+			<div class="form-detail form-add">
+				<label>Tên tuyến xe:</label> <select id="addTuyenXeId"
+					name="addTuyenXeId">
+					<c:forEach var="tuyenXe" items="${tuyenXeList}">
+						<option value="${tuyenXe.idTuyenXe}">${tuyenXe.tenTuyen}</option>
+					</c:forEach>
+				</select> <label>Thời điểm đi:</label> <input type="text" id="addThoiDiemDi">
+
+				<label>Thời điểm đến:</label> <input type="text" id="addThoiDiemDen">
+
+				<label>Biển số xe:</label> <select id="addXeId" name="addXeId">
+					<c:forEach var="xe" items="${xeList}">
+						<option value="${xe.idXe}">${xe.bienSo}</option>
+					</c:forEach>
+				</select> <label>Giá vé:</label> <input type="number" id="addGiaVe">
+
+				<label>Tên tài xế:</label> <select id="addTaiXeId" name="addTaiXeId">
+					<c:forEach var="taiXe" items="${nguoiDungList}">
+						<option value="${taiXe.idNguoiDung}">${taiXe.hoTen}</option>
+					</c:forEach>
+				</select>
+			</div>
+
+			<div class="modal-footer">
+				<button onclick="submitAddChuyenXe()">Lưu</button>
+				<button class="cancel-btn"
+					onclick="document.getElementById('overlayAddModal').style.display='none'">Hủy</button>
 			</div>
 		</div>
 	</div>
@@ -150,7 +173,8 @@
 				alt="bus" /><span>Quản Lý Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/location"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/buildings.png"
-				alt="location" /><span>Quản Lý địa điểm</span></a> <a href="<%=request.getContextPath()%>/admin/statistic"><img
+				alt="location" /><span>Quản Lý địa điểm</span></a> <a
+				href="<%=request.getContextPath()%>/admin/statistic"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
 				alt="bill" /><span>Thống Kê</span></a> <a
 				href="<%=request.getContextPath()%>/admin/account"><img
@@ -246,16 +270,19 @@
 
 			<div class="orders">
 				<div class="orders__header">
-					<h2 id="title">Danh sách tuyến xe</h2>
+					<h2 id="title">Danh sách chuyến xe</h2>
 					<div class="orders__actions">
 						<div class="search-box">
-							<input type="text" id="searchInput" placeholder="Nhập từ khoá để tìm kiếm..." />
+							<input type="text" id="searchInput"
+								placeholder="Nhập từ khoá để tìm kiếm..." />
 							<div class="search-box__icon">
 								<img
 									src="<%=request.getContextPath()%>/assets/admin/image/magnifying-glass.png"
 									alt="search" />
 							</div>
 						</div>
+						<button type="submit" class="btn-add-trip"
+							onclick="showAddChuyenXeModal()">+ Thêm chuyến xe</button>
 					</div>
 				</div>
 
@@ -304,10 +331,10 @@
         								'${chuyenxe.giaVe}',
         								'${chuyenxe.taiXe.idNguoiDung}',
         								'${chuyenxe.taiXe.hoTen}')" />
-									<img src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
-  										alt="delete"
-  										onclick="showDeleteModal('${chuyenxe.idChuyenXe}')"/>
-								</td>
+									<img
+									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
+									alt="delete"
+									onclick="showDeleteModal('${chuyenxe.idChuyenXe}')" /></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -356,6 +383,18 @@
     });
 
     flatpickr("#editThoiDiemDen", {
+        enableTime: true,
+        dateFormat: "d/m/Y H:i",
+        time_24hr: true
+    });
+    
+    flatpickr("#addThoiDiemDi", {
+        enableTime: true,
+        dateFormat: "d/m/Y H:i",
+        time_24hr: true
+    });
+
+    flatpickr("#addThoiDiemDen", {
         enableTime: true,
         dateFormat: "d/m/Y H:i",
         time_24hr: true
@@ -743,6 +782,112 @@
           }
         });
       });
+	
+	function showAddChuyenXeModal() {
+	    document.getElementById('addTuyenXeId').selectedIndex = 0;
+	    document.getElementById('addThoiDiemDi').value = '';
+	    document.getElementById('addThoiDiemDen').value = '';
+	    document.getElementById('addXeId').selectedIndex = 0;
+	    document.getElementById('addGiaVe').value = '';
+	    document.getElementById('addTaiXeId').selectedIndex = 0;
+
+	    const overlay = document.getElementById('overlayAddModal');
+	    overlay.style.display = 'flex';
+
+	    overlay.onclick = function (event) {
+	        if (event.target === overlay) {
+	            overlay.style.display = 'none';
+	        }
+	    };
+	}
+	
+	function submitAddChuyenXe() {
+	    const tuyenXeId = document.getElementById("addTuyenXeId").value.trim();
+	    const thoiDiemDi = document.getElementById("addThoiDiemDi").value;
+	    const thoiDiemDen = document.getElementById("addThoiDiemDen").value;
+	    const xeId = document.getElementById("addXeId").value;
+	    const giaVe = document.getElementById("addGiaVe").value;
+	    const taiXeId = document.getElementById("addTaiXeId").value;
+
+	    if (tuyenXeId === "" || thoiDiemDi === "" || thoiDiemDen === "" || xeId === "" || giaVe === "" || taiXeId === "") {
+	        toast({
+	            title: "Chú ý!",
+	            message: "Vui lòng điền đầy đủ thông tin!",
+	            type: "error",
+	            duration: 2000
+	        });
+	        return;
+	    }
+
+	    if (new Date(thoiDiemDi) >= new Date(thoiDiemDen)) {
+	        toast({
+	            title: "Lỗi!",
+	            message: "Thời điểm đi phải trước thời điểm đến!",
+	            type: "error",
+	            duration: 2000
+	        });
+	        return;
+	    }
+	    
+	    const thoiDiemDiUpdated = addSecondsIfNeeded(thoiDiemDi);
+	    const thoiDiemDenUpdated = addSecondsIfNeeded(thoiDiemDen);
+
+	    const data = {
+	    	tuyenXe: { idTuyenXe: parseInt(tuyenXeId) },
+	        thoiDiemDi: thoiDiemDiUpdated,
+	        thoiDiemDen: thoiDiemDenUpdated,
+	        xe: { idXe: parseInt(xeId) },
+	        giaVe: parseFloat(giaVe),
+	        taiXe: { idNguoiDung: parseInt(taiXeId) }
+	    };
+
+	    console.log("data: ", data);
+
+	    const url = 'http://localhost:8085/FutaBus_Backend/api/admin/chuyenxe/them';
+
+	    fetch(url, {
+	        method: "POST",
+	        headers: {
+	            "Content-Type": "application/json"
+	        },
+	        body: JSON.stringify(data)
+	    })
+	    .then(response => {
+	        if (!response.ok) {
+	            return response.text().then(text => { throw new Error(text) });
+	        }
+	        return response.json();
+	    })
+	    .then(result => {
+	        if (result.success) {
+	            toast({
+	                title: "Thành công!",
+	                message: "Thêm chuyến xe thành công.",
+	                type: "success",
+	                duration: 2000
+	            });
+	            setTimeout(() => {
+	                window.location.reload();
+	            }, 1000);
+	        } else {
+	            toast({
+	                title: "Thất bại!",
+	                message: "Không thể thêm chuyến xe!",
+	                type: "error",
+	                duration: 2000
+	            });
+	        }
+	    })
+	    .catch(error => {
+	        console.error("Lỗi khi gửi yêu cầu:", error);
+	        toast({
+	            title: "Lỗi!",
+	            message: "Đã xảy ra lỗi khi thêm chuyến xe!",
+	            type: "error",
+	            duration: 2000
+	        });
+	    });
+	}
 
 	</script>
 

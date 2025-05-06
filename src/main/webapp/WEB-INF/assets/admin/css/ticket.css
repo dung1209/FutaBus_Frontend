@@ -836,3 +836,19 @@ td, th {
   flex-direction: column;
 }
 
+select#editTrangThai {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    pointer-events: auto;
+    font-family: inherit;
+    font-size: inherit;
+    height: 37.6px;
+    font-size: 14px;
+}
+
+select#editTrangThai:focus {
+  outline: none;
+  border: 1px solid #eb9328;
+  box-shadow: 0 0 4px rgba(235, 147, 40, 0.5);
+}

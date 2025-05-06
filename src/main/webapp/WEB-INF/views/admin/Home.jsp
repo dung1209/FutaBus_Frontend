@@ -21,25 +21,27 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
 	integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
 	crossorigin="anonymous" />
-	
+
 </head>
 <body>
 	<div id="toast"></div>
 	<div id="overlayModal" class="overlay" style="display: none;">
-    	<div id="detailModal" class="modal">
-        	<h3>Chi tiết người dùng</h3>
-        		<div class="form-detail">
-            	<label>Họ và tên:</label><input type="text" id="modalHoTen" readonly>
-            	<label>Giới tính:</label><input type="text" id="modalGioiTinh" readonly>
-            	<label>Năm sinh:</label><input type="text" id="modalNamSinh" readonly>
-            	<label>Số điện thoại:</label><input type="text" id="modalSoDienThoai" readonly>
-            	<label>Email:</label><input type="text" id="modalEmail" readonly>
-            	<label>Địa chỉ:</label><input type="text" id="modalDiaChi" readonly>
-        	</div>
-        	<div class="modal-footer">
-            	<button onclick="document.getElementById('overlayModal').style.display='none'">Đóng</button>
-        	</div>
-   	 	</div>
+		<div id="detailModal" class="modal">
+			<h3>Chi tiết người dùng</h3>
+			<div class="form-detail">
+				<label>Họ và tên:</label><input type="text" id="modalHoTen" readonly>
+				<label>Giới tính:</label><input type="text" id="modalGioiTinh"
+					readonly> <label>Năm sinh:</label><input type="text"
+					id="modalNamSinh" readonly> <label>Số điện thoại:</label><input
+					type="text" id="modalSoDienThoai" readonly> <label>Email:</label><input
+					type="text" id="modalEmail" readonly> <label>Địa
+					chỉ:</label><input type="text" id="modalDiaChi" readonly>
+			</div>
+			<div class="modal-footer">
+				<button
+					onclick="document.getElementById('overlayModal').style.display='none'">Đóng</button>
+			</div>
+		</div>
 	</div>
 
 	<div id="overlayEditModal" class="overlay" style="display: none;">
@@ -47,16 +49,14 @@
 			<h3>Chỉnh sửa người dùng</h3>
 			<div class="form-detail form-edit">
 				<label>Họ và tên:</label><input type="text" id="editHoTen">
-				<label>Giới tính:</label>
-				<select id="editGioiTinh">
-  					<option value="false">Nam</option>
-  					<option value="true">Nữ</option>
-				</select>
-				<label>Năm sinh:</label><input type="text" id="editNamSinh">
+				<label>Giới tính:</label> <select id="editGioiTinh">
+					<option value="false">Nam</option>
+					<option value="true">Nữ</option>
+				</select> <label>Năm sinh:</label><input type="text" id="editNamSinh">
 				<label>Số điện thoại:</label><input type="text" id="editSoDienThoai">
-				<label>Email:</label><input type="text" id="editEmail" readonly> <label>Địa
-					chỉ:</label><input type="text" id="editDiaChi">
-				<input type="hidden" id="editUserId">
+				<label>Email:</label><input type="text" id="editEmail" readonly>
+				<label>Địa chỉ:</label><input type="text" id="editDiaChi"> <input
+					type="hidden" id="editUserId">
 			</div>
 			<div class="modal-footer">
 				<button onclick="submitEdit()">Lưu</button>
@@ -65,7 +65,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div id="overlayDeleteModal" class="overlay" style="display: none;">
 		<div id="confirmModal" class="modal delete-modal">
 			<div class="modal-content">
@@ -80,6 +80,37 @@
 					<button id="confirmYes" class="btn btn-yes">Có</button>
 					<button id="confirmNo" class="btn btn-no">Không</button>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="overlayAddModal" class="overlay" style="display: none;">
+		<div id="addModal" class="modal">
+			<h3>Thêm quản lý</h3>
+			<div class="form-detail form-add">
+				<label>Họ và tên:</label> <input type="text" id="addHoTen">
+
+				<label>Giới tính:</label> <select id="addGioiTinh">
+					<option value="false">Nam</option>
+					<option value="true">Nữ</option>
+				</select> <label>Năm sinh:</label> <input type="text" id="addNamSinh">
+
+				<label>Căn cước công dân:</label> <input type="text"
+					id="addCanCuocCongDan"> <label>Số điện thoại:</label> <input
+					type="text" id="addSoDienThoai"> <label>Email:</label> <input
+					type="text" id="addEmail"> <label>Địa chỉ:</label> <input
+					type="text" id="addDiaChi"> <label>Mật khẩu:</label>
+				<div class="input-group">
+					<input type="password" id="addMatKhau"> <img
+						src="<%=request.getContextPath()%>/assets/user/image/hide.png"
+						alt="eye" class="eye-icon" onclick="togglePassword(this)">
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button onclick="submitAdd()">Lưu</button>
+				<button class="cancel-btn"
+					onclick="document.getElementById('overlayAddModal').style.display='none'">Hủy</button>
 			</div>
 		</div>
 	</div>
@@ -106,7 +137,7 @@
 			</div>
 			<a href="<%=request.getContextPath()%>/admin/ticket"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/order.png"
-				alt="ticket" /><span>Quản Lý Vé</span></a> <a 
+				alt="ticket" /><span>Quản Lý Vé</span></a> <a
 				href="<%=request.getContextPath()%>/admin/bus-route"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
 				alt="route" /><span>Quản Lý Tuyến Xe</span></a> <a
@@ -118,9 +149,10 @@
 				alt="bus" /><span>Quản Lý Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/location"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/buildings.png"
-				alt="location" /><span>Quản Lý địa điểm</span></a> <a href="<%=request.getContextPath()%>/admin/statistic"><img
+				alt="location" /><span>Quản Lý địa điểm</span></a> <a
+				href="<%=request.getContextPath()%>/admin/statistic"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
-				alt="bill" /><span>Thống Kê</span></a> <a 
+				alt="bill" /><span>Thống Kê</span></a> <a
 				href="<%=request.getContextPath()%>/admin/account"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/profile.png"
 				alt="chart" /><span>Thông tin tài khoản</span></a>
@@ -141,7 +173,8 @@
 				<div class="header__user" onclick="toggleModal()">
 					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/users.png"
-						alt="User" /> <span>Xin chào <strong id="userName"></strong></span> <img
+						alt="User" /> <span>Xin chào <strong id="userName"></strong></span>
+					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/down-arrow.png"
 						alt="down" />
 				</div>
@@ -216,13 +249,17 @@
 					<h2 id="title">Danh sách khách hàng</h2>
 					<div class="orders__actions">
 						<div class="search-box">
-							<input type="text" id="searchInput" placeholder="Nhập từ khoá để tìm kiếm..." />
+							<input type="text" id="searchInput"
+								placeholder="Nhập từ khoá để tìm kiếm..." />
 							<div class="search-box__icon">
 								<img
 									src="<%=request.getContextPath()%>/assets/admin/image/magnifying-glass.png"
 									alt="search" />
 							</div>
 						</div>
+						<button id="add-user-button" type="submit" class="btn-add-user"
+							onclick="showAddModal()" style="display: none;">+ Thêm
+							quản lý</button>
 					</div>
 				</div>
 
@@ -247,29 +284,30 @@
 								<td>${nguoiDung.diaChi}</td>
 								<td>${nguoiDung.soDienThoai}</td>
 								<td>${nguoiDung.email}</td>
-								<td>
-									<img src="<%=request.getContextPath()%>/assets/admin/image/see.png"
-     									alt="detail"
-     									onclick="showDetailModal('${nguoiDung.hoTen}', 
+								<td><img
+									src="<%=request.getContextPath()%>/assets/admin/image/see.png"
+									alt="detail"
+									onclick="showDetailModal('${nguoiDung.hoTen}', 
      									'${nguoiDung.gioiTinh ? 'Nữ' : 'Nam'}', 
      									'${nguoiDung.namSinh}', 
      									'${nguoiDung.soDienThoai}', 
      									'${nguoiDung.email}', 
-     									'${nguoiDung.diaChi}')"/>
-									<img src="<%=request.getContextPath()%>/assets/admin/image/update.png"
-    									alt="update"
-    									onclick="showEditModal(
+     									'${nguoiDung.diaChi}')" />
+									<img
+									src="<%=request.getContextPath()%>/assets/admin/image/update.png"
+									alt="update"
+									onclick="showEditModal(
     									'${nguoiDung.idNguoiDung}',
         								'${nguoiDung.hoTen}', 
         								'${nguoiDung.gioiTinh ? 'true' : 'false'}', 
         								'${nguoiDung.namSinh}', 
         								'${nguoiDung.soDienThoai}', 
         								'${nguoiDung.email}', 
-        								'${nguoiDung.diaChi}')"/> 
-									<img src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
-  										alt="delete"
-  										onclick="showDeleteModal('${nguoiDung.idNguoiDung}')"/>
-								</td>
+        								'${nguoiDung.diaChi}')" />
+									<img
+									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
+									alt="delete"
+									onclick="showDeleteModal('${nguoiDung.idNguoiDung}')" /></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -378,16 +416,18 @@
 		    let titleElement = document.getElementById("title");
 		      let customerLink = document.getElementById("customer-link"); 
 		      let staffLink = document.getElementById("staff-link"); 
-		      
+		      let addUserButton = document.getElementById("add-user-button");
 
 		      if (loaiNguoiDung === "2") {
 		          titleElement.textContent = "Danh sách quản trị viên";
 		          staffLink.style.backgroundColor = "#ecf3ff";
 		          customerLink.style.backgroundColor = ""; 
+		          addUserButton.style.display = "inline-block";
 		      } else {
 		          titleElement.textContent = "Danh sách khách hàng";
 		          customerLink.style.backgroundColor = "#ecf3ff";
 		          staffLink.style.backgroundColor = "";
+		          addUserButton.style.display = "none";
 		      }
 		    
 		    if (localStorage.getItem('sidebarCollapsed') === 'true') {
@@ -696,6 +736,166 @@
 	          }
 	        });
 	      });
+	    
+	    function showAddModal() {
+	        document.getElementById('addHoTen').value = '';
+	        document.getElementById('addGioiTinh').value = 'false';
+	        document.getElementById('addNamSinh').value = '';
+	        document.getElementById('addSoDienThoai').value = '';
+	        document.getElementById('addEmail').value = '';
+	        document.getElementById('addDiaChi').value = '';
+
+	        const overlay = document.getElementById('overlayAddModal');
+	        overlay.style.display = 'flex';
+
+	        overlay.onclick = function (event) {
+	            if (event.target === overlay) {
+	                overlay.style.display = 'none';
+	            }
+	        };
+	    }
+	    
+	    function submitAdd() {
+	    	const hoTen = document.getElementById('addHoTen').value.trim();
+	    	const gioiTinh = document.getElementById('addGioiTinh').value;
+	    	const namSinh = document.getElementById('addNamSinh').value.trim();
+	    	const canCuocCongDan = document.getElementById('addCanCuocCongDan').value.trim();
+	    	const soDienThoai = document.getElementById('addSoDienThoai').value.trim();
+	    	const email = document.getElementById('addEmail').value.trim();
+	    	const diaChi = document.getElementById('addDiaChi').value.trim();
+	    	const matKhau = document.getElementById('addMatKhau').value;
+
+	    	let isValid = true;
+	    	const currentYear = new Date().getFullYear();
+
+	    	if (hoTen === "" || namSinh === "" || soDienThoai === "" || diaChi === "" || matKhau === "") {
+	    		toast({
+	    			title: "Chú ý!",
+	    			message: "Vui lòng điền đầy đủ thông tin!",
+	    			type: "error",
+	    			duration: 1000
+	    		});
+	    		isValid = false;
+	    	} else if (isNaN(namSinh) || namSinh.length !== 4) {
+	    		toast({
+	    			title: "Chú ý!",
+	    			message: "Năm sinh không hợp lệ!",
+	    			type: "error",
+	    			duration: 1000
+	    		});
+	    		isValid = false;
+	    	} else if (currentYear - parseInt(namSinh) < 16) {
+	    		toast({
+	    			title: "Chú ý!",
+	    			message: "Bạn phải từ 16 tuổi trở lên.",
+	    			type: "error",
+	    			duration: 1000
+	    		});
+	    		isValid = false;
+	    	} else if (!/^\d{12}$/.test(canCuocCongDan)) {
+	    		toast({
+	    			title: "Chú ý!",
+	    			message: "Căn cước công dân phải có đúng 12 chữ số!",
+	    			type: "error",
+	    			duration: 1000
+	    		});
+	    		isValid = false;
+	    	} else if (soDienThoai.length !== 10) {
+	    		toast({
+	    			title: "Chú ý!",
+	    			message: "Số điện thoại phải gồm đúng 10 chữ số!",
+	    			type: "error",
+	    			duration: 1000
+	    		});
+	    		isValid = false;
+	    	} else if (!/^0\d{9}$/.test(soDienThoai)) {
+	    		toast({
+	    			title: "Chú ý!",
+	    			message: "Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số!",
+	    			type: "error",
+	    			duration: 1000
+	    		});
+	    		isValid = false;
+	    	} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+	    		toast({
+	    			title: "Chú ý!",
+	    			message: "Email không đúng định dạng!",
+	    			type: "error",
+	    			duration: 1000
+	    		});
+	    		isValid = false;
+	    	}
+
+	    	if (isValid) {
+	    		const data = {
+	    			hoTen: hoTen,
+	    			gioiTinh: gioiTinh === "true",
+	    			namSinh: namSinh,
+	    			CCCD: canCuocCongDan,
+	    			soDienThoai: soDienThoai,
+	    			email: email,
+	    			diaChi: diaChi,
+	    			matKhau: matKhau
+	    		};
+	    		console.log("Dữ liệu gửi đi:", data);
+
+	    		const url = "http://localhost:8085/FutaBus_Backend/api/admin/nguoi-dung/them";
+
+	    		fetch(url, {
+	    			method: "POST",
+	    			headers: {
+	    				"Content-Type": "application/json"
+	    			},
+	    			body: JSON.stringify(data)
+	    		})
+	    		.then(response => {
+	    			if (!response.ok) {
+	    				return response.text().then(text => { throw new Error(text); });
+	    			}
+	    			return response.json();
+	    		})
+	    		.then(result => {
+	    			if (result.success) {
+	    				toast({
+	    					title: "Thành công!",
+	    					message: "Thêm ngươi quản lý thành công",
+	    					type: "success",
+	    					duration: 1500
+	    				});
+	    				setTimeout(() => window.location.reload(), 1000);
+	    			} else {
+	    				toast({
+	    					title: "Lỗi!",
+	    					message: result.message || "Không thể thêm quản lý.",
+	    					type: "error",
+	    					duration: 2000
+	    				});
+	    			}
+	    		})
+	    		.catch(error => {
+	    			console.error("Lỗi khi thêm quản lý:", error.message);
+	    			toast({
+	    				title: "Lỗi!",
+	    				message: "Không thể gửi yêu cầu.",
+	    				type: "error",
+	    				duration: 2000
+	    			});
+	    		});
+	    	}
+	    }
+	    
+	    function togglePassword(icon) {
+		    var passwordField = icon.previousElementSibling;
+
+		    if (passwordField.type === "password") {
+		        passwordField.type = "text";
+		        icon.src = "<%=request.getContextPath()%>/assets/user/image/eye.png";
+		    } else {
+		        passwordField.type = "password";
+		        icon.src = "<%=request.getContextPath()%>/assets/user/image/hide.png";
+		    }
+		}
+
 	</script>
 
 </body>

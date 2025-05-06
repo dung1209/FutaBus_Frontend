@@ -72,8 +72,8 @@
 					ngày chạy trong tuần:</label><input type="number" id="editSoNgay">
 				<input type="hidden" id="editTuyenId"> <input type="hidden"
 					id="benXeDiId"> <input type="hidden" id="benXeDenId">
-					<input type="hidden" id="quanHuyenDiId">
-					<input type="hidden" id="quanHuyenDenId">
+				<input type="hidden" id="quanHuyenDiId"> <input
+					type="hidden" id="quanHuyenDenId">
 			</div>
 			<div class="modal-footer">
 				<button onclick="submitEdit()">Lưu</button>
@@ -101,6 +101,37 @@
 		</div>
 	</div>
 
+	<div id="overlayAddModal" class="overlay" style="display: none;">
+		<div id="addModal" class="modal1">
+			<h3>Thêm tuyến xe</h3>
+			<div class="form-detail form-add">
+				<label>Tên tuyến:</label> <input type="text" id="addTenTuyen">
+
+				<label>Bến xe đi:</label> <select id="addBenXeDi" name="addBenXeDi">
+					<c:forEach var="benXe" items="${benXeList}">
+						<option value="${benXe.idBenXe},${benXe.idQuanHuyen}">
+							${benXe.tenBenXe}</option>
+					</c:forEach>
+				</select> <label>Bến xe đến:</label> <select id="addBenXeDen"
+					name="addBenXeDen">
+					<c:forEach var="benXe" items="${benXeList}">
+						<option value="${benXe.idBenXe},${benXe.idQuanHuyen}">
+							${benXe.tenBenXe}</option>
+					</c:forEach>
+				</select> <label>Quãng đường (km):</label> <input type="number"
+					id="addQuangDuong"> <label>Thời gian di chuyển
+					(giờ):</label> <input type="number" id="addThoiGian"> <label>Số
+					chuyến trong ngày:</label> <input type="number" id="addSoChuyen"> <label>Số
+					ngày chạy trong tuần:</label> <input type="number" id="addSoNgay">
+			</div>
+			<div class="modal-footer">
+				<button onclick="submitAdd()">Lưu</button>
+				<button class="cancel-btn"
+					onclick="document.getElementById('overlayAddModal').style.display='none'">Hủy</button>
+			</div>
+		</div>
+	</div>
+
 	<aside class="sidebar" id="sidebar">
 		<div class="sidebar__logo" id="sidebarLogo">
 			<img src="<%=request.getContextPath()%>/assets/admin/image/logo.png"
@@ -123,7 +154,7 @@
 			</div>
 			<a href="<%=request.getContextPath()%>/admin/ticket"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/order.png"
-				alt="ticket" /><span>Quản Lý Vé</span></a> <a 
+				alt="ticket" /><span>Quản Lý Vé</span></a> <a
 				href="<%=request.getContextPath()%>/admin/bus-route" class="active"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
 				alt="route" class="active" /><span>Quản Lý Tuyến Xe</span></a> <a
@@ -135,9 +166,10 @@
 				alt="bus" /><span>Quản Lý Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/location"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/buildings.png"
-				alt="location" /><span>Quản Lý địa điểm</span></a> <a href="<%=request.getContextPath()%>/admin/statistic"><img
+				alt="location" /><span>Quản Lý địa điểm</span></a> <a
+				href="<%=request.getContextPath()%>/admin/statistic"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bill.png"
-				alt="bill" /><span>Thống Kê</span></a> <a 
+				alt="bill" /><span>Thống Kê</span></a> <a
 				href="<%=request.getContextPath()%>/admin/account"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/profile.png"
 				alt="chart" /><span>Thông tin tài khoản</span></a>
@@ -158,7 +190,8 @@
 				<div class="header__user" onclick="toggleModal()">
 					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/users.png"
-						alt="User" /> <span>Xin chào <strong id="userName"></strong></span> <img
+						alt="User" /> <span>Xin chào <strong id="userName"></strong></span>
+					<img
 						src="<%=request.getContextPath()%>/assets/admin/image/down-arrow.png"
 						alt="down" />
 				</div>
@@ -233,13 +266,16 @@
 					<h2 id="title">Danh sách tuyến xe</h2>
 					<div class="orders__actions">
 						<div class="search-box">
-							<input type="text" id="searchInput" placeholder="Nhập từ khoá để tìm kiếm..." />
+							<input type="text" id="searchInput"
+								placeholder="Nhập từ khoá để tìm kiếm..." />
 							<div class="search-box__icon">
 								<img
 									src="<%=request.getContextPath()%>/assets/admin/image/magnifying-glass.png"
 									alt="search" />
 							</div>
 						</div>
+						<button type="submit" class="btn-add-route"
+							onclick="showAddTuyenXeModal()">+ Thêm tuyến xe</button>
 					</div>
 				</div>
 
@@ -294,9 +330,9 @@
         								'${tuyenxe.thoiGianDiChuyenTB}', 
         								'${tuyenxe.soChuyenTrongNgay}', 
         								'${tuyenxe.soNgayChayTrongTuan}')" />
-									<img src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
-  										alt="delete"
-  										onclick="showDeleteModal('${tuyenxe.idTuyenXe}')"/>
+									<img
+									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
+									alt="delete" onclick="showDeleteModal('${tuyenxe.idTuyenXe}')" />
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -743,6 +779,127 @@
           }
         });
       });
+	
+	function showAddTuyenXeModal() {
+	    document.getElementById('addTenTuyen').value = '';
+	    document.getElementById('addBenXeDi').selectedIndex = 0;
+	    document.getElementById('addBenXeDen').selectedIndex = 0;
+
+	    document.getElementById('addQuangDuong').value = '';
+	    document.getElementById('addThoiGian').value = '';
+	    document.getElementById('addSoChuyen').value = '';
+	    document.getElementById('addSoNgay').value = '';
+
+	    const overlay = document.getElementById('overlayAddModal');
+	    overlay.style.display = 'flex';
+
+	    overlay.onclick = function (event) {
+	        if (event.target === overlay) {
+	            overlay.style.display = 'none';
+	        }
+	    };
+	}
+	
+	function submitAdd() {
+		const tenTuyen = document.getElementById("addTenTuyen").value.trim();
+		const benXeDi = document.getElementById("addBenXeDi").value;
+		const benXeDen = document.getElementById("addBenXeDen").value;
+		const quangDuong = document.getElementById("addQuangDuong").value;
+		const thoiGian = document.getElementById("addThoiGian").value;
+		const soChuyen = document.getElementById("addSoChuyen").value;
+		const soNgay = document.getElementById("addSoNgay").value;
+
+		if (tenTuyen === "" || benXeDi === "" || benXeDen === "" || quangDuong === "" || thoiGian === "" || soChuyen === "" || soNgay === "") {
+			toast({
+				title: "Chú ý!",
+				message: "Vui lòng điền đầy đủ thông tin!",
+				type: "error",
+				duration: 2000
+			});
+			return;
+		}
+		if (benXeDi === benXeDen) {
+			toast({
+				title: "Lỗi!",
+				message: "Bến xe đi và đến không được trùng nhau!",
+				type: "error",
+				duration: 2000
+			});
+			return;
+		}
+		
+		const [idBenXeDi, idQuanHuyenDi] = benXeDi.split(',');
+		const [idBenXeDen, idQuanHuyenDen] = benXeDen.split(',');
+
+		 var quanHuyenToTinhThanhMap = {};
+		 <c:forEach var="qh" items="${quanHuyenList}">
+		     quanHuyenToTinhThanhMap[${qh.idQuanHuyen}] = ${qh.tinhThanh.idTinhThanh};
+		 </c:forEach>
+		    
+		const idTinhThanhDi = quanHuyenToTinhThanhMap[idQuanHuyenDi];
+		const idTinhThanhDen = quanHuyenToTinhThanhMap[idQuanHuyenDen];
+		
+		console.log("ID Bến Xe đi:", idBenXeDi);
+		console.log("ID Quận huyện đi:", idQuanHuyenDi);
+		console.log("ID tỉnh đi:", idTinhThanhDi);
+		console.log("ID Bến Xe đến:", idBenXeDen);
+		console.log("ID Quận huyện đến:", idQuanHuyenDen);
+		console.log("ID tỉnh đến:", idTinhThanhDen);
+
+		const data = {
+			tenTuyen: tenTuyen,
+			benXeDi: { idBenXe: parseInt(benXeDi) },
+			benXeDen: { idBenXe: parseInt(benXeDen) },
+			quangDuong: parseFloat(quangDuong),
+			thoiGianDiChuyenTB: parseFloat(thoiGian),
+			soChuyenTrongNgay: parseInt(soChuyen),
+			soNgayChayTrongTuan: parseInt(soNgay),
+			tinhThanhDi: { idTinhThanh: parseInt(idTinhThanhDi) },
+			tinhThanhDen: { idTinhThanh: parseInt(idTinhThanhDen) }
+		};
+		
+		console.log("data: ", data);
+		
+		const url = 'http://localhost:8085/FutaBus_Backend/api/admin/tuyenxe/them';
+
+		fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(data)
+		})
+		.then(response => response.json())
+		.then(result => {
+			if (result.success) {
+				toast({
+					title: "Thành công!",
+					message: "Thêm tuyến xe thành công!",
+					type: "success",
+					duration: 2000
+				});
+				setTimeout(() => {
+					window.location.reload();
+				}, 1000);
+			} else {
+				toast({
+					title: "Thất bại!",
+					message: result.message || "Không thể thêm tuyến xe!",
+					type: "error",
+					duration: 2000
+				});
+			}
+		})
+		.catch(error => {
+			console.error("Lỗi khi gửi yêu cầu:", error);
+			toast({
+				title: "Lỗi!",
+				message: "Đã xảy ra lỗi khi thêm tuyến xe!",
+				type: "error",
+				duration: 2000
+			});
+		});
+	}
 
 	</script>
 
