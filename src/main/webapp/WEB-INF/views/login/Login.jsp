@@ -30,106 +30,191 @@
 <body>
 	<div id="toast"></div>
 	<header>
-	<div class="hero-container">
-		<div class="items-start">
-			<div>
-				<img
-					src="<%=request.getContextPath()%>/assets/user/image/vietnam.svg"
-					width="26" alt="language icon"> <span class="mx-2 text-white">vi</span>
-				<img
-					src="<%=request.getContextPath()%>/assets/user/image/icon_form_droplist.svg"
-					alt="icon_form_droplist">
+		<div class="hero-container">
+			<div class="items-start">
+				<div>
+					<img
+						src="<%=request.getContextPath()%>/assets/user/image/vietnam.svg"
+						width="26" alt="language icon"> <span
+						class="mx-2 text-white">vi</span> <img
+						src="<%=request.getContextPath()%>/assets/user/image/icon_form_droplist.svg"
+						alt="icon_form_droplist">
+				</div>
+				<div>
+					<img
+						src="<%=request.getContextPath()%>/assets/user/image/download_app.svg"
+						width="26" alt="download app icon"> <span
+						class="mx-2 text-white">Tải ứng dụng</span> <img
+						src="<%=request.getContextPath()%>/assets/user/image/icon_form_droplist.svg"
+						alt="icon_form_droplist">
+				</div>
 			</div>
-			<div>
+
+			<img
+				src="<%=request.getContextPath()%>/assets/user/image/home_logo.svg"
+				alt="FUTA Bus Lines" class="hero-image">
+
+			<div class="justify-end">
 				<img
-					src="<%=request.getContextPath()%>/assets/user/image/download_app.svg"
-					width="26" alt="download app icon"> <span
-					class="mx-2 text-white">Tải ứng dụng</span> <img
-					src="<%=request.getContextPath()%>/assets/user/image/icon_form_droplist.svg"
-					alt="icon_form_droplist">
+					src="<%=request.getContextPath()%>/assets/user/image/person.svg"
+					width="26" style="margin: 0 10px" alt="download app icon"> <a
+					href="javascript:void(0)" class="gap-3 cursor-pointer"
+					onclick="redirectToLogin()"> Đăng nhập/Đăng ký </a>
 			</div>
 		</div>
+	</header>
 
-		<img
-			src="<%=request.getContextPath()%>/assets/user/image/home_logo.svg"
-			alt="FUTA Bus Lines" class="hero-image">
+	<div class="container">
+		<div class="left">
+			<img
+				src="<%=request.getContextPath()%>/assets/user/image/logoText.svg"
+				alt="Logo"> <img
+				src="<%=request.getContextPath()%>/assets/user/image/TVC.svg"
+				alt="Xe trung chuyển">
+		</div>
 
-		<div class="justify-end">
-			<img src="<%=request.getContextPath()%>/assets/user/image/person.svg"
-				width="26" style="margin: 0 10px" alt="download app icon"> <a href="javascript:void(0)"
-				class="gap-3 cursor-pointer" onclick="redirectToLogin()"> Đăng nhập/Đăng ký </a>
+		<div class="right">
+			<div class="login-box">
+				<h2 id="form-title">Đăng nhập tài khoản</h2>
+				<div class="tabs">
+					<button class="active" onclick="showLoginForm()">ĐĂNG NHẬP</button>
+					<button onclick="showRegisterForm()">ĐĂNG KÝ</button>
+				</div>
+
+				<form id="login-form">
+					<div class="input-group">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/email.png"
+							alt="Email Icon" class="email-icon"> <input type="text"
+							id="email" placeholder="Nhập email" autocomplete="username">
+					</div>
+					<div class="input-group">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/password.svg"
+							alt="password" class="password-icon"> <input
+							type="password" placeholder="Nhập mật khẩu" id="password"
+							autocomplete="current-password"> <img
+							src="<%=request.getContextPath()%>/assets/user/image/hide.png"
+							alt="eye" class="eye-icon" onclick="togglePassword(this)">
+					</div>
+					<button type="submit" class="btn" id="login-button">Đăng
+						nhập</button>
+					<a href="#" class="forgot-password"
+						onclick="showForgotPasswordForm(); return false;">Quên mật
+						khẩu</a>
+				</form>
+
+				<form id="register-form" style="display: none;">
+					<div class="input-group">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/email.png"
+							alt="Email Icon" class="email-icon"> <input type="text"
+							id="register-email" placeholder="Nhập email"
+							autocomplete="username">
+					</div>
+					<button type="submit" class="btn" id="send-otp-button">Gửi
+						mã</button>
+				</form>
+
+				<form id="otp-form" style="display: none;">
+					<div class="input-group">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/email.png"
+							alt="Email Icon" class="email-icon"> <input type="text"
+							placeholder="Nhập mã OTP" id="otp-code">
+					</div>
+					<button type="submit" class="btn" id="register-button">Xác
+						minh</button>
+				</form>
+
+				<form id="password-form" style="display: none;">
+					<input type="text" name="username" id="username"
+						autocomplete="username" hidden
+						value="<%=session.getAttribute("email")%>">
+					<div class="input-group">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/password.svg"
+							alt="password" class="password-icon"> <input
+							type="password" placeholder="Nhập mật khẩu" id="password1"
+							autocomplete="current-password"> <img
+							src="<%=request.getContextPath()%>/assets/user/image/hide.png"
+							alt="eye" class="eye-icon" onclick="togglePassword(this)">
+					</div>
+					<div class="input-group">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/password.svg"
+							alt="password" class="password-icon"> <input
+							type="password" placeholder="Nhập lại mật khẩu" id="password2"
+							autocomplete="current-password"> <img
+							src="<%=request.getContextPath()%>/assets/user/image/hide.png"
+							alt="eye" class="eye-icon" onclick="togglePassword(this)">
+					</div>
+					<button type="submit" class="btn" id="create-account-button">Xác
+						nhận</button>
+				</form>
+
+				<form id="forgot-password-form" style="display: none;">
+					<div class="input-group">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/email.png"
+							alt="Email Icon" class="email-icon"> <input type="text"
+							id="forgot-email" placeholder="Nhập email để đặt lại mật khẩu"
+							autocomplete="username">
+					</div>
+					<button type="submit" class="btn" id="send-forgot-otp-button">Gửi
+						mã</button>
+				</form>
+
+				<form id="verify-otp-form" style="display: none;">
+					<div class="input-group">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/email.png"
+							alt="Email Icon" class="email-icon"> <input type="text"
+							id="verify-otp-code" name="otp"
+							placeholder="Nhập mã OTP được gửi đến email của bạn">
+					</div>
+					<button type="submit" class="btn" id="verify-otp-button">Xác
+						minh</button>
+				</form>
+
+				<form id="reset-password-form" style="display: none;">
+					<input type="text" name="username" id="reset-username"
+						autocomplete="username" hidden
+						value="<%=session.getAttribute("email")%>">
+
+					<div class="input-group">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/password.svg"
+							alt="password" class="password-icon"> <input
+							type="password" placeholder="Nhập mật khẩu mới"
+							id="reset-password1" autocomplete="new-password"> <img
+							src="<%=request.getContextPath()%>/assets/user/image/hide.png"
+							alt="eye" class="eye-icon" onclick="togglePassword(this)">
+					</div>
+
+					<div class="input-group">
+						<img
+							src="<%=request.getContextPath()%>/assets/user/image/password.svg"
+							alt="password" class="password-icon"> <input
+							type="password" placeholder="Nhập lại mật khẩu mới"
+							id="reset-password2" autocomplete="new-password"> <img
+							src="<%=request.getContextPath()%>/assets/user/image/hide.png"
+							alt="eye" class="eye-icon" onclick="togglePassword(this)">
+					</div>
+
+					<button type="submit" class="btn" id="reset-account-button">Đặt
+						lại mật khẩu</button>
+				</form>
+			</div>
 		</div>
 	</div>
-	</header>
-	
-	<div class="container">
-        <div class="left">
-        	<img src="<%=request.getContextPath()%>/assets/user/image/logoText.svg" alt="Logo">
-            <img src="<%=request.getContextPath()%>/assets/user/image/TVC.svg" alt="Xe trung chuyển">
-        </div>
-        
-        <div class="right">
-            <div class="login-box">
-                <h2 id="form-title">Đăng nhập tài khoản</h2>
-                <div class="tabs">
-                    <button class="active" onclick="showLoginForm()">ĐĂNG NHẬP</button>
-                    <button onclick="showRegisterForm()">ĐĂNG KÝ</button>
-                </div>
 
-        <form id="login-form">
-            <div class="input-group">
-                <img src="<%=request.getContextPath()%>/assets/user/image/email.png" alt="Email Icon" class="email-icon">
-                <input type="text" id="email" placeholder="Nhập email" autocomplete="username">
-            </div>
-            <div class="input-group">
-                <img src="<%=request.getContextPath()%>/assets/user/image/password.svg" alt="password" class="password-icon">
-                <input type="password" placeholder="Nhập mật khẩu" id="password" autocomplete="current-password">
-                <img src="<%=request.getContextPath()%>/assets/user/image/hide.png" alt="eye" class="eye-icon" onclick="togglePassword(this)">
-            </div>
-            <button type="submit" class="btn" id="login-button">Đăng nhập</button>
-            <a href="#" class="forgot-password">Quên mật khẩu</a>
-        </form>
-
-        <form id="register-form" style="display: none;">
-            <div class="input-group">
-                <img src="<%=request.getContextPath()%>/assets/user/image/email.png" alt="Email Icon" class="email-icon">
-                <input type="text" id="register-email" placeholder="Nhập email" autocomplete="username">
-            </div>
-            <button type="submit" class="btn" id="send-otp-button">Gửi mã</button>
-        </form>
-        
-        <form id="otp-form" style="display: none;">
-            <div class="input-group">
-                <img src="<%=request.getContextPath()%>/assets/user/image/email.png" alt="Email Icon" class="email-icon">
-                <input type="text" placeholder="Nhập mã OTP" id="otp-code">
-            </div>
-            <button type="submit" class="btn" id="register-button">Xác minh</button>
-        </form>
-        
-        <form id="password-form" style="display: none;">
-        	<input type="text" name="username" id="username" autocomplete="username" hidden value="<%= session.getAttribute("email") %>">
-            <div class="input-group">
-                <img src="<%=request.getContextPath()%>/assets/user/image/password.svg" alt="password" class="password-icon">
-                <input type="password" placeholder="Nhập mật khẩu" id="password1" autocomplete="current-password">
-                <img src="<%=request.getContextPath()%>/assets/user/image/hide.png" alt="eye" class="eye-icon" onclick="togglePassword(this)">
-            </div>
-            <div class="input-group">
-                <img src="<%=request.getContextPath()%>/assets/user/image/password.svg" alt="password" class="password-icon">
-                <input type="password" placeholder="Nhập lại mật khẩu" id="password2" autocomplete="current-password">
-                <img src="<%=request.getContextPath()%>/assets/user/image/hide.png" alt="eye" class="eye-icon" onclick="togglePassword(this)">
-            </div>
-            <button type="submit" class="btn" id="create-account-button">Xác nhận</button>
-        </form>
-            </div>
-        </div>
-    </div>
-    
-    <section class="promotions">
+	<section class="promotions">
 		<h3>Kết nối FUTA Group</h3>
-		<span>Đa dạng hệ sinh thái FUTA Group qua App FUTA: mua vé xe Phương Trang, Xe Hợp Đồng, Xe Buýt, Giao hàng...</span>
-		<img
-					src="<%=request.getContextPath()%>/assets/user/image/ketnoi.svg"
-					alt="ketnoi" class="ketnoi-image">
+		<span>Đa dạng hệ sinh thái FUTA Group qua App FUTA: mua vé xe
+			Phương Trang, Xe Hợp Đồng, Xe Buýt, Giao hàng...</span> <img
+			src="<%=request.getContextPath()%>/assets/user/image/ketnoi.svg"
+			alt="ketnoi" class="ketnoi-image">
 	</section>
 
 	<footer>
@@ -189,7 +274,7 @@
 				Thông</p>
 		</div>
 	</footer>
-	
+
 	<script>
 	function togglePassword(icon) {
 	    var passwordField = icon.previousElementSibling;
@@ -207,6 +292,9 @@
 	    document.getElementById('form-title').innerText = 'Đăng nhập tài khoản';
 	    document.getElementById('login-form').style.display = 'block'; 
 	    document.getElementById('register-form').style.display = 'none'; 
+	    document.getElementById('forgot-password-form').style.display = 'none';
+	    document.getElementById('verify-otp-form').style.display = 'none';
+	    document.getElementById('reset-password-form').style.display = 'none';
 	    document.getElementById('otp-form').style.display = 'none'; 
 	    document.getElementById('password-form').style.display = 'none';
 	    document.getElementById('login-button').style.display = 'inline-block';
@@ -222,6 +310,9 @@
 	function showRegisterForm() {
 	    document.getElementById('form-title').innerText = 'Đăng ký tài khoản';
 	    document.getElementById('register-form').style.display = 'block'; 
+	    document.getElementById('forgot-password-form').style.display = 'none';
+	    document.getElementById('verify-otp-form').style.display = 'none';
+	    document.getElementById('reset-password-form').style.display = 'none';
 	    document.getElementById('login-form').style.display = 'none'; 
 	    document.getElementById('otp-form').style.display = 'none'; 
 	    document.getElementById('password-form').style.display = 'none';
@@ -237,6 +328,9 @@
 	
 	function showOTPForm() {
 	    document.getElementById('register-form').style.display = 'none';
+	    document.getElementById('forgot-password-form').style.display = 'none';
+	    document.getElementById('verify-otp-form').style.display = 'none';
+	    document.getElementById('reset-password-form').style.display = 'none';
 	    document.getElementById('login-form').style.display = 'none';
 	    document.getElementById('password-form').style.display = 'none';
 	    document.getElementById('otp-form').style.display = 'block';
@@ -245,12 +339,50 @@
 	
 	function passwordForm() {
 	    document.getElementById('register-form').style.display = 'none';
+	    document.getElementById('forgot-password-form').style.display = 'none';
+	    document.getElementById('verify-otp-form').style.display = 'none';
+	    document.getElementById('reset-password-form').style.display = 'none';
 	    document.getElementById('login-form').style.display = 'none';
 	    document.getElementById('otp-form').style.display = 'none';
 	    document.getElementById('password-form').style.display = 'block';
 	    document.getElementById('form-title').innerText = 'Xác nhận mật khẩu';
 	}
 	
+	function showForgotPasswordForm() {
+	    document.getElementById('form-title').innerText = 'Quên mật khẩu';
+	    
+	    document.getElementById('login-form').style.display = 'none';
+	    document.getElementById('register-form').style.display = 'none';
+	    document.getElementById('otp-form').style.display = 'none';
+	    document.getElementById('password-form').style.display = 'none';
+	    document.getElementById('verify-otp-form').style.display = 'none';
+	    document.getElementById('reset-password-form').style.display = 'none';
+
+	    document.getElementById('forgot-password-form').style.display = 'block';
+
+	    document.getElementById('login-button').style.display = 'none';
+	    document.getElementById('register-button').style.display = 'none';
+
+	    const loginButton = document.querySelector('.tabs button:first-child');
+	    const registerButton = document.querySelector('.tabs button:last-child');
+
+	    if (loginButton && registerButton) {
+	        loginButton.classList.remove('active');
+	        registerButton.classList.remove('active');
+	    }
+	}
+	
+	function resetPasswordForm() {
+	    document.getElementById('register-form').style.display = 'none';
+	    document.getElementById('forgot-password-form').style.display = 'none';
+	    document.getElementById('verify-otp-form').style.display = 'none';
+	    document.getElementById('password-form').style.display = 'none';
+	    document.getElementById('login-form').style.display = 'none';
+	    document.getElementById('otp-form').style.display = 'none';
+	    document.getElementById('reset-password-form').style.display = 'block';
+	    document.getElementById('form-title').innerText = 'Đặt lại mật khẩu';
+	}
+
 	function redirectToLogin() {
         window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
     }
@@ -556,7 +688,237 @@
 		        });
 		    });
 	    } 
+	});
+	
+	document.getElementById("forgot-password-form").addEventListener("submit", function(event) {
+	    event.preventDefault();
 
+	    const email = document.getElementById("forgot-email").value.trim();
+	    let isValid = true;
+
+	    if (email === "") {
+	        toast({
+	            title: "Chú ý!",
+	            message: "Vui lòng nhập email để đặt lại mật khẩu!",
+	            type: "error",
+	            duration: 1000
+	        });
+	        isValid = false;
+	    }
+
+	    if (!email.endsWith("@gmail.com") && email !== "") {
+	        toast({
+	            title: "Chú ý!",
+	            message: "Email phải có đuôi @gmail.com!",
+	            type: "error",
+	            duration: 1000
+	        });
+	        isValid = false;
+	    }
+
+	    if (isValid) {
+	        const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/send-verify-otp');
+
+	        fetch(url, {
+	            method: "POST",
+	            headers: {
+	                "Content-Type": "application/json"
+	            },
+	            credentials: "include",
+	            body: JSON.stringify({ email: email })
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	                toast({
+	                    title: "Thành công!",
+	                    message: "Mã OTP đã được gửi đến email.",
+	                    type: "success",
+	                    duration: 1500
+	                });
+
+	                document.getElementById("forgot-password-form").style.display = "none";
+	                document.getElementById("verify-otp-form").style.display = "block";
+	            } else {
+	                toast({
+	                    title: "Lỗi!",
+	                    message: data.message || "Không thể gửi mã OTP!",
+	                    type: "error",
+	                    duration: 1500
+	                });
+	            }
+	        })
+	        .catch(error => {
+	            toast({
+	                title: "Lỗi hệ thống!",
+	                message: "Vui lòng thử lại sau.",
+	                type: "error",
+	                duration: 1500
+	            });
+	            console.error("Lỗi gửi OTP:", error);
+	        });
+	    }
+	});
+	
+	document.getElementById("verify-otp-form").addEventListener("submit", function (event) {
+	    event.preventDefault();
+
+	    const email = document.getElementById("forgot-email").value.trim(); 
+	    const otp = document.getElementById("verify-otp-code").value.trim();
+
+	    if (otp === "") {
+	        toast({
+	            title: "Chú ý!",
+	            message: "Vui lòng nhập mã OTP!",
+	            type: "error",
+	            duration: 1000
+	        });
+	        return;
+	    }
+
+	    const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/verify-otp');
+
+	    fetch(url, {
+	        method: "POST",
+	        headers: {
+	            "Content-Type": "application/json"
+	        },
+	        credentials: "include",
+	        body: JSON.stringify({ email: email, otp: otp })
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        if (data.success) {
+	        	resetPasswordForm();
+	        } else {
+	            toast({
+	                title: "Lỗi!",
+	                message: "OTP không đúng hoặc đã hết hạn!",
+	                type: "error",
+	                duration: 1000
+	            });
+	        }
+	    })
+	    .catch(error => {
+	        console.error("Lỗi:", error);
+	        toast({
+	            title: "Lỗi!",
+	            message: "Đã có lỗi khi xác thực OTP!",
+	            type: "error",
+	            duration: 1000
+	        });
+	    });
+	});
+	
+	document.getElementById("reset-password-form").addEventListener("submit", function (event) {
+	    event.preventDefault();
+
+	    const email = document.getElementById("forgot-email").value.trim();
+	    const otp = document.getElementById("verify-otp-code").value.trim();
+	    const password1 = document.getElementById("reset-password1").value.trim();
+	    const password2 = document.getElementById("reset-password2").value.trim();
+	    
+	    console.log("email:", email);
+	    console.log("password1:", password1);
+	    console.log("password2:", password2);
+	    
+	    var isValid = true;
+	    let specialCharPattern = /[^A-Za-z0-9]/;
+	    let whitespacePattern = /\s/;
+	    
+	    if (password1 === "") {
+	    	toast({
+	      		title: "Chú ý!",
+	      		message: "Không được để trống mật khẩu!",
+	       		type: "error",
+	    		duration: 1000
+	        });
+	        isValid = false;
+	    } 
+	    
+	    else if (whitespacePattern.test(password1)) {
+	        toast({
+	            title: "Chú ý!",
+	            message: "Mật khẩu không được chứa khoảng trắng!",
+	            type: "error",
+	            duration: 1000
+	        });
+	        isValid = false;
+	    } 
+	    
+	    else if (specialCharPattern.test(password1)) {
+	        toast({
+	            title: "Chú ý!",
+	            message: "Mật khẩu không được chứa ký tự đặc biệt!",
+	            type: "error",
+	            duration: 1000
+	        });
+	        isValid = false;
+	    }
+	    
+	    else if (password2 === "" && password1 !== "") {
+	    	toast({
+	      		title: "Chú ý!",
+	      		message: "Vui lòng xác nhận lại mật khẩu!",
+	       		type: "error",
+	    		duration: 1000
+	        });
+	        isValid = false;
+	    } 
+	    
+	    else if (password2 !== password1 && password1 !== "") {
+	        toast({
+	            title: "Chú ý!",
+	            message: "Mật khẩu không trùng nhau!",
+	            type: "error",
+	            duration: 1000
+	        });
+	        isValid = false;
+	    } 
+	    
+	    if (isValid) {
+	        console.log("email: ", email);
+	        console.log("pass: ", password1);
+	        console.log("otp: ", otp);
+	        const url = new URL('http://localhost:8085/FutaBus_Backend/api/user/reset-password');
+
+		    fetch(url, {
+		        method: "POST",
+		        headers: {
+		            "Content-Type": "application/json"
+		        },
+		        credentials: "include",
+		        body: JSON.stringify({ email: email, otp: otp, password: password1 })
+		    })
+		    .then(response => response.json())
+		    .then(data => {
+		        if (data.success) {
+		            toast({
+		                title: "Thành công!",
+		                message: "Tạo tài khoản thành công!",
+		                type: "success",
+		                duration: 1500
+		            });
+		            showLoginForm();
+		        } else {
+		            toast({
+		                title: "Lỗi!",
+		                message: "OTP không đúng hoặc đã hết hạn!",
+		                type: "error",
+		                duration: 1000
+		            });
+		        }
+		    })
+		    .catch(error => {
+		        console.error("Lỗi:", error);
+		        toast({
+		            title: "Lỗi!",
+		            message: "Đã có lỗi khi xác thực OTP!",
+		            type: "error",
+		            duration: 1000
+		        });
+		    });
+	    }
 	});
 	
 	function toast({ title = "", message = "", type = "info", duration = 3000 }) {

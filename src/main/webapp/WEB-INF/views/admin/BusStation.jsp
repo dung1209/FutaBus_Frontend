@@ -5,10 +5,10 @@
 <head>
 
 <meta charset="utf-8">
-<title>Chuyến xe</title>
+<title>Bến xe</title>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/assets/admin/css/bustrip.css">
+	href="<%=request.getContextPath()%>/assets/admin/css/busstation.css">
 <link
 	href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
 	rel="stylesheet">
@@ -30,15 +30,14 @@
 	<div id="toast"></div>
 	<div id="overlayModal" class="overlay" style="display: none;">
 		<div id="detailModal" class="modal">
-			<h3>Chi tiết chuyến xe</h3>
+			<h3>Chi tiết bến xe</h3>
 			<div class="form-detail">
-				<label>Tên tuyến:</label> <input type="text" id="modalTenTuyen"
-					readonly> <label>Thời điểm đi:</label><input type="text"
-					id="modalThoiDiemDi" readonly> <label>Thời điểm
-					đến:</label><input type="text" id="modalThoiDiemDen" readonly> <label>Biển
-					số xe:</label><input type="text" id="modalBienSo" readonly> <label>Giá
-					vé:</label><input type="text" id="modalGiaVe" readonly> <label>Tài
-					xế:</label><input type="text" id="modalTaiXe" readonly>
+				<label>Tên bến xe:</label> <input type="text" id="modalTenBenXe"
+					readonly> <label>Địa chỉ:</label> <input type="text"
+					id="modalDiaChi" readonly> <label>Số điện thoại:</label> <input
+					type="text" id="modalSoDienThoai" readonly> <label>Quận/Huyện:</label>
+				<input type="text" id="modalQuanHuyen" readonly> <label>Tỉnh/Thành:</label>
+				<input type="text" id="modalTinhThanh" readonly>
 			</div>
 			<div class="modal-footer">
 				<button
@@ -49,38 +48,26 @@
 
 	<div id="overlayEditModal" class="overlay" style="display: none;">
 		<div id="editModal" class="modal">
-			<h3>Chỉnh sửa chuyến xe</h3>
+			<h3>Chỉnh sửa bến xe</h3>
 			<div class="form-detail form-edit">
-				<label>Tên tuyến xe:</label> <select id="editTenTuyen"
-					name="editTenTuyen">
-					<c:forEach var="tuyenXe" items="${tuyenXeList}">
-						<option value="${tuyenXe.idTuyenXe}"
-							${tuyenXe.idTuyenXe == idTuyenXe ? 'selected' : ''}>
-							${tuyenXe.tenTuyen}</option>
+				<label>Tên bến xe:</label> <input type="text" id="editTenBenXe">
+
+				<label>Địa chỉ:</label> <input type="text" id="editDiaChi">
+
+				<label>Số điện thoại:</label> <input type="text"
+					id="editSoDienThoai"> <label>Quận/Huyện:</label> <select
+					id="editQuanHuyen" name="editQuanHuyen">
+					<c:forEach var="quanHuyen" items="${quanHuyenList}">
+						<option value="${quanHuyen.idQuanHuyen}"
+							${quanHuyen.idQuanHuyen == idQuanHuyen ? 'selected' : ''}>
+							${quanHuyen.tenQuanHuyen}</option>
 					</c:forEach>
-				</select> <label>Thời điểm đi:</label> <input type="text" id="editThoiDiemDi">
-				<label>Thời điểm đến:</label> <input type="text"
-					id="editThoiDiemDen"> <label>Biển số xe:</label> <select
-					id="editBienSoXe" name="editBienSoXe">
-					<c:forEach var="xe" items="${xeList}">
-						<option value="${xe.idXe}" ${xe.idXe == idXe ? 'selected' : ''}>
-							${xe.bienSo}</option>
-					</c:forEach>
-				</select> <label>Giá vé:</label> <input type="number" id="editGiaVe">
-				<label>Tên tài xế:</label> <select id="editTenTaiXe"
-					name="editTenTaiXe">
-					<c:forEach var="taiXe" items="${nguoiDungList}">
-						<option value="${taiXe.idNguoiDung}"
-							${taiXe.idNguoiDung == idTaiXe ? 'selected' : ''}>
-							${taiXe.hoTen}</option>
-					</c:forEach>
-				</select> <input type="hidden" id="editChuyenXeId"> <input
-					type="hidden" id="idTuyenXe"> <input type="hidden"
-					id="idXe"> <input type="hidden" id="idTaiXe">
+				</select> <input type="hidden" id="editQuanHuyenId"> <input
+					type="hidden" id="editBenXeId">
 			</div>
 
 			<div class="modal-footer">
-				<button onclick="submitEdit()">Lưu</button>
+				<button onclick="submitEditBenXe()">Lưu</button>
 				<button class="cancel-btn"
 					onclick="document.getElementById('overlayEditModal').style.display='none'">Hủy</button>
 			</div>
@@ -95,7 +82,7 @@
 					<span class="close" id="modalClose">&times;</span>
 				</div>
 				<div class="modal-body">
-					<p class="title-question">Bạn có muốn xoá chuyến xe không?</p>
+					<p class="title-question">Bạn có muốn xoá bến xe không?</p>
 				</div>
 				<div class="modal-footer">
 					<button id="confirmYes" class="btn btn-yes">Có</button>
@@ -107,32 +94,22 @@
 
 	<div id="overlayAddModal" class="overlay" style="display: none;">
 		<div id="addModal" class="modal">
-			<h3>Thêm chuyến xe</h3>
+			<h3>Thêm bến xe</h3>
 			<div class="form-detail form-add">
-				<label>Tên tuyến xe:</label> <select id="addTuyenXeId"
-					name="addTuyenXeId">
-					<c:forEach var="tuyenXe" items="${tuyenXeList}">
-						<option value="${tuyenXe.idTuyenXe}">${tuyenXe.tenTuyen}</option>
-					</c:forEach>
-				</select> <label>Thời điểm đi:</label> <input type="text" id="addThoiDiemDi">
+				<label>Tên bến xe:</label> <input type="text" id="addTenBenXe">
 
-				<label>Thời điểm đến:</label> <input type="text" id="addThoiDiemDen">
-
-				<label>Biển số xe:</label> <select id="addXeId" name="addXeId">
-					<c:forEach var="xe" items="${xeList}">
-						<option value="${xe.idXe}">${xe.bienSo}</option>
-					</c:forEach>
-				</select> <label>Giá vé:</label> <input type="number" id="addGiaVe">
-
-				<label>Tên tài xế:</label> <select id="addTaiXeId" name="addTaiXeId">
-					<c:forEach var="taiXe" items="${nguoiDungList}">
-						<option value="${taiXe.idNguoiDung}">${taiXe.hoTen}</option>
+				<label>Địa chỉ:</label> <input type="text" id="addDiaChi"> <label>Số
+					điện thoại:</label> <input type="text" id="addSoDienThoai"> <label>Quận/Huyện:</label>
+				<select id="addQuanHuyen" name="addQuanHuyen">
+					<c:forEach var="quanHuyen" items="${quanHuyenList}">
+						<option value="${quanHuyen.idQuanHuyen}">
+							${quanHuyen.tenQuanHuyen}</option>
 					</c:forEach>
 				</select>
 			</div>
 
 			<div class="modal-footer">
-				<button onclick="submitAddChuyenXe()">Lưu</button>
+				<button onclick="submitAddBenXe()">Lưu</button>
 				<button class="cancel-btn"
 					onclick="document.getElementById('overlayAddModal').style.display='none'">Hủy</button>
 			</div>
@@ -165,12 +142,13 @@
 				href="<%=request.getContextPath()%>/admin/bus-route"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/route.png"
 				alt="route" /><span>Quản Lý Tuyến Xe</span></a> <a
-				href="<%=request.getContextPath()%>/admin/bus-trip" class="active"><img
+				href="<%=request.getContextPath()%>/admin/bus-trip"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/map.png"
-				alt="map" class="active" /><span>Quản Lý Chuyến Xe</span></a> <a
-				href="<%=request.getContextPath()%>/admin/bus-station"><img
+				alt="map" /><span>Quản Lý Chuyến Xe</span></a> <a
+				href="<%=request.getContextPath()%>/admin/bus-station"
+				class="active"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bus-station.png"
-				alt="station" /><span>Quản Lý Bến Xe</span></a> <a
+				alt="station" class="active" /><span>Quản Lý Bến Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/bus"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bus-bus.png"
 				alt="bus" /><span>Quản Lý Xe</span></a> <a
@@ -273,7 +251,7 @@
 
 			<div class="orders">
 				<div class="orders__header">
-					<h2 id="title">Danh sách chuyến xe</h2>
+					<h2 id="title">Danh sách bến xe</h2>
 					<div class="orders__actions">
 						<div class="search-box">
 							<input type="text" id="searchInput"
@@ -285,59 +263,50 @@
 							</div>
 						</div>
 						<button type="submit" class="btn-add-trip"
-							onclick="showAddChuyenXeModal()">+ Thêm chuyến xe</button>
+							onclick="showAddBenXeModal()">+ Thêm bến xe</button>
 					</div>
 				</div>
 
 				<table>
 					<thead>
 						<tr>
-							<th>Tuyến xe</th>
-							<th>Thời điểm đi</th>
-							<th>Thời điểm đến</th>
-							<th>Xe</th>
-							<th>Giá vé</th>
-							<th>Tài xế</th>
+							<th>Bến xe</th>
+							<th>Địa chỉ</th>
+							<th>Số điện thoại</th>
+							<th>Quận/Huyện</th>
+							<th>Tỉnh thành</th>
 							<th>Hành động</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="chuyenxe" items="${chuyenXeList}">
+						<c:forEach var="benxe" items="${benXeList}">
 							<tr>
-								<td>${chuyenxe.tuyenXe.tenTuyen}</td>
-								<td>${chuyenxe.thoiDiemDi}</td>
-								<td>${chuyenxe.thoiDiemDen}</td>
-								<td>${chuyenxe.xe.bienSo}</td>
-								<td><fmt:formatNumber value="${chuyenxe.giaVe}"
-										pattern="#,###" groupingUsed="true" /> đ</td>
-								<td>${chuyenxe.taiXe.hoTen}</td>
+								<td>${benxe.tenBenXe}</td>
+								<td>${benxe.diaChi}</td>
+								<td>${benxe.soDienThoai}</td>
+								<td>${benxe.quanHuyen.tenQuanHuyen}</td>
+								<td>${benxe.quanHuyen.tinhThanh.tenTinh}</td>
 								<td><img
 									src="<%=request.getContextPath()%>/assets/admin/image/see.png"
 									alt="detail"
-									onclick="showDetailModal('${chuyenxe.tuyenXe.tenTuyen}', 
-     									'${chuyenxe.thoiDiemDi}', 
-     									'${chuyenxe.thoiDiemDen}', 
-     									'${chuyenxe.xe.bienSo}', 
-     									'${chuyenxe.giaVe}', 
-     									'${chuyenxe.taiXe.hoTen}')" />
+									onclick="showDetailModal('${benxe.tenBenXe}', 
+     									'${benxe.diaChi}', 
+     									'${benxe.soDienThoai}', 
+     									'${benxe.quanHuyen.tenQuanHuyen}', 
+     									'${benxe.quanHuyen.tinhThanh.tenTinh}')" />
 									<img
 									src="<%=request.getContextPath()%>/assets/admin/image/update.png"
 									alt="update"
 									onclick="showEditModal(
-    									'${chuyenxe.idChuyenXe}',
-    									'${chuyenxe.tuyenXe.idTuyenXe}',
-        								'${chuyenxe.tuyenXe.tenTuyen}', 
-        								'${chuyenxe.thoiDiemDi}',
-        								'${chuyenxe.thoiDiemDen}',
-        								'${chuyenxe.xe.idXe}',
-        								'${chuyenxe.xe.bienSo}', 
-        								'${chuyenxe.giaVe}',
-        								'${chuyenxe.taiXe.idNguoiDung}',
-        								'${chuyenxe.taiXe.hoTen}')" />
+										'${benxe.idBenXe}',
+    									'${benxe.tenBenXe}',
+    									'${benxe.diaChi}',
+        								'${benxe.soDienThoai}', 
+        								'${benxe.quanHuyen.idQuanHuyen}', 
+        								'${benxe.quanHuyen.tenQuanHuyen}')" />
 									<img
 									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
-									alt="delete"
-									onclick="showDeleteModal('${chuyenxe.idChuyenXe}')" /></td>
+									alt="delete" onclick="showDeleteModal('${benxe.idBenXe}')" /></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -378,30 +347,6 @@
 	</div>
 
 	<script>
-	
-	flatpickr("#editThoiDiemDi", {
-        enableTime: true,
-        dateFormat: "d/m/Y H:i",
-        time_24hr: true
-    });
-
-    flatpickr("#editThoiDiemDen", {
-        enableTime: true,
-        dateFormat: "d/m/Y H:i",
-        time_24hr: true
-    });
-    
-    flatpickr("#addThoiDiemDi", {
-        enableTime: true,
-        dateFormat: "d/m/Y H:i",
-        time_24hr: true
-    });
-
-    flatpickr("#addThoiDiemDen", {
-        enableTime: true,
-        dateFormat: "d/m/Y H:i",
-        time_24hr: true
-    });
 	
 	const nguoiDungStr = localStorage.getItem("nguoiDung");
     if (nguoiDungStr) {
@@ -554,13 +499,12 @@
 	    return Number(number).toLocaleString('vi-VN') + ' đ';
 	}
 	
-	function showDetailModal(tenTuyen, thoiDiemDi, thoiDiemDen, bienSo, giaVe, taiXe) {
-	    document.getElementById('modalTenTuyen').value = tenTuyen;
-	    document.getElementById('modalThoiDiemDi').value = thoiDiemDi;
-	    document.getElementById('modalThoiDiemDen').value = thoiDiemDen;
-	    document.getElementById('modalBienSo').value = bienSo;
-	    document.getElementById('modalGiaVe').value = formatCurrency(giaVe);
-	    document.getElementById('modalTaiXe').value = taiXe;
+	function showDetailModal(tenBenXe, diaChi, soDienThoai, quanHuyen, tinhThanh) {
+	    document.getElementById('modalTenBenXe').value = tenBenXe;
+	    document.getElementById('modalDiaChi').value = diaChi;
+	    document.getElementById('modalSoDienThoai').value = soDienThoai;
+	    document.getElementById('modalQuanHuyen').value = quanHuyen;
+	    document.getElementById('modalTinhThanh').value = tinhThanh;
 
 	    const overlay = document.getElementById('overlayModal');
 	    overlay.style.display = 'flex';
@@ -572,18 +516,13 @@
 	    };
 	}
 	
-	function showEditModal(id, idTuyenXe, tenTuyen, thoiDiemDi, thoiDiemDen, idXe, bienSoXe, giaVe, idTaiXe, tenTaiXe) {
-	    document.getElementById('editChuyenXeId').value = id;
-	    document.getElementById('idTuyenXe').value = idTuyenXe;
-	    document.getElementById('editTenTuyen').value = idTuyenXe;
-
-	    document.getElementById('editThoiDiemDi').value = thoiDiemDi;
-	    document.getElementById('editThoiDiemDen').value = thoiDiemDen;
-	    document.getElementById('idXe').value = idXe;
-	    document.getElementById('editBienSoXe').value = idXe;
-	    document.getElementById('editGiaVe').value = giaVe;
-	    document.getElementById('idTaiXe').value = idTaiXe;
-	    document.getElementById('editTenTaiXe').value = idTaiXe;
+	function showEditModal(idBenXe, tenBenXe, diaChi, soDienThoai, idQuanHuyen, quanHuyen) {
+		document.getElementById('editBenXeId').value = idBenXe;
+	    document.getElementById('editTenBenXe').value = tenBenXe;
+	    document.getElementById('editDiaChi').value = diaChi;
+	    document.getElementById('editSoDienThoai').value = soDienThoai;
+	    document.getElementById('editQuanHuyen').value = idQuanHuyen;
+	    document.getElementById('editQuanHuyenId').value = idQuanHuyen;
 
 	    const overlay = document.getElementById('overlayEditModal');
 	    overlay.style.display = 'flex';
@@ -595,20 +534,10 @@
 	    };
 	}
 	
-	document.getElementById('editTenTuyen').addEventListener('change', function() {
-        const idBenXeDen = document.getElementById('editTenTuyen').value;
-        document.getElementById('idTuyenXe').value = idBenXeDen;
-    });
-	
-	document.getElementById('editBienSoXe').addEventListener('change', function() {
-        const idBenXeDen = document.getElementById('editBienSoXe').value;
-        document.getElementById('idXe').value = idBenXeDen;
-    });
-	
-	document.getElementById('editTenTaiXe').addEventListener('change', function() {
-        const idBenXeDen = document.getElementById('editTenTaiXe').value;
-        document.getElementById('idTaiXe').value = idBenXeDen;
-    });
+	document.getElementById('editQuanHuyen').addEventListener('change', function () {
+	    const selectedId = this.value;
+	    document.getElementById('editQuanHuyenId').value = selectedId;
+	});
 	
 	function addSecondsIfNeeded(thoiDiem) {
 	    if (!thoiDiem.includes(":")) {
@@ -622,60 +551,44 @@
 	    return thoiDiem; 
 	}
 	
-	function submitEdit() {
-		const idChuyenXe = document.getElementById('editChuyenXeId').value;
-		const idTuyenXe = document.getElementById('idTuyenXe').value;
-	    const tenTuyen = document.getElementById('editTenTuyen').value;
-	    const thoiDiemDi = document.getElementById('editThoiDiemDi').value;
-	    const thoiDiemDen = document.getElementById('editThoiDiemDen').value;
-	    const idXe = document.getElementById('idXe').value;
-	    const bienSoXe = document.getElementById('editBienSoXe').value;
-	    const giaVe = document.getElementById('editGiaVe').value;
-	    const idTaiXe = document.getElementById('idTaiXe').value;
-	    const tenTaiXe = document.getElementById('editTenTaiXe').value;
-	    const thoiDiemDiUpdated = addSecondsIfNeeded(thoiDiemDi);
-	    const thoiDiemDenUpdated = addSecondsIfNeeded(thoiDiemDen);
+	function submitEditBenXe() {
+		const idBenXe = document.getElementById('editBenXeId').value;
+		const tenBenXe = document.getElementById('editTenBenXe').value;
+	    const diaChi = document.getElementById('editDiaChi').value;
+	    const soDienThoai = document.getElementById('editSoDienThoai').value;
+	    const idQuanHuyen = document.getElementById('editQuanHuyen').value;
 	    
 		let isValid = true;
 
-		if (
-			thoiDiemDi === "" ||
-			thoiDiemDen === "" ||
-			giaVe === "" ||
-			idTuyenXe === "" ||
-			idXe === "" ||
-			idTaiXe === ""
-		) {
+		if (!tenBenXe || !diaChi || !soDienThoai || !idQuanHuyen) {
 			toast({
 				title: "Chú ý!",
 				message: "Vui lòng điền đầy đủ thông tin!",
 				type: "error",
-				duration: 1000
+				duration: 2000
 			});
 			isValid = false;
 		}
 
 		if (isValid) {
-			const chuyenXeData = {
-				idChuyenXe: parseInt(idChuyenXe),
-				idTuyenXe: parseInt(idTuyenXe),
-				thoiDiemDi: thoiDiemDiUpdated,
-				thoiDiemDen: thoiDiemDenUpdated,
-				idXe: parseInt(idXe),
-				giaVe: parseFloat(giaVe),
-				idTaiXe: parseInt(idTaiXe),
-				trangThai: 1
+			const benXeData = {
+				idBenXe: idBenXe,
+				tenBenXe: tenBenXe,
+				diaChi: diaChi,
+				soDienThoai: soDienThoai,
+				quanHuyen: { idQuanHuyen: parseInt(idQuanHuyen) }
 			};
-			console.log("Dữ liệu chuyến xe:", chuyenXeData);
 
-			const url = new URL('http://localhost:8085/FutaBus_Backend/api/admin/update-chuyenxe');
+			console.log("Dữ liệu bến xe:", benXeData);
+
+			const url = new URL('http://localhost:8085/FutaBus_Backend/api/admin/update-benxe');
 
 			fetch(url, {
 				method: 'POST',
 				headers: {
 					"Content-Type": "application/json"
 				},
-				body: JSON.stringify(chuyenXeData)
+				body: JSON.stringify(benXeData)
 			})
 			.then(response => {
 				if (!response.ok) {
@@ -689,7 +602,7 @@
 				console.log("Cập nhật thành công:", data);
 				toast({
 					title: "Thành công!",
-					message: "Chuyến xe đã được cập nhật.",
+					message: "Bến xe đã được cập nhật.",
 					type: "success",
 					duration: 1000
 				});
@@ -701,7 +614,7 @@
 				console.error("Lỗi cập nhật:", error.message);
 				toast({
 					title: "Lỗi!",
-					message: "Không thể cập nhật chuyến xe.",
+					message: "Không thể cập nhật bến xe.",
 					type: "error",
 					duration: 1000
 				});
@@ -730,7 +643,7 @@
         };
         
         document.getElementById("confirmYes").onclick = function () {
-            const url = 'http://localhost:8085/FutaBus_Backend/api/admin/chuyenxe/xoa/' + id;
+            const url = 'http://localhost:8085/FutaBus_Backend/api/admin/benxe/xoa/' + id;
 
             fetch(url, {
             	method: 'PUT',
@@ -750,7 +663,7 @@
             	    console.log("Xoá thành công:", message);
             	    toast({
             	      title: "Thành công!",
-            	      message: "Chuyến xe đã được xoá.",
+            	      message: "Bến xe đã được xoá.",
             	      type: "success",
             	      duration: 1000
             	    });
@@ -763,7 +676,7 @@
             	    console.error("Lỗi xoá:", error.message);
             	    toast({
             	      title: "Lỗi!",
-            	      message: "Không thể xoá chuyến xe.",
+            	      message: "Không thể xoá bến xe.",
             	      type: "error",
             	      duration: 1000
             	    });
@@ -786,13 +699,11 @@
         });
       });
 	
-	function showAddChuyenXeModal() {
-	    document.getElementById('addTuyenXeId').selectedIndex = 0;
-	    document.getElementById('addThoiDiemDi').value = '';
-	    document.getElementById('addThoiDiemDen').value = '';
-	    document.getElementById('addXeId').selectedIndex = 0;
-	    document.getElementById('addGiaVe').value = '';
-	    document.getElementById('addTaiXeId').selectedIndex = 0;
+	function showAddBenXeModal() {
+	    document.getElementById('addTenBenXe').value = '';
+	    document.getElementById('addDiaChi').value = '';
+	    document.getElementById('addSoDienThoai').value = '';
+	    document.getElementById('addQuanHuyen').selectedIndex = 0;
 
 	    const overlay = document.getElementById('overlayAddModal');
 	    overlay.style.display = 'flex';
@@ -804,92 +715,88 @@
 	    };
 	}
 	
-	function submitAddChuyenXe() {
-	    const tuyenXeId = document.getElementById("addTuyenXeId").value.trim();
-	    const thoiDiemDi = document.getElementById("addThoiDiemDi").value;
-	    const thoiDiemDen = document.getElementById("addThoiDiemDen").value;
-	    const xeId = document.getElementById("addXeId").value;
-	    const giaVe = document.getElementById("addGiaVe").value;
-	    const taiXeId = document.getElementById("addTaiXeId").value;
+	function submitAddBenXe() {
+		const tenBenXe = document.getElementById("addTenBenXe").value.trim();
+		const diaChi = document.getElementById("addDiaChi").value.trim();
+		const soDienThoai = document.getElementById("addSoDienThoai").value.trim();
+		const quanHuyenId = document.getElementById("addQuanHuyen").value;
 
-	    if (tuyenXeId === "" || thoiDiemDi === "" || thoiDiemDen === "" || xeId === "" || giaVe === "" || taiXeId === "") {
-	        toast({
-	            title: "Chú ý!",
-	            message: "Vui lòng điền đầy đủ thông tin!",
-	            type: "error",
-	            duration: 2000
-	        });
-	        return;
-	    }
+		if (tenBenXe === "" || diaChi === "" || soDienThoai === "" || quanHuyenId === "") {
+		    toast({
+		        title: "Chú ý!",
+		        message: "Vui lòng điền đầy đủ thông tin!",
+		        type: "error",
+		        duration: 2000
+		    });
+		    return;
+		}
 
-	    if (new Date(thoiDiemDi) >= new Date(thoiDiemDen)) {
-	        toast({
-	            title: "Lỗi!",
-	            message: "Thời điểm đi phải trước thời điểm đến!",
-	            type: "error",
-	            duration: 2000
-	        });
-	        return;
-	    }
-	    
-	    const thoiDiemDiUpdated = addSecondsIfNeeded(thoiDiemDi);
-	    const thoiDiemDenUpdated = addSecondsIfNeeded(thoiDiemDen);
+		const sdtRegex = /^(0|\+84)[0-9]{9}$/;
+		if (!sdtRegex.test(soDienThoai)) {
+		    toast({
+		        title: "Lỗi!",
+		        message: "Số điện thoại không hợp lệ!",
+		        type: "error",
+		        duration: 2000
+		    });
+		    return;
+		}
 
-	    const data = {
-	    	tuyenXe: { idTuyenXe: parseInt(tuyenXeId) },
-	        thoiDiemDi: thoiDiemDiUpdated,
-	        thoiDiemDen: thoiDiemDenUpdated,
-	        xe: { idXe: parseInt(xeId) },
-	        giaVe: parseFloat(giaVe),
-	        taiXe: { idNguoiDung: parseInt(taiXeId) }
-	    };
+		const data = {
+		    tenBenXe: tenBenXe,
+		    diaChi: diaChi,
+		    soDienThoai: soDienThoai,
+		    quanHuyen: {
+		        idQuanHuyen: parseInt(quanHuyenId)
+		    }
+		};
 
-	    console.log("data: ", data);
+		console.log("data:", data);
 
-	    const url = 'http://localhost:8085/FutaBus_Backend/api/admin/chuyenxe/them';
+		const url = 'http://localhost:8085/FutaBus_Backend/api/admin/benxe/them';
 
-	    fetch(url, {
-	        method: "POST",
-	        headers: {
-	            "Content-Type": "application/json"
-	        },
-	        body: JSON.stringify(data)
-	    })
-	    .then(response => {
-	        if (!response.ok) {
-	            return response.text().then(text => { throw new Error(text) });
-	        }
-	        return response.json();
-	    })
-	    .then(result => {
-	        if (result.success) {
-	            toast({
-	                title: "Thành công!",
-	                message: "Thêm chuyến xe thành công.",
-	                type: "success",
-	                duration: 2000
-	            });
-	            setTimeout(() => {
-	                window.location.reload();
-	            }, 1000);
-	        } else {
-	            toast({
-	                title: "Thất bại!",
-	                message: "Không thể thêm chuyến xe!",
-	                type: "error",
-	                duration: 2000
-	            });
-	        }
-	    })
-	    .catch(error => {
-	        console.error("Lỗi khi gửi yêu cầu:", error);
-	        toast({
-	            title: "Lỗi!",
-	            message: "Đã xảy ra lỗi khi thêm chuyến xe!",
-	            type: "error",
-	            duration: 2000
-	        });
-	    });
+		fetch(url, {
+		    method: "POST",
+		    headers: {
+		        "Content-Type": "application/json"
+		    },
+		    body: JSON.stringify(data)
+		})
+		.then(response => {
+		    if (!response.ok) {
+		        return response.text().then(text => { throw new Error(text) });
+		    }
+		    return response.json();
+		})
+		.then(result => {
+		    if (result.success) {
+		        toast({
+		            title: "Thành công!",
+		            message: "Thêm bến xe thành công.",
+		            type: "success",
+		            duration: 1000
+		        });
+		        setTimeout(() => {
+		            window.location.reload();
+		        }, 1000);
+		    } else {
+		        toast({
+		            title: "Thất bại!",
+		            message: "Không thể thêm bến xe!",
+		            type: "error",
+		            duration: 1000
+		        });
+		    }
+		})
+		.catch(error => {
+		    console.error("Lỗi khi gửi yêu cầu:", error);
+		    toast({
+		        title: "Lỗi!",
+		        message: "Đã xảy ra lỗi khi thêm bến xe!",
+		        type: "error",
+		        duration: 1000
+		    });
+		});
 	}
 
 	</script>

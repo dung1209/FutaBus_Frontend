@@ -28,6 +28,21 @@
 </head>
 <body>
 	<div id="toast"></div>
+	<div id="confirmLogoutModal" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 class="modal-title">Xác nhận</h2>
+				<span class="close" id="modalClose">&times;</span>
+			</div>
+			<div class="modal-body">
+				<p class="title-question">Bạn có muốn xác nhận đăng xuất không?</p>
+			</div>
+			<div class="modal-footer">
+				<button id="confirmYes" class="btn btn-yes">Có</button>
+				<button id="confirmNo" class="btn btn-no">Không</button>
+			</div>
+		</div>
+	</div>
 	<header class="header-container">
 		<img
 			src="<%=request.getContextPath()%>/assets/user/image/home_banner.png"
@@ -278,9 +293,27 @@
     }
 	
 	document.getElementById("logoutBtn").addEventListener("click", function () {
-	    localStorage.removeItem("nguoiDung");
+	    document.getElementById("confirmLogoutModal").classList.add("show");
+	});
 
+	document.getElementById("confirmNo").addEventListener("click", function () {
+	    document.getElementById("confirmLogoutModal").classList.remove("show");
+	});
+
+	document.getElementById("modalClose").addEventListener("click", function () {
+	    document.getElementById("confirmLogoutModal").classList.remove("show");
+	});
+
+	document.getElementById("confirmYes").addEventListener("click", function () {
+	    localStorage.removeItem("nguoiDung");
 	    window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+	});
+	
+	const modal = document.getElementById("confirmLogoutModal");
+	window.addEventListener("click", function (event) {
+	    if (event.target === modal) {
+	        modal.classList.remove("show");
+	    }
 	});
 	
     document.addEventListener("DOMContentLoaded", function () {

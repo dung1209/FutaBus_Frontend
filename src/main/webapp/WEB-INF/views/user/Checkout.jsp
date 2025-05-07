@@ -147,7 +147,7 @@
 			<div class="filter-header">
 				<h5>Tổng thanh toán</h5>
 				<div class="total-price"><fmt:formatNumber value="${totalPrice + totalPriceReturn}" type="number" groupingUsed="true"/>đ</div>
-				<div class="timing">Thời gian dữ chỗ còn lại 17:06</div>
+				<!-- <div class="timing">Thời gian dữ chỗ còn lại 17:06</div> -->
 			</div>
 			
 			<div id="agribankPayment">

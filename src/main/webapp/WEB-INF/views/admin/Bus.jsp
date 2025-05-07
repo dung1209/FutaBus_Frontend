@@ -131,6 +131,9 @@
 				href="<%=request.getContextPath()%>/admin/bus-trip"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/map.png"
 				alt="map" /><span>Quản Lý Chuyến Xe</span></a> <a
+				href="<%=request.getContextPath()%>/admin/bus-station"><img
+				src="<%=request.getContextPath()%>/assets/admin/image/bus-station.png"
+				alt="station" /><span>Quản Lý Bến Xe</span></a> <a
 				href="<%=request.getContextPath()%>/admin/bus" class="active"><img
 				src="<%=request.getContextPath()%>/assets/admin/image/bus-bus.png"
 				alt="bus" class="active" /><span>Quản Lý Xe</span></a> <a

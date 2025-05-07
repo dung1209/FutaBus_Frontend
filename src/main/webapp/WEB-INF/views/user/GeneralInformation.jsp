@@ -28,6 +28,21 @@
 </head>
 <body>
 	<div id="toast"></div>
+	<div id="confirmLogoutModal" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 class="modal-title">Xác nhận</h2>
+				<span class="close" id="modalClose">&times;</span>
+			</div>
+			<div class="modal-body">
+				<p class="title-question">Bạn có muốn xác nhận đăng xuất không?</p>
+			</div>
+			<div class="modal-footer">
+				<button id="confirmYes" class="btn btn-yes">Có</button>
+				<button id="confirmNo" class="btn btn-no">Không</button>
+			</div>
+		</div>
+	</div>
 	<header class="header-container">
 		<img
 			src="<%=request.getContextPath()%>/assets/user/image/home_banner.png"
@@ -102,7 +117,8 @@
 
 	<nav>
 		<ul>
-			<li><a href="http://localhost:8086/FutaBus_Frontend">TRANG CHỦ</a></li>
+			<li><a href="http://localhost:8086/FutaBus_Frontend">TRANG
+					CHỦ</a></li>
 			<li><a href="#">LỊCH TRÌNH</a></li>
 			<li><a href="#">TRA CỨU VÉ</a></li>
 			<li><a href="#">TIN TỨC</a></li>
@@ -133,11 +149,11 @@
 						src="<%=request.getContextPath()%>/assets/user/image/change_password.svg"
 						alt="chang-pass" /> Đặt lại mật khẩu
 				</a></li>
-				<li><a href="http://localhost:8086/FutaBus_Frontend/login">
+				<li><div id="logoutBtn1" class="logout-btn">
 						<img
-						src="<%=request.getContextPath()%>/assets/user/image/logout.svg"
-						alt="logout" /> Đăng xuất
-				</a></li>
+							src="<%=request.getContextPath()%>/assets/user/image/logout.svg"
+							alt="logout" /> Đăng xuất
+					</div></li>
 			</ul>
 		</div>
 
@@ -257,12 +273,6 @@
 				window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
 			}
 		}
-		
-		document.getElementById("logoutBtn").addEventListener("click", function () {
-		    localStorage.removeItem("nguoiDung");
-
-		    window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
-		});
 
 		const nguoiDungStr = localStorage.getItem("nguoiDung");
 		if (nguoiDungStr) {
@@ -525,6 +535,34 @@
         	    main.appendChild(toast);
     		}
         }
+		
+		document.getElementById("logoutBtn").addEventListener("click", function () {
+		    document.getElementById("confirmLogoutModal").classList.add("show");
+		});
+		
+		document.getElementById("logoutBtn1").addEventListener("click", function () {
+		    document.getElementById("confirmLogoutModal").classList.add("show");
+		});
+
+		document.getElementById("confirmNo").addEventListener("click", function () {
+		    document.getElementById("confirmLogoutModal").classList.remove("show");
+		});
+
+		document.getElementById("modalClose").addEventListener("click", function () {
+		    document.getElementById("confirmLogoutModal").classList.remove("show");
+		});
+
+		document.getElementById("confirmYes").addEventListener("click", function () {
+		    localStorage.removeItem("nguoiDung");
+		    window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+		});
+		
+		const modal = document.getElementById("confirmLogoutModal");
+		window.addEventListener("click", function (event) {
+		    if (event.target === modal) {
+		        modal.classList.remove("show");
+		    }
+		});
 	</script>
 
 </body>

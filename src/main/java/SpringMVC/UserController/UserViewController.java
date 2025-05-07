@@ -394,36 +394,18 @@ public class UserViewController {
 	
 	@GetMapping("/general-information")
 	public String informationPage(Model model, HttpSession session) {
-//		RestTemplate restTemplate = new RestTemplate();
-//		String apiUrlWithParams = API_URL + "tinhthanh";
-//		ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
-//
-//		Map<String, Object> responseData = response.getBody();
-//		model.addAttribute("tinhThanhList", responseData.get("tinhThanhList"));
 
 		return "user/GeneralInformation";
 	}
 	
 	@GetMapping("/reset-password")
 	public String resetPasswordPage(Model model, HttpSession session) {
-//		RestTemplate restTemplate = new RestTemplate();
-//		String apiUrlWithParams = API_URL + "tinhthanh";
-//		ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
-//
-//		Map<String, Object> responseData = response.getBody();
-//		model.addAttribute("tinhThanhList", responseData.get("tinhThanhList"));
 
 		return "user/ResetPassword";
 	}
 	
 	@GetMapping("/purchase-history")
 	public String purchaseHistoryPage(Model model, HttpSession session) {
-//		RestTemplate restTemplate = new RestTemplate();
-//		String apiUrlWithParams = API_URL + "tinhthanh";
-//		ResponseEntity<Map> response = restTemplate.getForEntity(apiUrlWithParams, Map.class);
-//
-//		Map<String, Object> responseData = response.getBody();
-//		model.addAttribute("tinhThanhList", responseData.get("tinhThanhList"));
 
 		return "user/PurchaseHistory";
 	}
