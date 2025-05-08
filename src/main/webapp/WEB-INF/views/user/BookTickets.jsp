@@ -656,33 +656,28 @@
 	</script>
 
 	<script>
-	
-	document.addEventListener("DOMContentLoaded", function () {
-	    document.getElementById("logoutBtn").addEventListener("click", function () {
-	        document.getElementById("confirmLogoutModal").classList.add("show");
-	    });
+	document.getElementById("logoutBtn").addEventListener("click", function () {
+		const modal = document.getElementById("confirmLogoutModal");
+	    
+	    modal.classList.add("show");
 
-	    document.getElementById("confirmNo").addEventListener("click", function () {
-	        document.getElementById("confirmLogoutModal").classList.remove("show");
-	    });
+	    modal.onclick = function (event) {
+	        modal.classList.remove("show");
+	    };
 
-	    document.getElementById("modalClose").addEventListener("click", function () {
-	        document.getElementById("confirmLogoutModal").classList.remove("show");
-	    });
+	    document.getElementById("confirmNo").onclick = function () {
+	    	modal.classList.remove("show");
+	    };
 
+	    document.getElementById("modalClose").onclick = function () {
+	    	modal.classList.remove("show");
+	    };
+	    
 	    document.getElementById("confirmYes").addEventListener("click", function () {
-	        localStorage.removeItem("nguoiDung");
-	        window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
-	    });
-
-	    const modal = document.getElementById("confirmLogoutModal");
-	    window.addEventListener("click", function (event) {
-	        if (event.target === modal) {
-	            modal.classList.remove("show");
-	        }
-	    });
-	});
-
+		    localStorage.removeItem("nguoiDung");
+		    window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+		});
+    });
 	
 	let selectedSeatsCount = 0;
 	const maxSeats = 5;

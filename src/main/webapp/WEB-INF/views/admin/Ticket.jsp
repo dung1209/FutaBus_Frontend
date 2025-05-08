@@ -177,7 +177,7 @@
 					</div>
 					<div class="form-group">
 						<label>Trạng thái:</label> <select id="editTrangThai">
-							<option value="0">Đã hủy</option>
+							<option value="0" disabled>Đã hủy</option>
 							<option value="1">Đã đặt</option>
 							<option value="2">Chờ thanh toán</option>
 							<option value="3">Đã thanh toán</option>
@@ -206,7 +206,7 @@
 					<span class="close" id="modalClose">&times;</span>
 				</div>
 				<div class="modal-body">
-					<p class="title-question">Bạn có muốn xoá người dùng không?</p>
+					<p class="title-question">Bạn có muốn huỷ vé không?</p>
 				</div>
 				<div class="modal-footer">
 					<button id="confirmYes" class="btn btn-yes">Có</button>
@@ -435,8 +435,10 @@
                                			'${booking.danhSachGhe}', 
                                			'${booking.danhSachIDGhe}')" />
 									<img
-									src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
-									alt="delete" /></td>
+										src="<%=request.getContextPath()%>/assets/admin/image/delete.png"
+										alt="delete"
+										onclick="showDeleteModal('${booking.idPhieuDatVe}', '${booking.danhSachIDGhe}')" />
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -764,6 +766,82 @@
 				});
 			});
 		}
+		
+		function showDeleteModal(id, danhSachIDGhe) {
+	        window.idCanXoa = id;
+
+	        const overlay = document.getElementById("overlayDeleteModal");
+	        overlay.style.display = "flex"; 
+
+	        overlay.onclick = function (event) {
+	            if (event.target === overlay) {
+	                overlay.style.display = "none";
+	            }
+	        };
+
+	        document.getElementById("confirmNo").onclick = function () {
+	            overlay.style.display = "none";
+	        };
+
+	        document.getElementById("modalClose").onclick = function () {
+	            overlay.style.display = "none";
+	        };
+	        
+	        document.getElementById("confirmYes").onclick = function () {
+	        	
+	        	const idGheList = danhSachIDGhe.split(',').map(id => parseInt(id.trim()));
+	        	
+	        	console.log("id", id);
+	        	console.log("danhSachIDGhe", danhSachIDGhe);
+	        	console.log("idGheList", idGheList);
+	        	
+	        	const url = 'http://localhost:8085/FutaBus_Backend/api/admin/cancel-ve/' + id;
+
+				fetch(url, {
+					method: 'PUT',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						trangThai: 0,
+						idGheList: idGheList
+					})
+				})
+				.then(response => {
+					if (!response.ok) {
+						return response.text().then(text => {
+							throw new Error("Lỗi từ server: " + text);
+						});
+					}
+					return response.json();
+				})
+				.then(data => {
+					console.log("Cập nhật thành công:", data);
+					toast({
+						title: "Thành công!",
+						message: "Vé xe huỷ thành công.",
+						type: "success",
+						duration: 1000
+					});
+					setTimeout(() => {
+						window.location.reload();
+					}, 1000);
+				})
+				.catch(error => {
+					console.error("Lỗi cập nhật:", error.message);
+					toast({
+						title: "Lỗi!",
+						message: "Không thể cập nhật vé xe.",
+						type: "error",
+						duration: 1000
+					});
+				});
+	        };
+	    }
+
+		document.querySelector(".user-modal__item").addEventListener("click", function () {
+		    window.location.href = "http://localhost:8086/FutaBus_Frontend/admin/account";
+		});
 
 	</script>
 

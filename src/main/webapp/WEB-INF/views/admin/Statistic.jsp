@@ -484,6 +484,10 @@
 		        });
 		    }
 		});
+	
+		document.querySelector(".user-modal__item").addEventListener("click", function () {
+		    window.location.href = "http://localhost:8086/FutaBus_Frontend/admin/account";
+		});
 
 	</script>
 

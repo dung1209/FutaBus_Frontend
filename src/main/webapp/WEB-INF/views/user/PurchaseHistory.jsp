@@ -17,9 +17,14 @@
 	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" type="text/css"
 	href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+	integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+	crossorigin="anonymous" />
 
 </head>
 <body>
+	<div id="toast"></div>
 	<div id="confirmLogoutModal" class="modal">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -35,6 +40,25 @@
 			</div>
 		</div>
 	</div>
+	
+	<div id="overlayDeleteModal" class="overlay">
+		<div id="confirmModal" class="modal delete-modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title">Xác nhận</h2>
+					<span class="close" id="modalCloseCancel">&times;</span>
+				</div>
+				<div class="modal-body">
+					<p class="title-question">Bạn có muốn huỷ vé không?</p>
+				</div>
+				<div class="modal-footer">
+					<button id="confirmYesCancel" class="btn btn-yes">Có</button>
+					<button id="confirmNoCancel" class="btn btn-no">Không</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<header class="header-container">
 		<img
 			src="<%=request.getContextPath()%>/assets/user/image/home_banner.png"
@@ -346,6 +370,12 @@
 		                const buttonHuy = document.createElement("button");
 		                buttonHuy.textContent = "Hủy";
 		                buttonHuy.id = "btnHuyVe";
+		                /*buttonHuy.onclick = function () {
+		                    showDeleteModal(ve.idPhieuDatVe, ve.danhSachIDGhe);
+		                };*/
+		                buttonHuy.classList.add("btn-huy-ve");
+		                buttonHuy.dataset.id = ve.idPhieuDatVe;
+		                buttonHuy.dataset.ghe = JSON.stringify(ve.danhSachIDGhe);
 		                
 		                if (ve.trangThai !== 1) {
 		                    buttonHuy.disabled = true;
@@ -364,6 +394,94 @@
 
 		                tbody.prepend(row);
 		            });
+		            
+		            document.querySelectorAll(".btn-huy-ve").forEach(btn => {
+		    		    btn.addEventListener("click", function () {
+		    		        const id = this.dataset.id;
+		    		        const danhSachGhe = JSON.parse(this.dataset.ghe);
+		    		        showDeleteModal(id, danhSachGhe);
+		    		    });
+		    		});
+		            
+		            function showDeleteModal(id, danhSachIDGhe) {
+		    	        window.idCanXoa = id;
+		    	        
+		    	        console.log("đã vào đâyy");
+		    	        console.log("id: ", id);
+		    	        console.log("danhSachIDGhe: ", danhSachIDGhe);
+ 
+		    	        const modal = document.getElementById("confirmModal");
+		    	        const overlay = document.getElementById("overlayDeleteModal");
+		    	        
+		    	        modal.classList.add("show");
+		    	        overlay.style.display = "block";
+
+		    	        modal.onclick = function (event) {
+		    	            modal.classList.remove("show");
+		    	            overlay.style.display = "none";
+		    	        };
+
+		    	        document.getElementById("confirmNoCancel").onclick = function () {
+		    	        	modal.classList.remove("show");
+		    	            overlay.style.display = "none";
+		    	        };
+
+		    	        document.getElementById("modalCloseCancel").onclick = function () {
+		    	        	modal.classList.remove("show");
+		    	            overlay.style.display = "none";
+		    	        };
+		    	        
+		    	        document.getElementById("confirmYesCancel").onclick = function () {
+		    	        	
+		    	        	const idGheList = danhSachIDGhe.split(',').map(id => parseInt(id.trim()));
+		    	        	
+		    	        	console.log("id", id);
+		    	        	console.log("danhSachIDGhe", danhSachIDGhe);
+		    	        	console.log("idGheList", idGheList);
+		    	        	
+		    	        	const url = 'http://localhost:8085/FutaBus_Backend/api/admin/cancel-ve/' + id;
+
+		    				fetch(url, {
+		    					method: 'PUT',
+		    					headers: {
+		    						"Content-Type": "application/json"
+		    					},
+		    					body: JSON.stringify({
+		    						trangThai: 0,
+		    						idGheList: idGheList
+		    					})
+		    				})
+		    				.then(response => {
+		    					if (!response.ok) {
+		    						return response.text().then(text => {
+		    							throw new Error("Lỗi từ server: " + text);
+		    						});
+		    					}
+		    					return response.json();
+		    				})
+		    				.then(data => {
+		    					console.log("Cập nhật thành công:", data);
+		    					toast({
+		    						title: "Thành công!",
+		    						message: "Vé xe huỷ thành công.",
+		    						type: "success",
+		    						duration: 1000
+		    					});
+		    					setTimeout(() => {
+		    						window.location.reload();
+		    					}, 1000);
+		    				})
+		    				.catch(error => {
+		    					console.error("Lỗi cập nhật:", error.message);
+		    					toast({
+		    						title: "Lỗi!",
+		    						message: "Không thể cập nhật vé xe.",
+		    						type: "error",
+		    						duration: 1000
+		    					});
+		    				});
+		    	        };
+		    	    }
 		        } else {
 		            console.error("❌ Không có dữ liệu hoặc lỗi:", data.message);
 		        }
@@ -467,6 +585,60 @@
 		        modal.classList.remove("show");
 		    }
 		});
+		
+		function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+    		const main = document.getElementById("toast");
+    		if (main) {
+    			const toast = document.createElement("div");
+    			
+        	    const autoRemoveId = setTimeout(function () {
+        	      main.removeChild(toast);
+        	    }, duration + 1000);
+
+        	    toast.onclick = function (e) {
+        	      if (e.target.closest(".toast__close")) {
+        	        main.removeChild(toast);
+        	        clearTimeout(autoRemoveId);
+        	      }
+        	    };
+
+        	    const icons = {
+        	      success: "fas fa-check-circle",
+        	      info: "fas fa-info-circle",
+        	      warning: "fas fa-exclamation-circle",
+        	      error: "fas fa-exclamation-circle"
+        	    };
+        	    const icon = icons[type];
+        	    const delay = (duration / 1000).toFixed(2);
+
+        	    toast.classList.add("toast", `toast--${type}`);
+        	    toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+        	    toast.innerHTML = `
+        	                    <div class="toast__icon">
+        	                        <i class="${icon}"></i>
+        	                    </div>
+        	                    <div class="toast__body">
+        	                        <h3 class="toast__title">${title}</h3>
+        	                        <p class="toast__msg">${message}</p>
+        	                    </div>
+        	                    <div class="toast__close">
+        	                        <i class="fas fa-times"></i>
+        	                    </div>
+        	                `;
+        	    const toastIcon = toast.querySelector('.toast__icon');
+    			if (toastIcon) {
+        			const iconElement = document.createElement('i');
+        			iconElement.className = icon;
+        			toastIcon.appendChild(iconElement);
+    			}
+        	    const toastMessage = toast.querySelector('.toast__msg');
+        	    toastMessage.textContent = message; 
+        	    const toastTitle = toast.querySelector('.toast__title');
+        	    toastTitle.textContent = title; 
+        	    main.appendChild(toast);
+    		}
+        }
 
 	</script>
 

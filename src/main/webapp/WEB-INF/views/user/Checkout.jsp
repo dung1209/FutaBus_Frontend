@@ -40,6 +40,23 @@
 			</div>
 		</div>
 	</div>
+	
+	<div id="confirmLogoutModal" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 class="modal-title">Xác nhận</h2>
+				<span class="close" id="modalClose">&times;</span>
+			</div>
+			<div class="modal-body">
+				<p class="title-question">Bạn có muốn xác nhận đăng xuất không?</p>
+			</div>
+			<div class="modal-footer">
+				<button id="confirmYesLogout" class="btn btn-yes">Có</button>
+				<button id="confirmNoLogout" class="btn btn-no">Không</button>
+			</div>
+		</div>
+	</div>
+	
 	<header class="header-container">
 		<img
 			src="<%=request.getContextPath()%>/assets/user/image/home_banner.png"
@@ -342,6 +359,28 @@
 	</script>
 
 	<script>
+	document.getElementById("logoutBtn").addEventListener("click", function () {
+		const modal = document.getElementById("confirmLogoutModal");
+	    
+	    modal.classList.add("show");
+
+	    modal.onclick = function (event) {
+	        modal.classList.remove("show");
+	    };
+
+	    document.getElementById("confirmNoLogout").onclick = function () {
+	    	modal.classList.remove("show");
+	    };
+
+	    document.getElementById("modalClose").onclick = function () {
+	    	modal.classList.remove("show");
+	    };
+	    
+	    document.getElementById("confirmYesLogout").addEventListener("click", function () {
+		    localStorage.removeItem("nguoiDung");
+		    window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+		});
+    });
 	
 	function redirectToLogin() {
 		const nguoiDungStr = localStorage.getItem("nguoiDung");
