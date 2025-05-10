@@ -6,6 +6,7 @@
 
 <meta charset="utf-8">
 <title>Đặt vé xe</title>
+<%@ include file="../chatbox/chatbox.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/assets/user/css/booktickets.css">

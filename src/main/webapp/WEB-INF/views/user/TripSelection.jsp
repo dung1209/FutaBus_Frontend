@@ -6,6 +6,7 @@
 
 <meta charset="utf-8">
 <title>Đặt vé</title>
+<%@ include file="../chatbox/chatbox.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <link rel="stylesheet" type="text/css"
