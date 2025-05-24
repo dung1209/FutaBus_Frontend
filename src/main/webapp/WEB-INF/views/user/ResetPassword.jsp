@@ -153,8 +153,6 @@
 				khẩu cho người khác</p>
 
 			<div class="change-password-card">
-				<div class="phone-number">(+84) 0916430832</div>
-
 				<form id="password-form" class="change-password-form">
 					<input type="text" id="username" name="username" style="display: none;" autocomplete="username" />
 					

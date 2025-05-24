@@ -101,7 +101,7 @@
 								alt="profile" /> Chỉnh sửa hồ sơ
 						</div>
 						<hr>
-						<div class="user-modal__item logout">
+						<div class="user-modal__item logout" id="logoutBtn">
 							<img
 								src="<%=request.getContextPath()%>/assets/admin/image/log-out.png"
 								alt="log-out" class="log-out" /> Đăng xuất
@@ -546,6 +546,10 @@
 	document.querySelector(".user-modal__item").addEventListener("click", function () {
 	    window.location.href = "http://localhost:8086/FutaBus_Frontend/admin/account";
 	});
+	
+	document.getElementById("logoutBtn").addEventListener("click", function () {
+        window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+      });
 
 	</script>
 

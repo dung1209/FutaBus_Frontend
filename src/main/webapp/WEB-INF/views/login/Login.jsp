@@ -36,7 +36,7 @@
 					<img
 						src="<%=request.getContextPath()%>/assets/user/image/vietnam.svg"
 						width="26" alt="language icon"> <span
-						class="mx-2 text-white">vi</span> <img
+						class="mx-2">vi</span> <img
 						src="<%=request.getContextPath()%>/assets/user/image/icon_form_droplist.svg"
 						alt="icon_form_droplist">
 				</div>
@@ -44,7 +44,7 @@
 					<img
 						src="<%=request.getContextPath()%>/assets/user/image/download_app.svg"
 						width="26" alt="download app icon"> <span
-						class="mx-2 text-white">Tải ứng dụng</span> <img
+						class="mx-2">Tải ứng dụng</span> <img
 						src="<%=request.getContextPath()%>/assets/user/image/icon_form_droplist.svg"
 						alt="icon_form_droplist">
 				</div>
@@ -99,9 +99,13 @@
 					</div>
 					<button type="submit" class="btn" id="login-button">Đăng
 						nhập</button>
-					<a href="#" class="forgot-password"
-						onclick="showForgotPasswordForm(); return false;">Quên mật
-						khẩu</a>
+					<div class="forgot-password-container">
+						<a href="#" class="forgot-password"
+							onclick="showForgotPasswordForm(); return false;">Quên mật
+							khẩu?</a> <img
+							src="<%=request.getContextPath()%>/assets/user/image/google.png"
+							alt="Google" class="google-icon" style="cursor: pointer;" onclick="signInWithGoogle()">
+					</div>
 				</form>
 
 				<form id="register-form" style="display: none;">
@@ -974,6 +978,26 @@
     	    main.appendChild(toast);
 		}
     }
+	
+	function signInWithGoogle() {
+		var clientId = "909666408197-a3l5csqs07f4dj6sjoteueg7efedr48e.apps.googleusercontent.com";
+		var redirectUri = "http://localhost:8085/FutaBus_Backend/api/user/login-google";
+		var scope = "openid email profile";
+		var responseType = "code";
+		var accessType = "offline";
+		var prompt = "consent";
+
+		var googleLoginUrl = "https://accounts.google.com/o/oauth2/v2/auth?" +
+			"client_id=" + clientId +
+			"&redirect_uri=" + encodeURIComponent(redirectUri) +
+			"&response_type=" + responseType +
+			"&scope=" + encodeURIComponent(scope) +
+			"&access_type=" + accessType +
+			"&prompt=" + prompt;
+
+		window.location.href = googleLoginUrl;
+	}
+
 	</script>
 
 </body>

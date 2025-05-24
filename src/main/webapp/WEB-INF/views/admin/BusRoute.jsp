@@ -211,7 +211,7 @@
 								alt="profile" /> Chỉnh sửa hồ sơ
 						</div>
 						<hr>
-						<div class="user-modal__item logout">
+						<div class="user-modal__item logout" id="logoutBtn">
 							<img
 								src="<%=request.getContextPath()%>/assets/admin/image/log-out.png"
 								alt="log-out" class="log-out" /> Đăng xuất
@@ -609,9 +609,9 @@
 	    </c:forEach>
 	    
 	    var benXeToQuanHuyen = {};
-	    <c:forEach items="${benXeList}" var="bx">
+	    /*<c:forEach items="${benXeList}" var="bx">
 	        benXeToQuanHuyen[${bx.idBenXe}] = ${bx.idQuanHuyen};
-	    </c:forEach>
+	    </c:forEach>*/
 	    
 	    const idQuanHuyenDi = benXeToQuanHuyen[idBenXeDi];
 	    const idQuanHuyenDen = benXeToQuanHuyen[idBenXeDen];
@@ -907,6 +907,10 @@
 	document.querySelector(".user-modal__item").addEventListener("click", function () {
 	    window.location.href = "http://localhost:8086/FutaBus_Frontend/admin/account";
 	});
+	
+	document.getElementById("logoutBtn").addEventListener("click", function () {
+        window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
+      });
 
 	</script>
 

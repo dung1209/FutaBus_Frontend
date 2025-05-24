@@ -8,7 +8,7 @@
 <title>Thông tin chung</title>
 <%@ include file="../chatbox/chatbox.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/assets/user/css/generalinformation.css">
 <link rel="icon" href="data:,">

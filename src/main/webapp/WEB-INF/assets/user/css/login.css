@@ -610,7 +610,6 @@ h4 {
 .forgot-password {
     display: block;
     text-align: center;
-    margin-top: 23px;
     color: #ff5a00;
     text-decoration: none;
 }
@@ -796,4 +795,22 @@ a.gap-3.cursor-pointer {
     display: inline-flex;
     align-items: center;
 }
+
+.forgot-password-container {
+    display: flex;
+    align-items: center;
+    margin-top: 27px;
+}
+
+.google-icon {
+    width: 24px; 
+    height: 24px;
+    cursor: pointer;
+    margin-left: 27px; 
+}
+
+span.mx-2 {
+    color: #565656;
+}
+
 
