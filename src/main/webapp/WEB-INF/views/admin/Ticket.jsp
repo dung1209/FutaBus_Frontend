@@ -27,7 +27,11 @@
 	<div id="toast"></div>
 	<div id="overlayModal" class="overlay" style="display: none;">
 		<div id="detailModal" class="modal">
-			<h3>Chi tiết vé</h3>
+			<div style="display: flex; justify-content: space-between; align-items: center;">
+				<h3>Chi tiết vé</h3>
+				<img src="<%=request.getContextPath()%>/assets/admin/image/printer.png"
+					alt="Logo" onclick="printTicket()" style="cursor:pointer;" />
+			</div>
 			<div class="form-detail">
 				<div class="column">
 					<div class="form-group">
@@ -477,7 +481,9 @@
 			</div>
 		</main>
 	</div>
-
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+	
 	<script>
 	function toast({ title = "", message = "", type = "info", duration = 3000 }) {
 		const main = document.getElementById("toast");
@@ -846,6 +852,61 @@
 		document.getElementById("logoutBtn").addEventListener("click", function () {
 	        window.location.href = "http://localhost:8086/FutaBus_Frontend/login";
 	      });
+		
+		function printTicket() {
+			  const modal = document.getElementById("detailModal");
+			  const formDetail = modal.querySelector(".form-detail");
+
+			  // Tạo bản sao để xử lý in
+			  const clone = formDetail.cloneNode(true);
+
+			  // Xóa tất cả input hidden
+			  const hiddenInputs = clone.querySelectorAll('input[type="hidden"]');
+			  hiddenInputs.forEach(input => input.remove());
+
+			  // Thay input visible bằng span chứa giá trị
+			  const inputs = clone.querySelectorAll('input');
+			  inputs.forEach(input => {
+			    const value = input.value;
+			    const parent = input.parentElement;
+
+			    const span = document.createElement("span");
+			    span.textContent = value;
+			    span.style.padding = "4px 8px";
+			    span.style.display = "inline-block";
+			    span.style.background = "#f1f1f1";
+			    span.style.border = "1px solid #ccc";
+			    span.style.minWidth = "200px";
+
+			    parent.replaceChild(span, input);
+			  });
+
+			  // Tạo cửa sổ mới để in
+			  const printWindow = window.open('', '_blank', 'width=800,height=600');
+			  printWindow.document.write('<html><head><title>Chi tiết vé</title>');
+			  printWindow.document.write('<style>');
+			  printWindow.document.write(`
+			    body { font-family: Arial, sans-serif; padding: 20px; }
+			    .form-group { margin-bottom: 10px; }
+			    label { font-weight: bold; display: inline-block; width: 150px; }
+			    span { border: none; background: #f1f1f1; padding: 4px 8px; display: inline-block; }
+			    .column { float: left; width: 50%; box-sizing: border-box; }
+			    .form-detail::after { content: ""; display: table; clear: both; }
+			  `);
+			  printWindow.document.write('</style>');
+			  printWindow.document.write('</head><body>');
+			  printWindow.document.write('<h2>Chi tiết vé</h2>');
+			  printWindow.document.write(clone.outerHTML);
+			  printWindow.document.write('</body></html>');
+
+			  printWindow.document.close();
+			  printWindow.focus();
+
+			  setTimeout(() => {
+			    printWindow.print();
+			    printWindow.close();
+			  }, 500);
+			}
 
 	</script>
 

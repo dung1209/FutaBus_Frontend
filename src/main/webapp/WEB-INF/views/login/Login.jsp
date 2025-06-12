@@ -453,10 +453,14 @@
 	            	
 	            	if (data.nguoiDung.idPhanQuyen === 2) {
 	            		localStorage.setItem("nguoiDung", JSON.stringify(data.nguoiDung));
-	                	window.location.href = "http://localhost:8086/FutaBus_Frontend/admin";
+	            		setTimeout(function() {
+	            			window.location.href = "http://localhost:8086/FutaBus_Frontend/admin";
+	            		}, 1000);
 	            	} else {
 	            		localStorage.setItem("nguoiDung", JSON.stringify(data.nguoiDung));
-	            		window.location.href = "http://localhost:8086/FutaBus_Frontend";
+	            		setTimeout(function() {
+	            			window.location.href = "http://localhost:8086/FutaBus_Frontend";
+	            		}, 1000);
 	            	}
 	            } else {
 	            	toast({
